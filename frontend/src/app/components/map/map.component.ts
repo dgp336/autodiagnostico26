@@ -49,10 +49,7 @@ export class MapComponent implements OnDestroy {
 
       // Actualiza marcador del usuario cuando cambia la geolocalización
       effect(() => {
-        const state = this.geoService.locationState();
-        if (this.mapReady() && state.coords) {
-          this.updateUserPosition(state.coords.lat, state.coords.lng);
-        }
+        this.refreshLocation();
       });
 
       // Re-renderiza marcadores de talleres cuando cambia la lista o el mapa está listo
@@ -61,6 +58,24 @@ export class MapComponent implements OnDestroy {
         if (!this.mapReady()) return;
         this.renderWorkshopMarkers(ws);
       });
+    }
+  }
+
+  public onRefreshClick(): void {
+    this.refreshLocation(true);
+  }
+
+  private refreshLocation(forceCenter: boolean = false) {
+    let state = this.geoService.locationState();
+    if (state.error) {
+      this.geoService.getIpFallback();
+      state = this.geoService.locationState();
+    }
+    if (this.mapReady() && state.coords) {
+      this.updateUserPosition(state.coords.lat, state.coords.lng);
+      if (forceCenter) {
+        this.map.setView([state.coords.lat, state.coords.lng], 13);
+      }
     }
   }
 
