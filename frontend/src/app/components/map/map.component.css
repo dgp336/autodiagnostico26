@@ -1,0 +1,69 @@
+/* =========================================
+   Map — Contenedor host
+   ========================================= */
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* =========================================
+   Layout principal
+   ========================================= */
+.main-container {
+  display: flex;
+  width: 100%;
+  height: 420px;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e8eaed;
+}
+
+/* =========================================
+   Mapa Leaflet
+   ========================================= */
+.map-wrapper {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+  /* evita overflow en flex */
+}
+
+.map-element {
+  width: 100%;
+  height: 100%;
+}
+
+
+:host ::ng-deep .user-location-marker {
+  width: 16px;
+  height: 16px;
+  background: #1a6bbd;
+  border: 2px solid white;
+  border-radius: 50%;
+  position: relative;
+}
+
+:host ::ng-deep .pulse {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #1a6bbd;
+  animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
