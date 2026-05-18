@@ -16,6 +16,65 @@
 
   <div class="workshop-layout" *ngIf="!loading(); else loadingState">
     <section class="workshop-list" aria-label="Listado de talleres">
+      <!-- Modern Premium Filter Controls -->
+      <div class="filter-card">
+        <div class="filter-header">
+          <h3>🔍 Filtros de taller</h3>
+          <button type="button" class="clear-filters-btn" (click)="resetFilters()">Limpiar</button>
+        </div>
+        
+        <div class="filter-grid">
+          <!-- Toggle: Horarios de apertura -->
+          <div class="filter-control">
+            <label>Horario</label>
+            <button
+              type="button"
+              class="toggle-btn"
+              [class.toggle-btn--active]="onlyOpen()"
+              (click)="onlyOpen.set(!onlyOpen())"
+            >
+              <span class="pulse-indicator" *ngIf="onlyOpen()"></span>
+              {{ onlyOpen() ? '🟢 Solo Abiertos' : 'Mostrar todos' }}
+            </button>
+          </div>
+
+          <!-- Select: Ocupación -->
+          <div class="filter-control">
+            <label>Ocupación</label>
+            <div class="select-wrapper">
+              <select
+                [value]="occupancyFilter()"
+                (change)="onOccupancyChange($event)"
+                class="filter-select"
+              >
+                <option value="ALL">Cualquiera</option>
+                <option value="AVAILABLE">Disponibles</option>
+                <option value="FULL">Completos</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Slider: Radio de distancia -->
+          <div class="filter-control distance-control">
+            <label class="distance-label">
+              <span>Distancia máxima</span>
+              <strong class="distance-badge">
+                {{ maxDistance() === Infinity ? 'Cualquiera' : (maxDistance() + ' km') }}
+              </strong>
+            </label>
+            <input
+              type="range"
+              min="1"
+              max="50"
+              [value]="maxDistance() === Infinity ? 50 : maxDistance()"
+              (input)="onDistanceChange($event)"
+              class="filter-slider"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Workshop List -->
       <button
         type="button"
         class="workshop-item"
@@ -30,11 +89,27 @@
             <span class="selected-pill" *ngIf="workshop.selectedByClient">Seleccionado</span>
           </span>
           <span>{{ workshop.address }}</span>
+          
+          <span class="workshop-item__schedule-line">
+            <span class="status-badge" [class.status-badge--open]="isOpenNow(workshop.schedule)">
+              {{ isOpenNow(workshop.schedule) ? 'Abierto' : 'Cerrado' }}
+            </span>
+            <span class="schedule-text">{{ workshop.schedule }}</span>
+          </span>
+
           <span class="workshop-item__meta">
-            {{ workshop.mechanicName }} · {{ workshop.activeVehicles }}/{{ workshop.vehicleLimit }} vehiculos
+            <span class="meta-stats">{{ workshop.mechanicName }} · {{ workshop.activeVehicles }}/{{ workshop.vehicleLimit }} vehiculos</span>
+            <span class="meta-distance" *ngIf="getDistanceLabel(workshop) as dist">
+              📍 A {{ dist }}
+            </span>
           </span>
         </span>
       </button>
+      
+      <div class="no-workshops-fallback" *ngIf="workshops().length === 0">
+        <p>No se encontraron talleres con los filtros seleccionados.</p>
+        <button type="button" class="reset-link-btn" (click)="resetFilters()">Restablecer filtros</button>
+      </div>
     </section>
 
     <section class="workshop-detail" *ngIf="selectedWorkshop() as workshop">
@@ -76,7 +151,12 @@
           </div>
           <div>
             <dt>Horario</dt>
-            <dd>{{ workshop.schedule }}</dd>
+            <dd>
+              {{ workshop.schedule }}
+              <span class="detail-status-pill" [class.detail-status-pill--open]="isOpenNow(workshop.schedule)">
+                {{ isOpenNow(workshop.schedule) ? '🟢 Abierto ahora' : '🔴 Cerrado' }}
+              </span>
+            </dd>
           </div>
         </dl>
 
@@ -111,6 +191,7 @@
 
         <app-map
           [workshops]="workshops()"
+          [selectedWorkshop]="selectedWorkshop()"
           (workshopSelected)="selectPreview($event)"
         ></app-map>
 

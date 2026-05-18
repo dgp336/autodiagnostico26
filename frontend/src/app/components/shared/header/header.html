@@ -32,6 +32,17 @@
       <!-- ACCIONES USUARIO -->
       <div class="header-actions">
 
+        <!-- Theme Toggle -->
+        <button class="theme-toggle-btn" (click)="toggleTheme()" aria-label="Cambiar tema">
+          @if (isDarkTheme) {
+            <!-- Sun Icon to switch to light mode -->
+            <i class="bi bi-sun-fill" style="font-size: 1.25rem;"></i>
+          } @else {
+            <!-- Moon Icon to switch to dark mode -->
+            <i class="bi bi-moon-stars-fill" style="font-size: 1.15rem;"></i>
+          }
+        </button>
+
         <!-- No autenticado -->
         @if (!authStateService.isLoggedIn()) {
           <button class="user-btn" (click)="onLogin()" aria-label="Iniciar sesión">

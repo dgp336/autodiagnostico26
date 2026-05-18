@@ -26,12 +26,46 @@
 .map-wrapper {
   flex: 1;
   position: relative;
-  min-width: 0; /* evita overflow en flex */
+  min-width: 0;
+  /* evita overflow en flex */
 }
 
 .map-element {
   width: 100%;
   height: 100%;
+}
+
+.refresh-loc-btn {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: var(--bg-card, #ffffff);
+  color: var(--ink, #111827);
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.1));
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 150ms ease, background-color 150ms ease, box-shadow 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.refresh-loc-btn:hover {
+  background-color: var(--accent-light, rgba(26, 107, 189, 0.08));
+  color: var(--accent, #1a6bbd);
+  border-color: var(--accent, #1a6bbd);
+  box-shadow: 0 6px 16px rgba(26, 107, 189, 0.15);
+  transform: translateY(-1px);
+}
+
+.refresh-loc-btn:active {
+  transform: translateY(0);
 }
 
 
@@ -46,15 +80,23 @@
 
 :host ::ng-deep .pulse {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   background: #1a6bbd;
   animation: pulse-animation 2s infinite;
 }
 
 @keyframes pulse-animation {
-  0%   { transform: scale(1); opacity: 0.6; }
-  100% { transform: scale(3); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
 }
-

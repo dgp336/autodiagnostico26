@@ -23,8 +23,7 @@ export class MapComponent implements OnDestroy {
   // ── Inputs desde el componente padre ────────────────────────────────────
   /** Lista de talleres a mostrar (la provee TallerComponent desde la BD). */
   workshops = input<Workshop[]>([]);
-  // TODO: eliminar — selectedWorkshop no se usa tras quitar el sidebar
-  // selectedWorkshop = input<Workshop | null>(null);
+  selectedWorkshop = input<Workshop | null>(null);
 
   // ── Outputs hacia el componente padre ────────────────────────────────────
   /** Emite cuando el usuario hace clic en un marcador del mapa. */
@@ -49,10 +48,7 @@ export class MapComponent implements OnDestroy {
 
       // Actualiza marcador del usuario cuando cambia la geolocalización
       effect(() => {
-        const state = this.geoService.locationState();
-        if (this.mapReady() && state.coords) {
-          this.updateUserPosition(state.coords.lat, state.coords.lng);
-        }
+        this.refreshLocation();
       });
 
       // Re-renderiza marcadores de talleres cuando cambia la lista o el mapa está listo
@@ -61,6 +57,31 @@ export class MapComponent implements OnDestroy {
         if (!this.mapReady()) return;
         this.renderWorkshopMarkers(ws);
       });
+
+      // Centra el mapa en el taller seleccionado cuando este cambia sin alterar la posición del usuario
+      effect(() => {
+        const selected = this.selectedWorkshop();
+        if (!this.mapReady() || !selected) return;
+        this.map.setView([selected.latitude, selected.longitude], 20);
+      });
+    }
+  }
+
+  public onRefreshClick(): void {
+    this.refreshLocation(true);
+  }
+
+  private refreshLocation(forceCenter: boolean = false) {
+    let state = this.geoService.locationState();
+    if (state.error) {
+      this.geoService.getIpFallback();
+      state = this.geoService.locationState();
+    }
+    if (this.mapReady() && state.coords) {
+      this.updateUserPosition(state.coords.lat, state.coords.lng);
+      if (forceCenter) {
+        this.map.setView([state.coords.lat, state.coords.lng], 13);
+      }
     }
   }
 
