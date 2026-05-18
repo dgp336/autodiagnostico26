@@ -111,8 +111,8 @@ body {
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-normal);
   color: var(--color-ink);
-  background-color: var(--color-bg-white);
-  transition: background-color var(--transition-normal);
+  background-color: var(--color-bg-lighter);
+  transition: background-color var(--transition-normal), color var(--transition-normal), border-color var(--transition-normal);
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -548,4 +548,185 @@ tr:hover {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ✦ DARK THEME OVERRIDES ✦ */
+.dark, :root.dark {
+  --color-primary: #3b82f6;          /* Vibrant blue in dark mode */
+  --color-primary-hover: #60a5fa;     /* Lighter blue on hover */
+  --color-primary-light: rgba(59, 130, 246, 0.15);
+  --color-primary-lighter: rgba(59, 130, 246, 0.08);
+  
+  --color-dark: #f9fafb;              /* Clean white headings */
+  --color-ink: #f3f4f6;               /* Light gray text */
+  --color-ink-muted: #9ca3af;         /* Muted gray text */
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-bg-light: #1e293b;          /* Dark slate card backgrounds */
+  --color-bg-lighter: #0f172a;        /* Deep navy page background */
+  --color-bg-white: #1e293b;          /* Replaced white with dark slate */
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.4);
+  --shadow-2xl: 0 24px 70px rgba(0, 0, 0, 0.6);
+}
+
+/* ── OVERRIDE ALL LOCAL COMPONENT :HOST VARIABLES GLOBALLY ── */
+.dark * {
+  --accent: var(--color-primary) !important;
+  --accent-light: var(--color-primary-light) !important;
+  --accent-faint: var(--color-primary-lighter) !important;
+  --accent-disabled: rgba(59, 130, 246, 0.3) !important;
+  --bg-card: var(--color-bg-white) !important;
+  --bg: var(--color-bg-lighter) !important;
+  --bg-footer: var(--color-bg-white) !important;
+  --bg-bottom: var(--color-bg-lighter) !important;
+  --ink: var(--color-ink) !important;
+  --ink-muted: var(--color-ink-muted) !important;
+  --ink-faint: var(--color-ink-muted) !important;
+  --border: var(--color-border) !important;
+  --border-input: var(--color-border) !important;
+}
+
+/* ── ELEMENT SELECTORS FOR PAGES ── */
+.dark app-home-page,
+.dark app-mis-vehiculos-page,
+.dark app-taller-page,
+.dark app-diagnostico-page,
+.dark app-contacto-page,
+.dark app-perfil-page,
+.dark app-faq-page,
+.dark app-privacidad-page,
+.dark app-terminos-page,
+.dark app-historial-page,
+.dark app-presupuesto-page,
+.dark app-repuestos-page,
+.dark app-login-page,
+.dark app-registro-taller-page,
+.dark app-mecanico-home,
+.dark app-mecanico-seguimiento,
+.dark app-seguimiento,
+.dark app-sobre-nosotros {
+  background-color: var(--color-bg-lighter) !important;
+  color: var(--color-ink) !important;
+}
+
+/* ── FORCES INPUTS/TEXTAREAS TO ADAPT ── */
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: var(--color-bg-white) !important;
+  color: var(--color-ink) !important;
+  border-color: var(--color-border) !important;
+}
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: var(--color-ink-muted) !important;
+}
+
+/* ── OVERRIDE HARDCODED ABSOLUTE COLORS ON CARDS, METADATA AND BOXES ── */
+.dark .home-page,
+.dark .workshop-shell,
+.dark .mv-page {
+  background: var(--color-bg-lighter) !important;
+}
+.dark .home-mis-coches,
+.dark .home-mis-coches-select,
+.dark .mv-card,
+.dark .mv-empty,
+.dark .workshop-item,
+.dark .workshop-detail,
+.dark .vehicle-row,
+.dark .refresh-button,
+.dark .social-link,
+.dark .dropdown {
+  background-color: var(--color-bg-white) !important;
+  color: var(--color-ink) !important;
+  border-color: var(--color-border) !important;
+}
+.dark .workshop-item--selected,
+.dark .vehicle-row:hover {
+  border-color: var(--color-primary) !important;
+}
+.dark .workshop-heading h1,
+.dark .workshop-heading p,
+.dark .detail-title h2,
+.dark .contact-grid dd,
+.dark .workshop-item__content strong,
+.dark .mv-title,
+.dark .mv-card-title,
+.dark .home-mis-coches-label {
+  color: var(--color-dark) !important;
+}
+.dark .mv-subtitle,
+.dark .mv-card-meta,
+.dark .mv-card-meta dt,
+.dark .workshop-item__content,
+.dark .refresh-button {
+  color: var(--color-ink-muted) !important;
+}
+
+/* ── DARK VARIANT FOR FILTER CARD ── */
+.dark .filter-card {
+  background-color: var(--color-bg-white) !important;
+  border-color: var(--color-border) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25) !important;
+}
+.dark .filter-card .filter-header {
+  border-bottom-color: var(--color-border) !important;
+}
+.dark .filter-card h3 {
+  color: var(--color-dark) !important;
+}
+.dark .filter-card .clear-filters-btn {
+  color: var(--color-primary) !important;
+}
+.dark .filter-card .clear-filters-btn:hover {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: var(--color-primary-hover) !important;
+}
+.dark .filter-card label {
+  color: var(--color-ink-muted) !important;
+}
+.dark .filter-card .toggle-btn {
+  background-color: var(--color-bg-lighter) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-ink) !important;
+}
+.dark .filter-card .toggle-btn:hover {
+  background-color: var(--color-bg-light) !important;
+}
+.dark .filter-card .toggle-btn--active {
+  background-color: var(--color-primary-light) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-primary-hover) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+}
+.dark .filter-card .filter-select {
+  background-color: var(--color-bg-lighter) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-ink) !important;
+}
+.dark .filter-card .filter-select:hover {
+  background-color: var(--color-bg-light) !important;
+}
+.dark .filter-card .filter-select:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+}
+.dark .filter-card .select-wrapper::after {
+  color: var(--color-ink-muted) !important;
+}
+.dark .filter-card .distance-badge {
+  color: var(--color-primary) !important;
+  background-color: var(--color-primary-light) !important;
+}
+.dark .filter-card .filter-slider {
+  background-color: var(--color-border) !important;
+}
+.dark .filter-card .filter-slider::-webkit-slider-thumb {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-bg-white) !important;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35) !important;
 }
