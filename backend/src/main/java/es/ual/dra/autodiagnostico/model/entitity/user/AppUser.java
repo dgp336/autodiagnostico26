@@ -1,11 +1,7 @@
 package es.ual.dra.autodiagnostico.model.entitity.user;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import es.ual.dra.autodiagnostico.model.entitity.core.PersonalVehicle;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,7 +9,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
@@ -43,8 +39,11 @@ public class AppUser {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PersonalVehicle> personalVehicles = new ArrayList<>();
+    @Column(length = 150)
+    private String city;
+
+    @Column(name = "postal_code", length = 10)
+    private String postalCode;
 
     public AppUser() {
     }
@@ -105,11 +104,19 @@ public class AppUser {
         this.createdAt = createdAt;
     }
 
-    public List<PersonalVehicle> getPersonalVehicles() {
-        return personalVehicles;
+    public String getCity() {
+        return city;
     }
 
-    public void setPersonalVehicles(List<PersonalVehicle> personalVehicles) {
-        this.personalVehicles = personalVehicles;
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 }

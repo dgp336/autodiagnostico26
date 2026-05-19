@@ -13,6 +13,16 @@ $SCRIPT_DIR = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $ROOT_DIR = Resolve-Path "$SCRIPT_DIR\..\.."
 $BACKEND_DIR = $ROOT_DIR
 
+# --- Load .env file if it exists ---
+$envPath = Join-Path $ROOT_DIR "..\.env"
+$envFileParam = @()
+if (Test-Path $envPath) {
+    Write-Host "Using .env file: $envPath"
+    $envFileParam = @("--env-file", $envPath)
+} else {
+    Write-Warning ".env file not found at $envPath. Skipping --env-file."
+}
+
 # --- Docker network ---
 $DOCKER_NETWORK = "autodiagnostico-net"
 
@@ -51,6 +61,7 @@ Write-Host "Starting Application (Population will run on startup)..."
 docker rm -f $MAVEN_CONTAINER -ErrorAction SilentlyContinue | Out-Null
 docker run --name $MAVEN_CONTAINER --rm `
     --network $DOCKER_NETWORK `
+    $envFileParam `
     -v "$BACKEND_DIR:/usr/src/mymaven" `
     -w /usr/src/mymaven `
     -p 8081:8081 `
