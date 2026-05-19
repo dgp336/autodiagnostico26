@@ -17,7 +17,18 @@
         [attr.aria-selected]="categoriaActiva === cat.nombre"
         (click)="toggleCategoria(cat.nombre)"
       >
-        <span class="sp-chip-icon" aria-hidden="true">{{ cat.icono }}</span>
+        <svg
+          class="sp-chip-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true">
+
+          <path [attr.d]="cat.icono"></path>
+        </svg>
         <span class="sp-chip-label">{{ cat.nombre }}</span>
         @if (categoriaConProblema(cat.nombre)) {
           <span class="sp-chip-dot" aria-hidden="true"></span>
@@ -30,13 +41,27 @@
   @if (categoriaActiva) {
     <div class="sp-subpanel" role="tabpanel">
       @if (esOtro(categoriaActiva)) {
-        <textarea
-          class="sp-textarea"
-          placeholder="Describe el problema de tu vehículo..."
-          [value]="descripcionLibre"
-          (input)="onDescripcionLibre($any($event.target).value)"
-          rows="3"
-        ></textarea>
+              <div class="sp-textarea-hint">
+        Describe el problema con tus propias palabras. Se añadirá automáticamente al resumen.
+      </div>
+      <textarea
+        class="sp-textarea"
+        placeholder="Ej. Hace un ruido metálico al acelerar en frío..."
+        [value]="descripcionLibre"
+        (input)="onDescripcionLibre($any($event.target).value)"
+        rows="3"
+        maxlength="250"
+      ></textarea>
+
+      <div class="sp-textarea-footer">
+        <span>
+          Máximo 250 caracteres
+        </span>
+
+        <span>
+          {{ descripcionLibre.length }}/250
+        </span>
+      </div>
       } @else {
         <div class="sp-subpanel-grid">
           @for (item of problemasPorCategoria(categoriaActiva); track item.label) {

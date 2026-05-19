@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,27 +25,26 @@ public class ChatController {
 
     private final ChatService chatService;
 
-    @PostMapping("/{roomType}/join")
+    @PostMapping("/join")
     public ResponseEntity<ChatJoinResponseDTO> joinRoom(
-            @PathVariable String roomType,
+            @RequestParam String sessionUuid,
             @RequestParam Long participantId) {
-        return ResponseEntity.ok(chatService.joinRoom(roomType, participantId));
+        return ResponseEntity.ok(chatService.joinRoom(sessionUuid, participantId));
     }
 
-    @PostMapping("/{roomType}/leave")
+    @PostMapping("/leave")
     public ResponseEntity<ChatJoinResponseDTO> leaveRoom(
-            @PathVariable String roomType,
+            @RequestParam String sessionUuid,
             @RequestParam Long participantId) {
-        return ResponseEntity.ok(chatService.leaveRoom(roomType, participantId));
+        return ResponseEntity.ok(chatService.leaveRoom(sessionUuid, participantId));
     }
 
-    @GetMapping("/{roomType}/mensajes")
+    @GetMapping("/mensajes")
     public ResponseEntity<List<ChatMessageResponseDTO>> listMessages(
-            @PathVariable String roomType,
             @RequestParam String sessionUuid,
             @RequestParam(defaultValue = "50") Integer limit,
             @RequestParam(required = false) Long afterId) {
-        return ResponseEntity.ok(chatService.listMessages(roomType, sessionUuid, limit, afterId));
+        return ResponseEntity.ok(chatService.listMessages(sessionUuid, limit, afterId));
     }
 
     @PostMapping("/mensajes")
@@ -54,20 +52,20 @@ public class ChatController {
         return ResponseEntity.status(HttpStatus.CREATED).body(chatService.sendMessage(dto));
     }
 
-    @GetMapping("/{roomType}/unread")
-    public ResponseEntity<Long> unreadCount(@PathVariable String roomType, @RequestParam String sessionUuid) {
-        return ResponseEntity.ok(chatService.unreadCount(roomType, sessionUuid));
+    @GetMapping("/unread")
+    public ResponseEntity<Long> unreadCount(@RequestParam String sessionUuid) {
+        return ResponseEntity.ok(chatService.unreadCount(sessionUuid));
     }
 
-    @PostMapping("/{roomType}/mark-read")
-    public ResponseEntity<Integer> markReadByUser(@PathVariable String roomType, @RequestParam String sessionUuid) {
-        return ResponseEntity.ok(chatService.markReadByUser(roomType, sessionUuid));
+    @PostMapping("/mark-read")
+    public ResponseEntity<Integer> markReadByUser(@RequestParam String sessionUuid) {
+        return ResponseEntity.ok(chatService.markReadByUser(sessionUuid));
     }
 
-    @GetMapping("/{roomType}/presence")
+    @GetMapping("/presence")
     public ResponseEntity<Boolean> userPresence(
-            @PathVariable String roomType,
+            @RequestParam String sessionUuid,
             @RequestParam Long participantId) {
-        return ResponseEntity.ok(chatService.isUserOnline(roomType, participantId));
+        return ResponseEntity.ok(chatService.isUserOnline(sessionUuid, participantId));
     }
 }

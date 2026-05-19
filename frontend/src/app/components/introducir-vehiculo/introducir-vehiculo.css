@@ -104,3 +104,41 @@
   cursor: not-allowed;
   box-shadow: none;
 }
+
+/* ── Modo alta: campos extra ────────────────────────── */
+
+.iv-alta-extra {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.iv-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.iv-field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.iv-field input {
+  padding: 8px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  font-family: var(--font);
+  font-size: 14px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.iv-field input:focus {
+  outline: 2px solid rgba(26, 107, 189, 0.3);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}

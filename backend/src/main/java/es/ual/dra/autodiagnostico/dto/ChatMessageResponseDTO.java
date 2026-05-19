@@ -16,7 +16,6 @@ import lombok.Setter;
 public class ChatMessageResponseDTO {
 
     private Long id;
-    private String roomType;
     private Long participantId;
     private String sessionUuid;
     private String senderRole;

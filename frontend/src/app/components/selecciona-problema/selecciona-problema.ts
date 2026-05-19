@@ -105,16 +105,56 @@ export class SeleccionaProblema {
   ];
 
   readonly categoriasConfig: CategoriaConfig[] = [
-    { nombre: 'Motor', icono: '⚙️' },
-    { nombre: 'Frenos', icono: '🛑' },
-    { nombre: 'Electricidad', icono: '⚡' },
-    { nombre: 'Transmisión', icono: '🔄' },
-    { nombre: 'Dirección', icono: '🔧' },
-    { nombre: 'Neumáticos', icono: '⭕' },
-    { nombre: 'Climatización', icono: '❄️' },
-    { nombre: 'Escape', icono: '💨' },
-    { nombre: 'Carrocería', icono: '🚗' },
-    { nombre: 'Otro', icono: '✏️' },
+
+    {
+      nombre: 'Motor',
+      icono: 'M3 13h2l2-4h10l2 4h2M5 13v4M19 13v4M7 5h10v4H7z'
+    },
+
+    {
+      nombre: 'Frenos',
+      icono: 'M12 2v20M2 12h20'
+    },
+
+    {
+      nombre: 'Electricidad',
+      icono: 'M13 2L3 14h7l-1 8 10-12h-7l1-8z'
+    },
+
+    {
+      nombre: 'Transmisión',
+      icono: 'M8 6v12M16 6v12M8 12h8M8 6a2 2 0 1 0 0 .01M16 6a2 2 0 1 0 0 .01M8 18a2 2 0 1 0 0 .01M16 18a2 2 0 1 0 0 .01'
+    },
+
+    {
+      nombre: 'Dirección',
+      icono: 'M12 2a10 10 0 1 0 10 10H12z'
+    },
+
+    {
+      nombre: 'Neumáticos',
+      icono: 'M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 4v12'
+    },
+
+    {
+      nombre: 'Climatización',
+      icono: 'M12 2v20M4.9 4.9l14.2 14.2M19.1 4.9 4.9 19.1'
+    },
+
+    {
+      nombre: 'Escape',
+      icono: 'M4 12h10M14 8l6 4-6 4'
+    },
+
+    {
+      nombre: 'Carrocería',
+      icono: 'M3 13l2-5h14l2 5v5H3z'
+    },
+
+    {
+      nombre: 'Otro',
+      icono: 'M4 20h16M6 16l8-8 4 4-8 8H6z'
+    }
   ];
 
   categoriaActiva: string | null = null;
@@ -154,7 +194,17 @@ export class SeleccionaProblema {
   }
 
   onDescripcionLibre(valor: string): void {
-    this.descripcionLibre = valor;
+
+    let normalized = valor;
+
+    // evitar múltiples saltos vacíos
+    normalized = normalized.replace(/\n\s*\n+/g, '\n');
+
+    // máximo 250 caracteres
+    normalized = normalized.slice(0, 250);
+
+    this.descripcionLibre = normalized;
+
     this.emitChange();
   }
 

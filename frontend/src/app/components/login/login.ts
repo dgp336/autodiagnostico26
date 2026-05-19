@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthApiService } from '../../services/auth-api.service';
@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   private readonly authApiService = inject(AuthApiService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   mode: 'login' | 'register' = 'login';
   fullName = '';
@@ -95,10 +96,22 @@ export class LoginComponent implements OnInit {
 
 
     this.authApiService.login({ email, password: this.password }).subscribe({
-      next: (user) => this.completeSession(user),
+      next: (user) => {
+
+        this.completeSession(user);
+
+        this.cdr.detectChanges();
+      },
       error: (error) => {
+
         this.isSubmitting = false;
-        this.errorMessage = this.extractErrorMessage(error, 'No se pudo iniciar sesión.');
+
+        this.errorMessage = this.extractErrorMessage(
+          error,
+          'No se pudo iniciar sesión.'
+        );
+
+        this.cdr.detectChanges();
       }
     });
   }
@@ -145,17 +158,22 @@ export class LoginComponent implements OnInit {
     this.emailFieldError = '';
 
     this.authApiService.register({ fullName, email, password, role: this.selectedRole }).subscribe({
-      next: (user) => this.completeSession(user),
+      next: (user) => {
+        this.completeSession(user);
+        this.cdr.detectChanges();
+      },
       error: (error) => {
         this.isSubmitting = false;
         if (this.isConflictError(error)) {
           this.emailFieldError = 'Ya existe una cuenta con ese correo. Usa otro email para registrarte.';
           this.errorMessage = '';
+          this.cdr.detectChanges();
           return;
         }
 
         this.emailFieldError = '';
         this.errorMessage = this.extractErrorMessage(error, 'No se pudo crear la cuenta.');
+        this.cdr.detectChanges();
       }
     });
   }
@@ -170,7 +188,7 @@ private completeSession(user: AuthUserResponse): void {
     });
 
     this.isSubmitting = false;
-    
+    this.cdr.detectChanges();
     // Si es Taller o Admin, lo enviamos a su dashboard de mecánico
     if (user.role === 'TALLER' || user.role === 'ADMIN') {
       void this.router.navigate(['/mecanico']);

@@ -1,65 +1,78 @@
+/* =========================================
+   Map — Contenedor host
+   ========================================= */
 :host {
   display: block;
-  width: 932px; /* Mismo ancho que buscar-matricula */
-  margin: 0 auto;
-}
-
-.map-wrapper {
-  position: relative;
   width: 100%;
-  height: 500px;
-  background-color: #eee; /* Fondo temporal para verificar visibilidad */
-  overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  border: 1px solid #ddd;
 }
 
-.map-container {
+/* =========================================
+   Layout principal
+   ========================================= */
+.main-container {
+  display: flex;
+  width: 100%;
+  height: 420px;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e8eaed;
+}
+
+/* =========================================
+   Mapa Leaflet
+   ========================================= */
+.map-wrapper {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+  /* evita overflow en flex */
+}
+
+.map-element {
   width: 100%;
   height: 100%;
-  z-index: 1;
 }
 
-.map-overlay {
+.refresh-loc-btn {
   position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  background: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  font-family: 'Exo 2', sans-serif;
-}
-
-.fab-appointment {
-  position: absolute;
-  bottom: 30px;
-  right: 30px;
+  bottom: 20px;
+  left: 20px;
   z-index: 1000;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 16px 24px;
-  background: #f97316;
-  color: white;
-  border: none;
-  border-radius: 50px;
-  font-family: 'Exo 2', sans-serif;
-  font-weight: 700;
-  font-size: 16px;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: var(--bg-card, #ffffff);
+  color: var(--ink, #111827);
+  border: 1px solid var(--border, rgba(0, 0, 0, 0.1));
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(249, 115, 22, 0.4);
-  transition: all 0.3s ease;
+  transition: transform 150ms ease, background-color 150ms ease, box-shadow 150ms ease, border-color 150ms ease, color 150ms ease;
 }
 
-/* Marcadores */
+.refresh-loc-btn:hover {
+  background-color: var(--accent-light, rgba(26, 107, 189, 0.08));
+  color: var(--accent, #1a6bbd);
+  border-color: var(--accent, #1a6bbd);
+  box-shadow: 0 6px 16px rgba(26, 107, 189, 0.15);
+  transform: translateY(-1px);
+}
+
+.refresh-loc-btn:active {
+  transform: translateY(0);
+}
+
+
 :host ::ng-deep .user-location-marker {
   width: 16px;
   height: 16px;
-  background: #3b82f6;
+  background: #1a6bbd;
   border: 2px solid white;
   border-radius: 50%;
   position: relative;
@@ -67,14 +80,23 @@
 
 :host ::ng-deep .pulse {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  background: #3b82f6;
+  background: #1a6bbd;
   animation: pulse-animation 2s infinite;
 }
 
 @keyframes pulse-animation {
-  0% { transform: scale(1); opacity: 0.6; }
-  100% { transform: scale(3); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
 }

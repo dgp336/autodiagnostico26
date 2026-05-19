@@ -8,17 +8,17 @@ import es.ual.dra.autodiagnostico.dto.ChatMessageResponseDTO;
 
 public interface ChatService {
 
-    ChatJoinResponseDTO joinRoom(String roomType, Long participantId);
+    ChatJoinResponseDTO joinRoom(String sessionUuid, Long participantId);
 
-    ChatJoinResponseDTO leaveRoom(String roomType, Long participantId);
+    ChatJoinResponseDTO leaveRoom(String sessionUuid, Long participantId);
 
-    List<ChatMessageResponseDTO> listMessages(String roomType, String sessionUuid, Integer limit, Long afterId);
+    List<ChatMessageResponseDTO> listMessages(String sessionUuid, Integer limit, Long afterId);
 
     ChatMessageResponseDTO sendMessage(ChatMessageRequestDTO dto);
 
-    long unreadCount(String roomType, String sessionUuid);
+    long unreadCount(String sessionUuid);
 
-    int markReadByUser(String roomType, String sessionUuid);
+    int markReadByUser(String sessionUuid);
 
-    boolean isUserOnline(String roomType, Long participantId);
+    boolean isUserOnline(String sessionUuid, Long participantId);
 }

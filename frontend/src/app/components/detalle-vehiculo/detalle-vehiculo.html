@@ -45,9 +45,15 @@
   <div class="dv-field">
     <label class="dv-label" for="dv-engine">Motorización</label>
     <div class="dv-select-wrap">
-      <svg class="dv-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M7 4v2H4v3H2v4h2v3h3v2h2v-2h2v2h2v-2h3v-3h2v-4h-2V6h-3V4h-2v2h-2V4H7Zm1 4h8v8H8V8Z"/>
-      </svg>
+    <svg class="dv-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        aria-hidden="true">
+
+      <path d="M3 13h2l2-4h10l2 4h2"/>
+      <path d="M5 13v4"/>
+      <path d="M19 13v4"/>
+      <rect x="7" y="5" width="10" height="4" rx="1"/>
+    </svg>
       <select id="dv-engine" class="dv-select" formControlName="engineType">
         <option [ngValue]="null">No lo sé / Cualquiera</option>
         @for (opt of engineTypeOptions; track opt.value) {
@@ -65,9 +71,22 @@
   <div class="dv-field">
     <label class="dv-label" for="dv-transmission">Transmisión</label>
     <div class="dv-select-wrap">
-      <svg class="dv-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M12 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4ZM4 7a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm16 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4ZM4 17a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm16 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4ZM11 4h2v6H11V4ZM5 9h14v2H5V9Zm-1 6h2v5H4v-5Zm16 0h2v5h-2v-5Z"/>
-      </svg>
+    <svg class="dv-icon" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true">
+
+      <circle cx="8" cy="6" r="2"/>
+      <circle cx="16" cy="6" r="2"/>
+      <circle cx="8" cy="18" r="2"/>
+      <circle cx="16" cy="18" r="2"/>
+
+      <path d="M8 8v8"/>
+      <path d="M16 8v8"/>
+      <path d="M8 12h8"/>
+    </svg>
       <select id="dv-transmission" class="dv-select" formControlName="transmission">
         <option [ngValue]="null">No lo sé / Cualquiera</option>
         @for (opt of transmissionOptions; track opt.value) {

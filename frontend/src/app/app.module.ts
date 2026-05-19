@@ -1,4 +1,7 @@
 import { NgModule } from '@angular/core';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
-@NgModule({})
+@NgModule({
+	providers: [provideHttpClient(withFetch())]
+})
 export class AppModule {}

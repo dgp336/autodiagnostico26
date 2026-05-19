@@ -1,0 +1,58 @@
+@if (member) {
+
+  <div class="member-overlay" (click)="close.emit()">
+
+    <div class="member-modal" (click)="$event.stopPropagation()">
+
+      <button
+        type="button"
+        class="member-close"
+        (click)="close.emit()"
+      >
+        ×
+      </button>
+
+      <div class="member-header">
+
+        <div class="member-avatar">
+          {{ member.initials }}
+        </div>
+
+        <div>
+          <h2>{{ member.name }}</h2>
+          <p>{{ member.role }}</p>
+        </div>
+
+      </div>
+
+      <div class="member-content">
+
+        <section>
+          <h3>Sobre mí</h3>
+
+          <p>
+            {{ member.description }}
+          </p>
+        </section>
+
+        <section>
+          <h3>Tecnologías</h3>
+
+          <div class="tech-list">
+
+            @for (tech of member.technologies; track tech) {
+
+              <span class="tech-pill">
+                {{ tech }}
+              </span>
+            }
+
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+
+  </div>
+}

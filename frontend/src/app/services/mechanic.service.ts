@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, map } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { API_BASE_URL } from './api.config';
-import { AuthStateService } from './auth-state.service';
+import { DiagnosedPart } from './api.models';
 
 export interface MechanicClient {
   clientId: number;
@@ -11,6 +11,9 @@ export interface MechanicClient {
   clientAvatar: string;
   carInfo: string;
   problemDescription: string;
+  aiDiagnosis: string;
+  recommendedParts: DiagnosedPart[];
+  estimatedPrice: number | null;
   status: 'verde' | 'amarillo' | 'naranja' | 'rojo';
   latestUpdate?: string;
   sessionUuid: string;
@@ -19,7 +22,6 @@ export interface MechanicClient {
 
 @Injectable({ providedIn: 'root' })
 export class MechanicService {
-  private readonly auth = inject(AuthStateService);
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${API_BASE_URL}/mechanic`;
   private readonly clientsSubject = new BehaviorSubject<MechanicClient[]>([]);
@@ -46,40 +48,11 @@ export class MechanicService {
   }
 
   getTrackingForClient(clientId: number) {
-
-  return this.http.get<MechanicClient>(
-    `${this.baseUrl}/client/${clientId}/tracking`
-  );
-}
-
-getTracking(clientId: number): Observable<MechanicClient> {
-
-  const mechanicId = this.auth.userId();
-
-  if (!mechanicId) {
-    throw new Error('Mechanic ID no encontrado');
+    return this.http.get<MechanicClient>(`${this.baseUrl}/client/${clientId}/tracking`);
   }
 
-  return this.http
-    .get<MechanicClient[]>(
-      `${this.baseUrl}/${mechanicId}/clients`
-    )
-    .pipe(
-      map(clients => {
-
-        console.log('CLIENTS', clients);
-
-        const tracking = clients.find(
-          c => c.clientId === clientId
-        );
-
-        if (!tracking) {
-          throw new Error('Cliente no encontrado');
-        }
-
-        return tracking;
-      })
-    );
-}
+  getTracking(clientId: number): Observable<MechanicClient> {
+    return this.getTrackingForClient(clientId);
+  }
 
 }

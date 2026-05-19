@@ -1,7 +1,13 @@
-import { Component, OnDestroy, effect, inject, ElementRef, ViewChild, output, PLATFORM_ID, afterNextRender, signal } from '@angular/core';
+import {
+  Component, OnDestroy, effect, inject,
+  ElementRef, ViewChild, output, input,
+  // TODO: eliminar — computed no se usa actualmente
+  // computed,
+  PLATFORM_ID, afterNextRender, signal
+} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { GeolocationService } from '../../services/geolocation.service';
-import { WorkshopService } from '../../services/workshop.service';
+import { Workshop } from '../../services/api.models';
 
 @Component({
   selector: 'app-map',
@@ -11,14 +17,20 @@ import { WorkshopService } from '../../services/workshop.service';
   styleUrl: './map.component.css'
 })
 export class MapComponent implements OnDestroy {
-  public geoService = inject(GeolocationService);
-  private workshopService = inject(WorkshopService);
+  private geoService = inject(GeolocationService);
   private platformId = inject(PLATFORM_ID);
-  
+
+  // ── Inputs desde el componente padre ────────────────────────────────────
+  /** Lista de talleres a mostrar (la provee TallerComponent desde la BD). */
+  workshops = input<Workshop[]>([]);
+  selectedWorkshop = input<Workshop | null>(null);
+
+  // ── Outputs hacia el componente padre ────────────────────────────────────
+  /** Emite cuando el usuario hace clic en un marcador del mapa. */
+  workshopSelected = output<Workshop>();
+
   @ViewChild('mapContainer', { static: false }) mapContainer!: ElementRef;
-  
-  onAppointmentRequested = output<void>();
-  
+
   private map: any;
   private L: any;
   private userMarker?: any;
@@ -30,31 +42,61 @@ export class MapComponent implements OnDestroy {
       afterNextRender(async () => {
         const leafletModule = await import('leaflet');
         this.L = leafletModule.default || leafletModule;
-        
-        // Fix para iconos de Leaflet en Angular/Vite
         this.fixLeafletIcons();
-        
         this.initMap();
       });
 
+      // Actualiza marcador del usuario cuando cambia la geolocalización
       effect(() => {
-        const state = this.geoService.locationState();
-        if (this.mapReady() && state.coords) {
-          this.updateUserPosition(state.coords.lat, state.coords.lng);
-        }
+        this.refreshLocation();
+      });
+
+      // Re-renderiza marcadores de talleres cuando cambia la lista o el mapa está listo
+      effect(() => {
+        const ws = this.workshops();
+        if (!this.mapReady()) return;
+        this.renderWorkshopMarkers(ws);
+      });
+
+      // Centra el mapa en el taller seleccionado cuando este cambia sin alterar la posición del usuario
+      effect(() => {
+        const selected = this.selectedWorkshop();
+        if (!this.mapReady() || !selected) return;
+        this.map.setView([selected.latitude, selected.longitude], 20);
       });
     }
   }
 
+  public onRefreshClick(): void {
+    this.refreshLocation(true);
+  }
+
+  private refreshLocation(forceCenter: boolean = false) {
+    let state = this.geoService.locationState();
+    if (state.error) {
+      this.geoService.getIpFallback();
+      state = this.geoService.locationState();
+    }
+    if (this.mapReady() && state.coords) {
+      this.updateUserPosition(state.coords.lat, state.coords.lng);
+      if (forceCenter) {
+        this.map.setView([state.coords.lat, state.coords.lng], 13);
+      }
+    }
+  }
+
+  // ── Métodos públicos (llamados desde el template) ────────────────────────
+
+  /** Notifica al padre que el usuario ha seleccionado este taller (clic en marcador). */
+  selectWorkshop(workshop: Workshop): void {
+    this.workshopSelected.emit(workshop);
+  }
+
+  // ── Helpers privados ─────────────────────────────────────────────────────
+
   private fixLeafletIcons() {
     if (!this.L) return;
-    const iconRetinaUrl = 'assets/leaflet/marker-icon-2x.png';
-    const iconUrl = 'assets/leaflet/marker-icon.png';
-    const shadowUrl = 'assets/leaflet/marker-shadow.png';
-    
-    // Si no tienes los assets locales, usamos un CDN para asegurar visibilidad inmediata
     const cdnBase = 'https://unpkg.com/leaflet@1.9.4/dist/images/';
-    
     this.L.Icon.Default.mergeOptions({
       iconRetinaUrl: cdnBase + 'marker-icon-2x.png',
       iconUrl: cdnBase + 'marker-icon.png',
@@ -65,17 +107,17 @@ export class MapComponent implements OnDestroy {
   private initMap() {
     if (!this.L || !this.mapContainer) return;
 
-    // Inicializamos con un delay mínimo para asegurar que el DOM está listo
     setTimeout(() => {
       this.map = this.L.map(this.mapContainer.nativeElement).setView([0, 0], 2);
-      
+
       this.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap contributors'
       }).addTo(this.map);
-      
-      this.map.invalidateSize();
+
       this.mapReady.set(true);
+
+      setTimeout(() => this.map.invalidateSize(), 300);
     }, 100);
   }
 
@@ -83,31 +125,35 @@ export class MapComponent implements OnDestroy {
     if (!this.L || !this.map) return;
 
     if (!this.userMarker) {
-      this.map.setView([lat, lng], 15);
+      this.map.setView([lat, lng], 13);
       this.userMarker = this.L.marker([lat, lng], {
-        icon: this.L.divIcon({ 
-          className: 'user-location-marker-container', 
+        icon: this.L.divIcon({
+          className: 'user-location-marker-container',
           html: '<div class="user-location-marker"><div class="pulse"></div></div>',
           iconSize: [20, 20],
           iconAnchor: [10, 10]
         })
       }).addTo(this.map).bindPopup('Tu ubicación');
-      
-      this.loadWorkshops(lat, lng);
     } else {
       this.userMarker.setLatLng([lat, lng]);
     }
   }
 
-  private loadWorkshops(lat: number, lng: number) {
-    this.workshopService.getNearbyWorkshops(lat, lng).subscribe(workshops => {
-      this.clearWorkshopMarkers();
-      workshops.forEach(w => {
-        const marker = this.L.marker([w.lat, w.lng])
-          .addTo(this.map)
-          .bindPopup(`<b>${w.name}</b><br>${w.address}`);
-        this.workshopMarkers.push(marker);
-      });
+  private renderWorkshopMarkers(workshops: Workshop[]) {
+    if (!this.L || !this.map) return;
+
+    this.clearWorkshopMarkers();
+
+    workshops.forEach(w => {
+      const marker = this.L
+        .marker([w.latitude, w.longitude])
+        .addTo(this.map)
+        .bindPopup(`<b>${w.name}</b><br>${w.address}`);
+
+      // Clic en el marcador del mapa → selecciona el taller en el padre
+      marker.on('click', () => this.selectWorkshop(w));
+
+      this.workshopMarkers.push(marker);
     });
   }
 
@@ -115,11 +161,6 @@ export class MapComponent implements OnDestroy {
     if (!this.map) return;
     this.workshopMarkers.forEach(m => this.map.removeLayer(m));
     this.workshopMarkers = [];
-  }
-
-  handleRequestAppointment() {
-    console.log('Log: Solicitud de cita iniciada.');
-    this.onAppointmentRequested.emit();
   }
 
   ngOnDestroy() {

@@ -1,7 +1,34 @@
 <section class="home-page">
+  @if (submitError) {
+    <p class="home-submit-error">{{ submitError }}</p>
+  }
+
   <app-selecciona-problema (problemaChange)="onProblemaChange($event)" />
+
+  @if (isLoggedIn && personalVehicles.length > 0) {
+    <div class="home-mis-coches">
+      <label class="home-mis-coches-label" for="home-personal-vehicle">
+        ¿Diagnosticar uno de tus coches?
+      </label>
+      <select
+        id="home-personal-vehicle"
+        class="home-mis-coches-select"
+        [ngModel]="selectedPersonalVehicleId"
+        (ngModelChange)="onPersonalVehicleSelect($event)"
+      >
+        <option [ngValue]="null">— Introducir uno nuevo —</option>
+        @for (vehicle of personalVehicles; track vehicle.id) {
+          <option [ngValue]="vehicle.id">
+            {{ displayName(vehicle) }}@if (vehicle.plate) { · {{ vehicle.plate }} }
+          </option>
+        }
+      </select>
+    </div>
+  }
+
   <app-introducir-vehiculo
     [tieneProblema]="tieneProblema"
+    [prefill]="prefillContext"
     (vehicleContextChange)="onVehicleContextChange($event)"
     (enviar)="onEnviar()"
   />

@@ -53,6 +53,54 @@ export interface ChatMessageResponse {
   createdAt: string;
 }
 
+export interface RepairVehicleMock {
+  id: number;
+  name: string;
+  plate: string;
+  status: string;
+}
+
+export interface Workshop {
+  id: number;
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+  schedule: string;
+  photoUrl: string;
+  vehicleLimit: number;
+  activeVehicles: number;
+  mechanicId: number;
+  mechanicName: string;
+  mechanicAvatar: string;
+  latitude: number;
+  longitude: number;
+  selectedByClient: boolean;
+  sessionUuid: string | null;
+  vehiclesInRepair: RepairVehicleMock[];
+}
+
+export interface WorkshopSelectionResponse {
+  workshop: Workshop;
+  tracking: MechanicClientTracking;
+}
+
+export interface MechanicClientTracking {
+  clientId: number;
+  clientName: string;
+  clientEmail: string;
+  clientAvatar: string;
+  carInfo: string;
+  problemDescription: string;
+  aiDiagnosis: string;
+  recommendedParts: DiagnosedPart[];
+  estimatedPrice: number | null;
+  status: string;
+  latestUpdate?: string;
+  sessionUuid: string;
+  tallerAssignmentId: number;
+}
+
 // ── Vehículos ──────────────────────────────────────────────────────────────
 
 export type EngineType = 'PETROL' | 'DIESEL' | 'BEV' | 'HEV' | 'PHEV' | 'REEV';
@@ -92,4 +140,57 @@ export interface VehicleSearchContext {
   engineType: EngineType | null;
   transmission: TransmissionType | null;
   year: number | null;
+}
+
+// ── Autodiagnóstico (IA) ───────────────────────────────────────────────────
+
+export interface AutodiagnosisRequest {
+  clientId: number;
+  personalVehicleId: number;
+  vehicleModelId: number;
+  symptoms: string[];
+  freeText: string;
+  year: number | null;
+  engineType: EngineType | null;
+  transmission: TransmissionType | null;
+}
+
+export interface DiagnosedPart {
+  idProduct: number;
+  name: string;
+  description: string;
+  lowRangePrice: number | null;
+  highRangePrice: number | null;
+  image: string | null;
+}
+
+export interface AutodiagnosisResponse {
+  diagnosis: string;
+  confidence: number;
+  explanation: string;
+  suggestedParts: DiagnosedPart[];
+  unresolvedPartNames: string[];
+}
+
+export interface PersonalVehicleResponse {
+  id: number;
+  ownerId: number;
+  vehicleModelId: number;
+  brand: string | null;
+  vehicleName: string | null;
+  modelName: string | null;
+  year: number | null;
+  engineType: EngineType | null;
+  transmission: TransmissionType | null;
+  plate: string | null;
+  vin: string | null;
+  buildDate: string | null;
+}
+
+export interface CreatePersonalVehicleRequest {
+  ownerId: number;
+  vehicleModelId: number;
+  plate: string | null;
+  vin: string | null;
+  buildDate: string | null;
 }

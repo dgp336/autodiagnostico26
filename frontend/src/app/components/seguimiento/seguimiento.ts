@@ -1,8 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, inject, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component, inject, Inject, OnInit, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ChatApiService } from '../../services/chat-api.service';
-import { ChatRoomType } from '../../services/api.models';
 import { AuthStateService } from '../../services/auth-state.service';
 import { MechanicService } from '../../services/mechanic.service';
 
@@ -16,7 +15,9 @@ import { MechanicService } from '../../services/mechanic.service';
 
 export class SeguimientoComponent implements OnInit {
   private readonly mechanicService = inject(MechanicService);
-  private readonly roomType: ChatRoomType = 'SEGUIMIENTO';
+  private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
+
   participantId = 0;
   sessionUuid = '';
   tracking: any = null;
@@ -53,7 +54,12 @@ loadTracking(): void {
     .subscribe({
 
       next: (tracking) => {
+        if (!tracking) {
 
+          this.hasTracking = false;
+          this.cdr.detectChanges();
+          return;
+        }
         this.hasTracking = true;
         this.tracking = tracking;
 
@@ -62,11 +68,15 @@ loadTracking(): void {
           'trackingSessionUuid',
           this.sessionUuid
          );
-
+        this.cdr.detectChanges();
         console.log('USER TRACKING', tracking);
         console.log('USER UUID', this.sessionUuid);
 
-        this.loadChatData();
+        this.cdr.detectChanges();
+
+        setTimeout(() => {
+          this.router.navigate(['/usuario/seguimiento/chat']);
+        });
       },
 
       error: (err) => {
@@ -74,21 +84,26 @@ loadTracking(): void {
           console.error(err);
         }        
         this.hasTracking = false;
+        this.cdr.detectChanges();
+        setTimeout(() => {
+          this.router.navigate(['/usuario/seguimiento']);
+        });     
       }
     });
 }
 loadChatData(): void {
 
   this.chatApiService
-    .isUserOnline(this.roomType, this.participantId)
+    .isUserOnline(this.sessionUuid, this.participantId)
     .subscribe({
       next: (isOnline) => {
         this.userOnline = isOnline;
+        this.cdr.detectChanges();
       }
     });
 
   this.chatApiService
-    .unreadCount(this.roomType, this.sessionUuid)
+    .unreadCount(this.sessionUuid)
     .subscribe({
       next: (count) => {
         this.unreadCount = count;

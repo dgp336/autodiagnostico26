@@ -19,9 +19,6 @@ public class ChatMessageRequestDTO {
     @NotNull(message = "El participante es obligatorio")
     private Long participantId;
 
-    @NotBlank(message = "La sala es obligatoria")
-    private String roomType;
-
     @NotBlank(message = "El rol del remitente es obligatorio")
     private String senderRole;
 

@@ -1,4 +1,5 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
+import { API_BASE_URL } from './api.config';
 
 export interface GeoLocationState {
   coords: { lat: number; lng: number } | null;
@@ -17,6 +18,20 @@ export class GeolocationService {
   });
 
   readonly locationState = this.state.asReadonly();
+
+  // Proveer locacion por IP publica en caso de fallo por GPS utilizando el Proxy del Backend (CORS-free)
+  public async getIpFallback() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/geolocation`);
+      if (!response.ok) throw new Error('Proxy lookup failed');
+      const coords = await response.json();
+      this.state.set({ coords, error: null, loading: false });
+    } catch (e) {
+      console.warn('IP proxy failed, using default coords:', e);
+      // Fallback a coordenadas predeterminadas (Madrid) para prevenir bucles de efectos reactivos
+      this.state.set({ coords: { lat: 40.416775, lng: -3.703790 }, error: null, loading: false });
+    }
+  }
 
   constructor() {
     this.initWatch();

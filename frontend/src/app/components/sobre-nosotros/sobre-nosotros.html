@@ -1,0 +1,85 @@
+<section class="about-shell">
+
+  <header class="about-hero">
+    <div class="about-hero__content">
+      <p class="about-eyebrow">AutoDiagnóstico</p>
+
+      <h1 class="about-title">
+        Tecnología y mecánica para ayudarte a entender tu vehículo
+      </h1>
+
+      <p class="about-description">
+        AutoDiagnóstico nace con la idea de hacer más accesible el diagnóstico
+        inicial de problemas mecánicos mediante una plataforma moderna, sencilla
+        y orientada tanto a usuarios como a talleres.
+      </p>
+    </div>
+  </header>
+
+  <section class="about-section">
+    <div class="about-card">
+      <h2>Nuestra misión</h2>
+
+      <p>
+        Queremos reducir la incertidumbre que sienten muchos conductores cuando
+        aparece un fallo en su vehículo. Nuestro objetivo es ofrecer una primera
+        orientación clara, rápida y útil antes de acudir al taller.
+      </p>
+
+      <p>
+        Además, buscamos mejorar la comunicación entre clientes y mecánicos
+        mediante herramientas de seguimiento, chat y gestión de reparaciones en
+        tiempo real.
+      </p>
+    </div>
+
+    <div class="about-card">
+      <h2>¿Qué ofrece la plataforma?</h2>
+
+      <ul class="about-list">
+        <li>Diagnóstico detallado de problemas mecánicos.</li>
+        <li>Seguimiento del estado de reparación.</li>
+        <li>Comunicación directa con talleres.</li>
+        <li>Selección de talleres disponibles.</li>
+        <li>Información transparente sobre tiempos y costos.</li>
+
+      </ul>
+    </div>
+  </section>
+
+  <section class="team-section">
+    <div class="team-header">
+      <p class="about-eyebrow">Equipo</p>
+      <h2>Desarrolladores del proyecto</h2>
+    </div>
+
+    <div class="team-grid">
+
+    @for (member of teamMembers; track member.id) {
+
+        <button
+        type="button"
+        class="team-card"
+        (click)="selectedMember = member"
+        >
+
+        <div class="team-avatar">
+            {{ member.initials }}
+        </div>
+
+        <h3>{{ member.name }}</h3>
+
+        <p>{{ member.role }}</p>
+
+        </button>
+    }
+
+    </div>
+
+    <app-team-member-detail
+    [member]="selectedMember"
+    (close)="selectedMember = null"
+    />
+  </section>
+
+</section>

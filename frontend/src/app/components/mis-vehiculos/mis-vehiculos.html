@@ -1,0 +1,75 @@
+<section class="mv-page">
+  <header class="mv-header">
+    <div>
+      <h1 class="mv-title">Mis vehículos</h1>
+      <p class="mv-subtitle">Gestiona los coches de tu garaje y diagnostica problemas con un solo clic.</p>
+    </div>
+    @if (isLoggedIn) {
+      <button type="button" class="mv-add-btn" (click)="toggleAddForm()">
+        {{ showAddForm ? 'Cancelar' : '+ Añadir vehículo' }}
+      </button>
+    }
+  </header>
+
+  @if (!isLoggedIn) {
+    <div class="mv-empty">
+      <p>Inicia sesión para gestionar tus vehículos.</p>
+    </div>
+  } @else {
+    @if (errorMessage) {
+      <div class="mv-error">{{ errorMessage }}</div>
+    }
+
+    @if (showAddForm) {
+      <div class="mv-form-wrap">
+        <app-introducir-vehiculo
+          [mode]="'alta'"
+          (guardarCoche)="onGuardarCoche($event)"
+        />
+      </div>
+    }
+
+    @if (loading) {
+      <p class="mv-loading">Cargando vehículos…</p>
+    } @else if (vehicles.length === 0) {
+      <div class="mv-empty">
+        <p>Aún no tienes vehículos guardados. Añade el primero para diagnosticar problemas más rápido.</p>
+      </div>
+    } @else {
+      <ul class="mv-list">
+        @for (vehicle of vehicles; track vehicle.id) {
+          <li class="mv-card">
+            <div class="mv-card-info">
+              <h3 class="mv-card-title">{{ displayName(vehicle) }}</h3>
+              <dl class="mv-card-meta">
+                @if (vehicle.year) {
+                  <div><dt>Año</dt><dd>{{ vehicle.year }}</dd></div>
+                }
+                @if (vehicle.engineType) {
+                  <div><dt>Motor</dt><dd>{{ vehicle.engineType }}</dd></div>
+                }
+                @if (vehicle.transmission) {
+                  <div><dt>Transmisión</dt><dd>{{ vehicle.transmission }}</dd></div>
+                }
+                @if (vehicle.plate) {
+                  <div><dt>Matrícula</dt><dd>{{ vehicle.plate }}</dd></div>
+                }
+                @if (vehicle.vin) {
+                  <div><dt>VIN</dt><dd>{{ vehicle.vin }}</dd></div>
+                }
+              </dl>
+            </div>
+            <div class="mv-card-actions">
+              <button type="button" class="mv-action-primary" (click)="diagnosticar(vehicle)">
+                Diagnosticar
+              </button>
+              <button type="button" class="mv-action-secondary" (click)="eliminar(vehicle)">
+                Eliminar
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  }
+</section>

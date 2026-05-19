@@ -12,6 +12,13 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
 
+  mcp-server:
+    build: ./mcp-server
+    container_name: autodiagnostico-mcp
+    restart: unless-stopped
+    ports:
+      - "5005:5005"
+
   backend:
     build: ./backend
     container_name: autodiagnostico-backend
@@ -22,13 +29,18 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/autodiagnostico?createDatabaseIfNotExist=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - SPRING_AI_MCP_CLIENT_SSE_CONNECTIONS_AUTODIAGNOSTICO_MCP_URL=http://mcp-server:5005
+    env_file:
+      - .env
     volumes:
       - ./backend/src/main/resources/scraper-output:/app/scraper-output
       - ./backend/src/main/resources/logos:/app/logos
       - ./backend/src/main/resources/models:/app/models
     depends_on:
       - mysql
+      - mcp-server
 
   frontend:
     build: ./frontend

@@ -14,12 +14,11 @@ export class SelectorMarcaModelo implements OnChanges {
   @Input() models: VehicleModelSummary[] = [];
   @Input() loadingBrands = false;
   @Input() loadingModels = false;
+  @Input() selectedBrand: string | null = null;
+  @Input() selectedModelId: number | null = null;
 
   @Output() brandChange = new EventEmitter<string | null>();
   @Output() modelChange = new EventEmitter<number | null>();
-
-  selectedBrand: string | null = null;
-  selectedModelId: number | null = null;
 
   get modelsDisabled(): boolean {
     return !this.selectedBrand || this.loadingModels;

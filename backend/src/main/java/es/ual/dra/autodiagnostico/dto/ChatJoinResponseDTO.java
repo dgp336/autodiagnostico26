@@ -13,7 +13,7 @@ import lombok.Setter;
 @Builder
 public class ChatJoinResponseDTO {
 
-    private String roomType;
+    private String sessionUuid;
     private Long participantId;
     private Integer activeUsers;
     private Integer maxUsers;

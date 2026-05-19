@@ -100,9 +100,29 @@
   color: var(--accent);
 }
 
+.sp-textarea-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
+.sp-textarea-hint {
+  margin-bottom: 8px;
+
+  font-size: 12px;
+  line-height: 1.45;
+
+  color: var(--ink-muted);
+}
+
 .sp-chip-icon {
-  font-size: 14px;
-  line-height: 1;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 .sp-chip-label {

@@ -1,0 +1,155 @@
+:host {
+  display: block;
+}
+
+.mv-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+.mv-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.mv-title {
+  margin: 0 0 4px;
+  font-size: 1.75rem;
+  color: #1a6bbd;
+}
+
+.mv-subtitle {
+  margin: 0;
+  color: #5a6470;
+}
+
+.mv-add-btn {
+  background: #1a6bbd;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mv-add-btn:hover {
+  background: #155a9e;
+}
+
+.mv-error {
+  background: #fdecec;
+  border: 1px solid #f5b5b5;
+  color: #a52e2e;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.mv-empty {
+  background: #f4f7fb;
+  border: 1px dashed #b7c3d2;
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+  color: #5a6470;
+}
+
+.mv-loading {
+  color: #5a6470;
+}
+
+.mv-form-wrap {
+  margin-bottom: 24px;
+}
+
+.mv-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.mv-card {
+  background: #fff;
+  border: 1px solid #e1e7ee;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.mv-card-title {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  color: #1a6bbd;
+}
+
+.mv-card-meta {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  font-size: 0.875rem;
+  color: #444;
+}
+
+.mv-card-meta div {
+  display: flex;
+  gap: 6px;
+}
+
+.mv-card-meta dt {
+  font-weight: 600;
+  color: #5a6470;
+  min-width: 80px;
+  margin: 0;
+}
+
+.mv-card-meta dd {
+  margin: 0;
+}
+
+.mv-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.mv-action-primary,
+.mv-action-secondary {
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mv-action-primary {
+  background: #1a6bbd;
+  color: #fff;
+}
+
+.mv-action-primary:hover {
+  background: #155a9e;
+}
+
+.mv-action-secondary {
+  background: #f4f7fb;
+  color: #5a6470;
+  border: 1px solid #e1e7ee;
+}
+
+.mv-action-secondary:hover {
+  background: #e8eef6;
+}

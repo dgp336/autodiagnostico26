@@ -1,0 +1,343 @@
+<section class="rt-page">
+
+  <!-- ── HERO ── -->
+  <div class="rt-hero">
+    <div class="rt-hero-inner">
+      <span class="rt-badge">Para talleres</span>
+      <h1 class="rt-hero-title">¿Eres un taller y quieres<br>trabajar con nosotros?</h1>
+      <p class="rt-hero-sub">
+        Únete a la red de talleres de AutoDiagnóstico y conecta con miles de
+        conductores que buscan un servicio de confianza cerca de ellos.
+      </p>
+      <div class="rt-perks">
+        <div class="rt-perk">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span>Más visibilidad y clientes</span>
+        </div>
+        <div class="rt-perk">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          <span>Seguimiento en tiempo real</span>
+        </div>
+        <div class="rt-perk">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span>Plataforma segura y verificada</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CONTENIDO PRINCIPAL ── -->
+  <div class="rt-body">
+    <div class="rt-inner">
+
+      @if (!enviado()) {
+        <!-- ── FORMULARIO ── -->
+        <form class="rt-form card" (ngSubmit)="onSubmit()" #tallerForm="ngForm" novalidate>
+
+          <div class="rt-form-header">
+            <h2 class="rt-form-title">Solicitud de registro</h2>
+            <p class="rt-form-sub">Rellena los datos de tu taller. Nos pondremos en contacto contigo en menos de 48 horas.</p>
+          </div>
+
+          <!-- ══ SECCIÓN 1: Datos del taller (Workshop) ══ -->
+          <fieldset class="rt-fieldset">
+            <legend class="rt-legend">
+              <span class="rt-legend-num">1</span>
+              Datos del taller
+            </legend>
+
+            <!-- name -->
+            <div class="rt-field">
+              <label for="name" class="rt-label">Nombre del taller <span class="rt-required">*</span></label>
+              <input
+                id="name"
+                type="text"
+               
+                placeholder="Ej: Taller García Automoción"
+                [(ngModel)]="formData.name"
+                name="name"
+                required
+                maxlength="160"
+                autocomplete="organization"
+              />
+            </div>
+
+            <!-- address -->
+            <div class="rt-field">
+              <label for="address" class="rt-label">Dirección <span class="rt-required">*</span></label>
+              <input
+                id="address"
+                type="text"
+               
+                placeholder="Calle, número, municipio y provincia"
+                [(ngModel)]="formData.address"
+                name="address"
+                required
+                maxlength="240"
+                autocomplete="street-address"
+              />
+            </div>
+
+            <div class="rt-grid-2">
+              <!-- phone -->
+              <div class="rt-field">
+                <label for="phone" class="rt-label">Teléfono <span class="rt-required">*</span></label>
+                <input
+                  id="phone"
+                  type="tel"
+                 
+                  placeholder="Ej: 600 123 456"
+                  [(ngModel)]="formData.phone"
+                  name="phone"
+                  required
+                  maxlength="40"
+                  autocomplete="tel"
+                />
+              </div>
+
+              <!-- email -->
+              <div class="rt-field">
+                <label for="email" class="rt-label">Correo electrónico <span class="rt-required">*</span></label>
+                <input
+                  id="email"
+                  type="email"
+                 
+                  placeholder="taller@ejemplo.com"
+                  [(ngModel)]="formData.email"
+                  name="email"
+                  required
+                  maxlength="180"
+                  autocomplete="email"
+                />
+              </div>
+            </div>
+
+            <!-- schedule -->
+            <div class="rt-field">
+              <label for="schedule" class="rt-label">Horario <span class="rt-required">*</span></label>
+              <input
+                id="schedule"
+                type="text"
+               
+                placeholder="Ej: Lun–Vie 08:00–18:00, Sáb 09:00–14:00"
+                [(ngModel)]="formData.schedule"
+                name="schedule"
+                required
+                maxlength="160"
+              />
+            </div>
+
+            <div class="rt-grid-2">
+              <!-- vehicleLimit -->
+              <div class="rt-field">
+                <label for="vehicleLimit" class="rt-label">
+                  Límite de vehículos simultáneos <span class="rt-required">*</span>
+                </label>
+                <input
+                  id="vehicleLimit"
+                  type="number"
+                 
+                  placeholder="Ej: 5"
+                  [(ngModel)]="formData.vehicleLimit"
+                  name="vehicleLimit"
+                  required
+                  min="1"
+                  max="999"
+                />
+              </div>
+
+              <!-- photoUrl -->
+              <div class="rt-field">
+                <label for="photoUrl" class="rt-label">URL de foto / logo</label>
+                <input
+                  id="photoUrl"
+                  type="url"
+                 
+                  placeholder="https://mi-taller.es/logo.png"
+                  [(ngModel)]="formData.photoUrl"
+                  name="photoUrl"
+                  maxlength="300"
+                />
+              </div>
+            </div>
+
+          </fieldset>
+
+          <!-- ══ SECCIÓN 2: Cuenta de acceso (AppUser) ══ -->
+          <fieldset class="rt-fieldset">
+            <legend class="rt-legend">
+              <span class="rt-legend-num">2</span>
+              Cuenta de acceso
+            </legend>
+
+            <!-- fullName -->
+            <div class="rt-field">
+              <label for="fullName" class="rt-label">Nombre completo del responsable <span class="rt-required">*</span></label>
+              <input
+                id="fullName"
+                type="text"
+               
+                placeholder="Nombre y apellidos"
+                [(ngModel)]="formData.fullName"
+                name="fullName"
+                required
+                maxlength="150"
+                autocomplete="name"
+              />
+            </div>
+
+            <div class="rt-grid-2">
+              <!-- password -->
+              <div class="rt-field">
+                <label for="password" class="rt-label">Contraseña <span class="rt-required">*</span></label>
+                <input
+                  id="password"
+                  type="password"
+                 
+                  placeholder="Mínimo 8 caracteres"
+                  [(ngModel)]="formData.password"
+                  name="password"
+                  required
+                  minlength="8"
+                  autocomplete="new-password"
+                />
+              </div>
+
+              <!-- confirmPassword -->
+              <div class="rt-field">
+                <label for="confirmPassword" class="rt-label">Repetir contraseña <span class="rt-required">*</span></label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                 
+                  [class.rt-input--error]="passwordMismatch()"
+                  placeholder="Repite la contraseña"
+                  [(ngModel)]="formData.confirmPassword"
+                  name="confirmPassword"
+                  required
+                  autocomplete="new-password"
+                />
+                @if (passwordMismatch()) {
+                  <span class="rt-error-msg">Las contraseñas no coinciden</span>
+                }
+              </div>
+            </div>
+
+          </fieldset>
+
+          <!-- ── Términos y botón ── -->
+          <div class="rt-footer-form">
+            <label class="rt-checkbox-label" for="aceptaTerminos">
+              <input
+                id="aceptaTerminos"
+                type="checkbox"
+                class="rt-checkbox"
+                [(ngModel)]="formData.aceptaTerminos"
+                name="aceptaTerminos"
+              />
+              <span>
+                He leído y acepto los
+                <a routerLink="/terminos" class="rt-link">Términos de uso</a>
+                y la
+                <a routerLink="/privacidad" class="rt-link">Política de privacidad</a>
+                de AutoDiagnóstico.
+              </span>
+            </label>
+
+            <button
+              id="btn-enviar-solicitud"
+              type="submit"
+              class="btn btn-primary rt-submit-btn"
+              [disabled]="!isFormValid() || enviando()"
+            >
+              @if (enviando()) {
+                <span class="rt-spinner" aria-hidden="true"></span>
+                Enviando solicitud...
+              } @else {
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <line x1="22" y1="2" x2="11" y2="13"/>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+                Enviar solicitud
+              }
+            </button>
+          </div>
+
+        </form>
+
+      } @else {
+        <!-- ── CONFIRMACIÓN ── -->
+        <div class="rt-success card">
+          <div class="rt-success-icon" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <h2 class="rt-success-title">¡Solicitud enviada!</h2>
+          <p class="rt-success-text">
+            Hemos recibido los datos de <strong>{{ formData.name }}</strong>.
+            Nuestro equipo revisará tu solicitud y se pondrá en contacto contigo en
+            <strong>menos de 48 horas</strong> a través de <strong>{{ formData.email }}</strong>.
+          </p>
+          <div class="rt-success-actions">
+            <button class="btn btn-secondary" (click)="resetForm()">Enviar otra solicitud</button>
+            <a routerLink="/home" class="btn btn-primary">Volver al inicio</a>
+          </div>
+        </div>
+      }
+
+      <!-- ── ASIDE ── -->
+      <aside class="rt-aside">
+        <div class="card">
+          <h3 class="rt-aside-title">¿Cómo funciona?</h3>
+          <ol class="rt-steps">
+            <li class="rt-step">
+              <span class="rt-step-num">1</span>
+              <div>
+                <strong>Rellena el formulario</strong>
+                <p>Envíanos los datos de tu taller y crea tu cuenta de acceso.</p>
+              </div>
+            </li>
+            <li class="rt-step">
+              <span class="rt-step-num">2</span>
+              <div>
+                <strong>Revisión del equipo</strong>
+                <p>Verificamos tu información en un máximo de 48 horas.</p>
+              </div>
+            </li>
+            <li class="rt-step">
+              <span class="rt-step-num">3</span>
+              <div>
+                <strong>Activación</strong>
+                <p>Tu taller aparece en la plataforma y empiezas a recibir clientes.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="card rt-aside-contact">
+          <h3 class="rt-aside-title">¿Tienes dudas?</h3>
+          <p>Escríbenos directamente y resolveremos cualquier consulta.</p>
+          <a href="mailto:talleres@autodiagnostico.ual.es" class="rt-contact-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            talleres&#64;autodiagnostico.ual.es
+          </a>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+</section>

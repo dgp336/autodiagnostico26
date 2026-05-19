@@ -104,7 +104,7 @@ export class SeguimientoChatComponent implements OnInit, OnDestroy {
 joinChat(): void {
 
   this.chatApiService
-    .joinRoom('SEGUIMIENTO', this.participantId!)
+    .joinRoom(this.sessionUuid, this.participantId!)
     .subscribe({
 
       next: () => {
@@ -124,10 +124,7 @@ joinChat(): void {
 loadMessages(): void {
 
   this.chatApiService
-    .getMessages(
-      'SEGUIMIENTO',
-      this.sessionUuid
-    )
+    .getMessages(this.sessionUuid)
     .subscribe({
 
       next: (messages: ChatMessageResponse[]) => {
@@ -160,7 +157,7 @@ loadMessages(): void {
     }
 
     this.stopMessageRefresh();
-    this.chatApiService.leaveRoom(this.roomType, participantId).subscribe();
+    this.chatApiService.leaveRoom(this.sessionUuid, participantId).subscribe();
   }
 
   get unreadCount(): number {
@@ -208,7 +205,7 @@ loadMessages(): void {
   }
 
   private fetchMessages(): void {
-    this.chatApiService.listMessages(this.roomType, this.sessionUuid, 60).subscribe({
+    this.chatApiService.listMessages(this.sessionUuid, 60).subscribe({
       next: (messages) => {
         this.messages = messages.map((message) => this.toViewMessage(message));
         this.latestMessageId = messages.length > 0 ? messages[messages.length - 1].id : null;
@@ -221,7 +218,7 @@ loadMessages(): void {
       return;
     }
 
-    this.chatApiService.listMessages(this.roomType, this.sessionUuid, 60, this.latestMessageId).subscribe({
+    this.chatApiService.listMessages(this.sessionUuid, 60, this.latestMessageId).subscribe({
       next: (messages) => {
         this.upsertMessages(messages);
         this.cdr.detectChanges();
@@ -235,7 +232,7 @@ loadMessages(): void {
       return;
     }
 
-    this.chatApiService.isUserOnline(this.roomType, participantId).subscribe({
+    this.chatApiService.isUserOnline(this.sessionUuid, participantId).subscribe({
       next: (isOnline) => {
         this.userOnline = isOnline;
       }

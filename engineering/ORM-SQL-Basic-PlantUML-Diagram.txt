@@ -16,6 +16,8 @@ entity Vehicle {
   engineDisplacement : String
 }
 
+
+
 note right: A vehicle is the most abstract entity, for instance, SEAT IBIZA 6K2
 
 entity VehicleModel {
@@ -38,6 +40,11 @@ entity Engine {
     type : EngineType
 }
 
+entity AppUser {
+* PK id: Long
+
+}
+
 entity Product {
     * PK idProduct : Integer
     ---
@@ -45,6 +52,15 @@ entity Product {
     desc : String
     price : Double
     image : String
+}
+
+entity ChatMessage {
+}
+
+entity ChatRoomPresence {
+}
+
+entity ChatSenderRole {
 }
 
 entity PersonalVehicle {
@@ -83,6 +99,9 @@ entity VM_Has_Product {
     PK FK idProduct : Integer
 }
 
+entity Issue {
+}
+
 
 /'Relationships'/
 Vehicle ||..|{ VehicleModel
@@ -92,6 +111,10 @@ VehicleModel ||..o{ VM_Has_Product
 VehicleModel ||..o{ PersonalVehicle: "appears"
 Product ||..o{ VM_Has_Product
 Engine ..> EngineType
+ChatMessage }o..|| AppUser
+ChatRoomPresence }o..|| Issue
+ChatRoomPresence }o..|| AppUser
+AppUser ||..o{ PersonalVehicle
 
 @enduml
 

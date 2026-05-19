@@ -28,6 +28,23 @@
         <div class="client-details">
           <p><strong>Coche:</strong> {{ client.carInfo }}</p>
           <p><strong>Problema:</strong> {{ client.problemDescription }}</p>
+          <p *ngIf="client.aiDiagnosis"><strong>Diagnóstico IA:</strong> {{ client.aiDiagnosis }}</p>
+          <p *ngIf="client.estimatedPrice !== null"><strong>Presupuesto estimado:</strong> {{ client.estimatedPrice | number:'1.2-2' }}€</p>
+          <div *ngIf="client.recommendedParts.length > 0" class="recommended-parts">
+            <strong>Piezas recomendadas:</strong>
+            <ul>
+              <li *ngFor="let part of client.recommendedParts">
+                {{ part.name }}
+                <span *ngIf="part.lowRangePrice !== null || part.highRangePrice !== null">
+                  (
+                  <ng-container *ngIf="part.lowRangePrice !== null">{{ part.lowRangePrice }}€</ng-container>
+                  <ng-container *ngIf="part.lowRangePrice !== null && part.highRangePrice !== null"> - </ng-container>
+                  <ng-container *ngIf="part.highRangePrice !== null">{{ part.highRangePrice }}€</ng-container>
+                  )
+                </span>
+              </li>
+            </ul>
+          </div>
         </div>
 
         <p class="client-action">Ver seguimiento</p>

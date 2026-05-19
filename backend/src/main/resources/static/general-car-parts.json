@@ -1,0 +1,368 @@
+[
+    {
+        "name": "Motor combustión interna",
+        "description": "Propulsión por combustión interna (gasolina o diésel).",
+        "priceRange": "1500-10000€",
+        "image": "https://images.stockcake.com/public/8/5/a/85abca39-ce1b-4a58-bc03-862b8c30e132/complex-car-engine-stockcake.jpg"
+    },
+    {
+        "name": "Motor eléctrico",
+        "description": "Propulsión por motor eléctrico.",
+        "priceRange": "1500-10000€",
+        "image": "https://www.bkindsolutions.com/wp-content/uploads/2023/07/iStock-1318947619-1.jpg"
+    },
+    {
+        "name": "Tanque de combustible",
+        "description": "Almacena el combustible del vehículo.",
+        "priceRange": "100-500€",
+        "image": "https://t4.ftcdn.net/jpg/04/37/13/05/360_F_437130544_PkdrK5lCpItdth6oHlnMwS26tq1JzBDF.jpg"
+    },
+    {
+        "name": "Bomba de combustible",
+        "description": "Suministra combustible al motor.",
+        "priceRange": "50-300€",
+        "image": "https://electroautocangas.es/web2020/wp-content/uploads/2022/02/bomba-de-combustible-mecanica-nissan.png"
+    },
+    {
+        "name": "Inyectores de combustible",
+        "description": "Rocían el combustible en la cámara de combustión.",
+        "priceRange": "50-250€",
+        "image": "https://media.istockphoto.com/id/2157378542/es/foto/nuevo-inyector-de-combustible-sobre-fondo-blanco-de-cerca.jpg?s=612x612&w=0&k=20&c=bggDYY3xlZpDD1x5jb6Mu0uuKhiM6Mg8prxwyWVY5ek="
+    },
+    {
+        "name": "Filtro de aire",
+        "description": "Filtra el aire que entra al motor.",
+        "priceRange": "10-50€",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMYR4opdTuT0mt4oiMtJCSUcrpnrXrTvAzWw&s"
+    },
+    {
+        "name": "Cuerpo del acelerador",
+        "description": "Regula la cantidad de aire que entra al motor.",
+        "priceRange": "100-400€",
+        "image": "https://webp.cqggedm.com/image/catalog/images-hd/default/tb/tb-03g128063c/main/tb-03g128063c(1).jpg?x-oss-process=image/auto-orient,1/quality,q_100/resize,m_mfit,w_750,h_0/format,webp"
+    },
+    {
+        "name": "Múltiple de admisión",
+        "description": "Distribuye el aire hacia los cilindros del motor.",
+        "priceRange": "150-600€",
+        "image": "https://scdn.autodoc.de/catalog/categories/600x600/10486.png"
+    },
+    {
+        "name": "Bujías",
+        "description": "Generan la chispa para la combustión en motores de gasolina.",
+        "priceRange": "5-50€",
+        "image": "https://cdn.club-magazin.autodoc.de/uploads/sites/11/2020/10/bujias.jpg"
+    },
+    {
+        "name": "Bobinas de encendido",
+        "description": "Transforman el voltaje para las bujías.",
+        "priceRange": "30-150€",
+        "image": "https://www.densoautoparts.com/wp-content/uploads/2022/09/directignitioncoil-product-photo_1.jpeg"
+    },
+    {
+        "name": "ECU (Control del motor)",
+        "description": "Unidad de control electrónico del motor.",
+        "priceRange": "300-1500€",
+        "image": "https://cdn.club-magazin.autodoc.de/uploads/sites/11/2022/04/shutterstock_1709170579.jpg"
+    },
+    {
+        "name": "BCM (Control de carrocería)",
+        "description": "Unidad que controla funciones eléctricas de la carrocería.",
+        "priceRange": "200-1000€",
+        "image": "https://absstuurapparaten.nl/cdn/shop/files/BCM_klonen_Ford_Transit_MK7_Kloonservice_-_Ford_Body_Control_Module_1.png?v=1757850375"
+    },
+    {
+        "name": "Caja de fusibles y relés",
+        "description": "Protege y distribuye la electricidad del vehículo.",
+        "priceRange": "50-300€",
+        "image": "https://coelectrix.com/wp-content/uploads/2023/01/Modulo-para-Mini-Fusibles-y-Micro-Reles-Estanco.jpg"
+    },
+    {
+        "name": "Relé de bomba de combustible",
+        "description": "Controla el encendido de la bomba de combustible.",
+        "priceRange": "10-50€",
+        "image": "https://media.pkwteile.de/360_photos/8178180/h-preview.jpg"
+    },
+    {
+        "name": "Mazo de cables principal",
+        "description": "Conecta todos los sistemas eléctricos del vehículo.",
+        "priceRange": "100-600€",
+        "image": "https://cdn-images.motor.es/image/m/1320w/fotos-noticias/2022/05/la-crisis-de-los-mazos-de-cables-es-una-oportunidad-para-mejorar-disenos-de-coches-202287397-1654031260_1.jpg"
+    },
+    {
+        "name": "Sensores (MAP, MAF, cigüeñal, oxígeno, DPF, presión de rampa)",
+        "description": "Miden diversas variables del motor y emisiones.",
+        "priceRange": "20-200€",
+        "image": "https://bxrepsol.s3.eu-west-1.amazonaws.com/static/2025/11/13103320/Diseno-sin-titulo-75.png"
+    },
+    {
+        "name": "Múltiple de escape",
+        "description": "Recoge los gases de escape del motor.",
+        "priceRange": "100-500€",
+        "image": "https://m.media-amazon.com/images/I/810IUXgd5sL.jpg"
+    },
+    {
+        "name": "Convertidor catalítico",
+        "description": "Reduce emisiones contaminantes.",
+        "priceRange": "200-1000€",
+        "image": "https://www.autonocion.com/wp-content/uploads/2020/02/Catalizador-5.jpg"
+    },
+    {
+        "name": "Silenciador",
+        "description": "Reduce el ruido de escape.",
+        "priceRange": "50-300€",
+        "image": "https://www.escapeshomologados.com/images/detalle-silenciador-tubo-escape-coche.jpg"
+    },
+    {
+        "name": "Radiador",
+        "description": "Enfría el motor mediante el líquido refrigerante.",
+        "priceRange": "100-500€",
+        "image": "https://neoquim.com/wp-content/uploads/2021/08/radiador-coche-radiasell.jpg"
+    },
+    {
+        "name": "Bomba de agua",
+        "description": "Circula el líquido refrigerante en el motor.",
+        "priceRange": "50-250€",
+        "image": "https://media.autodoc.de/360_photos/8095365/h-preview.jpg"
+    },
+    {
+        "name": "Bomba de aceite",
+        "description": "Circula el aceite en el motor para lubricación.",
+        "priceRange": "50-200€",
+        "image": "https://autorrautomocion.com/cdn/shop/files/bomba-aceite-19tdi-vw-06a11512106a115121-1899529.jpg?v=1773515931&width=1946"
+    },
+    {
+        "name": "Filtro de aceite",
+        "description": "Filtra impurezas del aceite del motor.",
+        "priceRange": "10-50€",
+        "image": "https://media.pkwteile.de/360_photos/18744100/h-preview.jpg"
+    },
+    {
+        "name": "Motor de arranque",
+        "description": "Permite arrancar el motor.",
+        "priceRange": "100-500€",
+        "image": "https://media.autodoc.de/360_photos/13651551/h-preview.jpg"
+    },
+    {
+        "name": "Batería de 12V",
+        "description": "Suministra energía a sistemas eléctricos y arranque.",
+        "priceRange": "50-200€",
+        "image": "https://media.autodoc.de/360_photos/1145148/h-preview.jpg"
+    },
+    {
+        "name": "Alternador",
+        "description": "Genera electricidad mientras el motor funciona.",
+        "priceRange": "100-500€",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSk4wEXQCqUndYxUzpMgrfi4t4Vdzi9tT9omw&s"
+    },
+    {
+        "name": "Transmisión",
+        "description": "Transfiere la potencia del motor a las ruedas.",
+        "priceRange": "500-4000€",
+        "image": "https://advancedfleetmanagementconsulting.com/wp-content/uploads/2024/09/Transmision.jpg"
+    },
+    {
+        "name": "Bomba de alta presión",
+        "description": "Suministra combustible a alta presión en motores diésel.",
+        "priceRange": "200-800€",
+        "image": "https://www.motointegrator.es/blog/wp-content/uploads/sites/10/2025/12/Bomba-de-alta-presion.jpg"
+    },
+    {
+        "name": "Common rail",
+        "description": "Distribuye combustible de alta presión en motores diésel.",
+        "priceRange": "300-1000€",
+        "image": "https://i.bstr.es/highmotor/2020/01/common-rail-bosch.jpg"
+    },
+    {
+        "name": "Inyectores diesel",
+        "description": "Rocían combustible diésel en la cámara de combustión.",
+        "priceRange": "50-300€",
+        "image": "https://dieselfixneuss.es/cdn/shop/files/0414720210-bosch-pde-injector-4x_18992e6c-a607-482c-8980-e81aff3c626e.jpg?v=1711971012&width=1214"
+    },
+    {
+        "name": "Turbocompresor",
+        "description": "Aumenta la presión de aire en el motor para más potencia.",
+        "priceRange": "300-1200€",
+        "image": "https://turbonoroeste.es/wp-content/uploads/2024/06/717858-300x300.png"
+    },
+    {
+        "name": "Intercooler",
+        "description": "Enfría el aire comprimido por el turbo.",
+        "priceRange": "150-600€",
+        "image": "https://www.speedingparts.es/image/4372/Intercooler-aluminium.jpg"
+    },
+    {
+        "name": "Calentadores",
+        "description": "Calientan el motor diésel para facilitar el arranque.",
+        "priceRange": "20-100€",
+        "image": "https://media.autodoc.de/360_photos/16417756/h-preview.jpg"
+    },
+    {
+        "name": "Relé de calentadores",
+        "description": "Controla la activación de los calentadores diésel.",
+        "priceRange": "10-50€",
+        "image": "https://cdn.pkwteile.de/thumb?id=7695674&m=0&n=0&lng=es&rev=94078017"
+    },
+    {
+        "name": "DPF",
+        "description": "Filtro de partículas diésel que reduce emisiones.",
+        "priceRange": "300-1500€",
+        "image": "https://noticias.pro.pvt.coches.com/wp-content/uploads/2015/11/filtro-de-particulas-dpf.jpg"
+    },
+    {
+        "name": "EGR",
+        "description": "Recircula gases de escape para reducir NOx.",
+        "priceRange": "150-800€",
+        "image": "https://lh4.googleusercontent.com/proxy/1-0KytzNyj9UQpyJ6jAGy58QOAlYC59zsr1thaq7uOBlss5SyUfVPyQchj27QB4qMCfVInxKpkZB-7E-92U5HbkmhKdFxHN-OoiQsdLnv72XlYnS8nRCHoTrWR_3YiE78JLZ0-7muPELJX6h-OQmn2xRptfT2yiG3FuPTa4JT-ffJQ"
+    },
+    {
+        "name": "SCR + tanque AdBlue",
+        "description": "Sistema de reducción catalítica selectiva para emisiones diésel.",
+        "priceRange": "500-2000€",
+        "image": "https://es.kuriyama.eu/img/activities/urea-scr-system.jpg"
+    },
+    {
+        "name": "Batería híbrida",
+        "description": "Almacena energía eléctrica para vehículos híbridos.",
+        "priceRange": "1000-5000€",
+        "image": "https://cybercar.es/wp-content/uploads/2021/11/bateria-toyota.jpg"
+    },
+    {
+        "name": "Inversor",
+        "description": "Convierte corriente continua de la batería en alterna para el motor eléctrico.",
+        "priceRange": "500-2500€",
+        "image": "https://cdn-images.motor.es/image/m/1320w/fotos-diccionario/2022/06//inversor-coche-electrico_1655216973.jpg"
+    },
+    {
+        "name": "Dispositivo divisor de potencia",
+        "description": "Gestiona la potencia combinada de motor eléctrico y combustión.",
+        "priceRange": "500-2000€",
+        "image": "https://www.nitro.pe/images/2017/octubre/bloqueo-del-diferencial.jpg"
+    },
+    {
+        "name": "Sistema de frenado regenerativo",
+        "description": "Recupera energía al frenar y la almacena en la batería.",
+        "priceRange": "300-1500€",
+        "image": "https://www.transfluid.eu/wp-content/uploads/2015/03/htv700_2019-copia.png.webp"
+    },
+    {
+        "name": "ECU (control híbrido)",
+        "description": "Unidad de control electrónico para sistemas híbridos.",
+        "priceRange": "300-1500€",
+        "image": "https://autosoporte.com/wp-content/uploads/2021/05/ECU-de-la-bateria-hibrida.jpeg"
+    },
+    {
+        "name": "Contactores de alto voltaje",
+        "description": "Permiten la conexión segura de la batería de alto voltaje.",
+        "priceRange": "50-300€",
+        "image": "https://m.media-amazon.com/images/I/61RmAB90cVL.jpg"
+    },
+    {
+        "name": "Sensores (motor, HV, posición, corriente, voltaje, temperatura)",
+        "description": "Monitorean variables críticas del vehículo.",
+        "priceRange": "20-200€",
+        "image": "https://s.alicdn.com/@sc04/kf/H14923cf1960440a2be0cc599e395e1b1A.jpg_300x300.jpg"
+    },
+    {
+        "name": "Batería de tracción (alto voltaje)",
+        "description": "Almacena energía eléctrica para vehículos eléctricos.",
+        "priceRange": "2000-15000€",
+        "image": "https://www.diariomotor.com/imagenes/2023/07/reciclaje-de-baterias-64c0360dc51a8.jpg?class=XL"
+    },
+    {
+        "name": "Engranaje reductor (una sola velocidad)",
+        "description": "Transfiere la potencia del motor eléctrico a las ruedas.",
+        "priceRange": "300-1500€",
+        "image": "https://urany.net/assets/img/Coaxial_Gearbox.jpg"
+    },
+    {
+        "name": "Cargador a bordo",
+        "description": "Convierte la corriente alterna de la red en continua para cargar la batería.",
+        "priceRange": "300-1000€",
+        "image": "https://media.istockphoto.com/id/1310927628/es/foto/m%C3%B3dulo-de-cargador-a-bordo-en-el-coche-del-motor.jpg?s=170667a&w=0&k=20&c=ej4l0uqEvQP68sa5Hjeg0WQ774EuIcz0u6L_0NmrKv4="
+    },
+    {
+        "name": "Puerto de carga",
+        "description": "Permite conectar el vehículo a una fuente de energía.",
+        "priceRange": "50-300€",
+        "image": "https://thumbs.dreamstime.com/b/charge-port-electric-car-ev-charging-port-electric-car-electronic-car-charging-devise-publicly-installed-ev-charger-o-219356534.jpg"
+    },
+    {
+        "name": "Convertidor DC-DC",
+        "description": "Convierte alto voltaje de batería a 12V para sistemas auxiliares.",
+        "priceRange": "100-500€",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuralQ5a4zGErGsoaTHuliZQsHSqn1kjHP5A&s"
+    },
+    {
+        "name": "BMS (Gestión de batería)",
+        "description": "Sistema que controla la carga y descarga de la batería.",
+        "priceRange": "200-1000€",
+        "image": "https://thumbs.dreamstime.com/b/packed-lithium-battery-bms-available-white-background-276740667.jpg"
+    },
+    {
+        "name": "Sistema de gestión térmica",
+        "description": "Mantiene la batería y motor eléctricos en temperatura óptima.",
+        "priceRange": "300-1200€",
+        "image": "https://cicenergigune.com/media/uploads/rrss/thermal-management-electric-vehicle-cicenergigune-01.jpg"
+    },
+    {
+        "name": "VCU (Unidad de control del vehículo)",
+        "description": "Controla los sistemas de un vehículo eléctrico.",
+        "priceRange": "500-2000€",
+        "image": "https://media.istockphoto.com/id/1342090579/es/foto/m%C3%B3dulo-de-unidad-de-control-tcu-tcm-ecu-ecm-para-transmisi%C3%B3n-autom%C3%A1tica-abs.jpg?s=612x612&w=0&k=20&c=JytOK9NeM98Q4BMNwX4ZaSJVIQoRyF9GMdPQF3q88VM="
+    },
+    {
+        "name": "Contactores y relés de alto voltaje",
+        "description": "Controlan la conexión de sistemas de alto voltaje.",
+        "priceRange": "50-300€",
+        "image": "https://thumbs.dreamstime.com/b/detailed-close-up-shot-car-s-fuse-box-relay-assembly-showing-multi-colored-fuses-organized-black-relays-their-422393593.jpg"
+    },
+    {
+        "name": "Luces delanteras",
+        "description": "Iluminación frontal del vehículo.",
+        "priceRange": "50-1000€",
+        "image": "https://img.freepik.com/premium-vector/car-lights-realistic-front-silhouette-view-automobile-vector-car-headlights-darkness_41737-612.jpg"
+    },
+    {
+        "name": "Luces traseras",
+        "description": "Iluminación trasera del vehículo.",
+        "priceRange": "50-800€",
+        "image": "https://thumbs.dreamstime.com/b/tail-light-modern-car-night-city-close-up-image-right-glowing-led-red-neon-lines-background-reflection-street-lights-371038180.jpg"
+    },
+    {
+        "name": "Interiores y paneles",
+        "description": "Componentes del habitáculo y decoración interior.",
+        "priceRange": "50-2000€",
+        "image": "https://thumbs.dreamstime.com/b/un-moderno-habit%C3%A1culo-de-coche-lujo-que-muestra-materiales-refinados-iluminaci%C3%B3n-ambiental-pantallas-avanzadas-y-una-elegante-432937029.jpg"
+    },
+    {
+        "name": "Infoentretenimiento",
+        "description": "Sistema de audio, navegación y conectividad.",
+        "priceRange": "100-2500€",
+        "image": "https://www.sevensmartauto.com.au/wp-content/uploads/2025/06/shutterstock_2327349657.jpg"
+    },
+    {
+        "name": "Suspensión (amortiguadores y muelles)",
+        "description": "Sistema que absorbe impactos y mantiene estabilidad.",
+        "priceRange": "100-1500€",
+        "image": "https://schonautomotive.com.au/wp-content/uploads/2025/05/car-suspension.jpg"
+    },
+    {
+        "name": "Dirección (columna y cremalleras)",
+        "description": "Permite controlar la dirección del vehículo.",
+        "priceRange": "150-1000€",
+        "image": "https://thumbs.dreamstime.com/b/steering-column-white-background-new-car-95584384.jpg"
+    },
+    {
+        "name": "Frenos (discos, pastillas, pinzas)",
+        "description": "Sistema de frenado del vehículo.",
+        "priceRange": "100-1500€",
+        "image": "https://thumbs.dreamstime.com/b/sistema-de-frenos-del-autom%C3%B3vil-56800086.jpg"
+    },
+    {
+        "name": "Neumáticos",
+        "description": "Ruedas de contacto con el pavimento.",
+        "priceRange": "50-500€",
+        "image": "https://img.magnific.com/vector-gratis/juego-completo-realista-ruedas-coche_1284-29765.jpg"
+    }
+]

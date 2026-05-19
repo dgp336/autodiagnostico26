@@ -29,6 +29,7 @@ export class DetalleVehiculo implements OnInit, OnChanges, OnDestroy {
   @Input() disabled = false;
   @Input() engineTypeOptions: EnumOption<EngineType>[] = [];
   @Input() transmissionOptions: EnumOption<TransmissionType>[] = [];
+  @Input() value: DetalleVehiculoValue | null = null;
 
   @Output() detailChange = new EventEmitter<DetalleVehiculoValue>();
 
@@ -81,6 +82,10 @@ export class DetalleVehiculo implements OnInit, OnChanges, OnDestroy {
 
     if (changes['variants'] && this.variants.length === 0) {
       this.form.get('variantId')!.setValue(null, { emitEvent: false });
+    }
+
+    if (changes['value'] && this.value) {
+      this.form.patchValue(this.value, { emitEvent: false });
     }
   }
 

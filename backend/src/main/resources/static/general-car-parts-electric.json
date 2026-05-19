@@ -1,0 +1,17 @@
+[
+  { "name": "Motor eléctrico", "description": "Propulsión por motor eléctrico.", "priceRange": "1500-10000€" },
+  { "name": "Batería de tracción (alto voltaje)", "description": "Almacena energía eléctrica para vehículos eléctricos.", "priceRange": "2000-15000€" },
+  { "name": "Inversor", "description": "Convierte corriente continua de la batería en alterna para el motor eléctrico.", "priceRange": "500-2500€" },
+  { "name": "Convertidor DC-DC", "description": "Convierte alto voltaje de batería a 12V para sistemas auxiliares.", "priceRange": "100-500€" },
+  { "name": "Contactores de alto voltaje", "description": "Permiten la conexión segura de la batería de alto voltaje.", "priceRange": "50-300€" },
+  { "name": "BMS (Gestión de batería)", "description": "Sistema que controla la carga y descarga de la batería.", "priceRange": "200-1000€" },
+  { "name": "Cargador a bordo", "description": "Convierte la corriente alterna de la red en continua para cargar la batería.", "priceRange": "300-1000€" },
+  { "name": "Puerto de carga", "description": "Permite conectar el vehículo a una fuente de energía.", "priceRange": "50-300€" },
+  { "name": "Convertidor DC-DC", "description": "Convierte alto voltaje de batería a 12V para sistemas auxiliares.", "priceRange": "100-500€" },
+  { "name": "Engranaje reductor (una sola velocidad)", "description": "Transfiere la potencia del motor eléctrico a las ruedas.", "priceRange": "300-1500€" },
+  { "name": "VCU (Unidad de control del vehículo)", "description": "Controla los sistemas de un vehículo eléctrico.", "priceRange": "500-2000€" },
+  { "name": "Sistema de gestión térmica", "description": "Mantiene la batería y motor eléctricos en temperatura óptima.", "priceRange": "300-1200€" },
+  { "name": "Contactores y relés de alto voltaje", "description": "Controlan la conexión de sistemas de alto voltaje.", "priceRange": "50-300€" },
+  { "name": "BMS (Gestión de batería)", "description": "Sistema que controla la carga y descarga de la batería.", "priceRange": "200-1000€" },
+  { "name": "Batería de 12V", "description": "Suministra energía a sistemas auxiliares (12V).", "priceRange": "50-200€" }
+]

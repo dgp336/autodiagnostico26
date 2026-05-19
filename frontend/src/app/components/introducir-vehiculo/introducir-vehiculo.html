@@ -1,8 +1,20 @@
 <section class="iv-card">
 
   <div class="iv-header">
-    <h2 class="iv-title">Información del vehículo</h2>
-    <span class="iv-subtitle">Indica al menos la marca y el modelo para enviar el diagnóstico</span>
+    <h2 class="iv-title">
+      @if (mode === 'alta') {
+        Añadir un vehículo a tu garaje
+      } @else {
+        Información del vehículo
+      }
+    </h2>
+    <span class="iv-subtitle">
+      @if (mode === 'alta') {
+        Selecciona marca, modelo y variante. Matrícula y VIN son opcionales.
+      } @else {
+        Indica al menos la marca y el modelo para enviar el diagnóstico
+      }
+    </span>
   </div>
 
   <app-selector-marca-modelo
@@ -10,6 +22,8 @@
     [models]="models"
     [loadingBrands]="loadingBrands"
     [loadingModels]="loadingModels"
+    [selectedBrand]="selectedBrand"
+    [selectedModelId]="selectedModelId"
     (brandChange)="onBrandChange($event)"
     (modelChange)="onModelChange($event)"
   />
@@ -21,7 +35,13 @@
 
   <div class="iv-section-header">
     <span class="iv-section-title">¿Cuánto conoces tu coche?</span>
-    <span class="iv-section-hint">Completa lo que sepas para afinar el diagnóstico</span>
+    <span class="iv-section-hint">
+      @if (mode === 'alta') {
+        La variante (motor/transmisión) es obligatoria al guardar
+      } @else {
+        Completa lo que sepas para afinar el diagnóstico
+      }
+    </span>
   </div>
 
   <app-detalle-vehiculo
@@ -30,27 +50,59 @@
     [disabled]="detailDisabled"
     [engineTypeOptions]="engineTypeOptions"
     [transmissionOptions]="transmissionOptions"
+    [value]="detailValue"
     (detailChange)="onDetailChange($event)"
   />
 
+  @if (mode === 'alta') {
+    <div class="iv-alta-extra">
+      <label class="iv-field">
+        <span class="iv-field-label">Matrícula (opcional)</span>
+        <input type="text" [(ngModel)]="plate" name="plate" maxlength="16" placeholder="0000-AAA" />
+      </label>
+      <label class="iv-field">
+        <span class="iv-field-label">VIN (opcional)</span>
+        <input type="text" [(ngModel)]="vin" name="vin" maxlength="32" placeholder="Número de bastidor" />
+      </label>
+      <label class="iv-field">
+        <span class="iv-field-label">Fecha de matriculación (opcional)</span>
+        <input type="date" [(ngModel)]="buildDate" name="buildDate" />
+      </label>
+    </div>
+  }
+
   <div class="iv-footer">
-    @if (!canSubmit) {
-      <p class="iv-submit-hint">
-        @if (!tieneProblema) {
-          Selecciona primero un problema
-        } @else {
-          Indica al menos la marca y el modelo
-        }
-      </p>
+    @if (mode === 'alta') {
+      @if (!canSubmitAlta && !saving) {
+        <p class="iv-submit-hint">Completa marca, modelo y variante para guardar</p>
+      }
+      <button
+        type="button"
+        class="iv-submit"
+        [disabled]="!canSubmitAlta"
+        (click)="onClickGuardarCoche()"
+      >
+        @if (saving) { Guardando... } @else { Guardar coche }
+      </button>
+    } @else {
+      @if (!canSubmitDiagnostico) {
+        <p class="iv-submit-hint">
+          @if (!tieneProblema) {
+            Selecciona primero un problema
+          } @else {
+            Indica al menos la marca y el modelo
+          }
+        </p>
+      }
+      <button
+        type="button"
+        class="iv-submit"
+        [disabled]="!canSubmitDiagnostico"
+        (click)="enviar.emit()"
+      >
+        Enviar diagnóstico
+      </button>
     }
-    <button
-      type="button"
-      class="iv-submit"
-      [disabled]="!canSubmit"
-      (click)="enviar.emit()"
-    >
-      Enviar diagnóstico
-    </button>
   </div>
 
 </section>
