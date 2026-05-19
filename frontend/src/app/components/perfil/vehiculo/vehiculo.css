@@ -1,0 +1,132 @@
+.vehiculo-shell {
+  max-width: 560px;
+}
+
+.section-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+}
+
+.section-desc {
+  color: var(--color-ink-muted, #6b7280);
+  font-size: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.tracking-card {
+  border: 1.5px solid var(--color-border, rgba(0,0,0,0.08));
+  border-radius: var(--radius-md, 0.625rem);
+  padding: 1.25rem;
+  transition: border-color 150ms ease;
+}
+
+.tracking-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.tracking-vehicle {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.tracking-vehicle svg {
+  flex-shrink: 0;
+  color: var(--color-primary, #1a6bbd);
+  margin-top: 2px;
+}
+
+.tracking-vehicle div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.tracking-car-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-ink, #111827);
+}
+
+.tracking-problem {
+  font-size: 0.8rem;
+  color: var(--color-ink-muted, #6b7280);
+}
+
+.tracking-status {
+  flex-shrink: 0;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tracking-status--verde {
+  background: rgba(16, 185, 129, 0.1);
+  color: #065f46;
+}
+
+.tracking-status--amarillo {
+  background: rgba(245, 158, 11, 0.1);
+  color: #78350f;
+}
+
+.tracking-status--naranja {
+  background: rgba(251, 146, 60, 0.12);
+  color: #9a3412;
+}
+
+.tracking-status--rojo {
+  background: rgba(239, 68, 68, 0.1);
+  color: #7f1d1d;
+}
+
+.tracking-update {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border, rgba(0,0,0,0.06));
+}
+
+.tracking-update-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-ink-muted, #6b7280);
+  margin-bottom: 0.25rem;
+}
+
+.tracking-update-text {
+  font-size: 0.875rem;
+  color: var(--color-ink, #111827);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.vehiculo-empty {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.vehiculo-icon {
+  color: var(--color-primary, #1a6bbd);
+  opacity: 0.35;
+  margin-bottom: 0.75rem;
+}
+
+.vehiculo-empty h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.vehiculo-empty p {
+  color: var(--color-ink-muted, #6b7280);
+  font-size: 0.875rem;
+}

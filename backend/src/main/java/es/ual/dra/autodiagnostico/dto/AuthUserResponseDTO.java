@@ -21,4 +21,6 @@ public class AuthUserResponseDTO {
     private String role;
     private String avatarUrl;
     private LocalDateTime createdAt;
+    private String city;
+    private String postalCode;
 }

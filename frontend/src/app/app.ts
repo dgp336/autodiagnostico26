@@ -25,7 +25,7 @@ export class App {
 
   protected readonly isAuthPage = computed(() => {
     const url = this.currentUrl();
-    return url?.includes('/login') || url?.includes('/registro');
+    return url?.includes('/login') || url?.includes('/registro') || url?.startsWith('/perfil');
   });
 
   protected readonly title = signal('autodiagnostico');

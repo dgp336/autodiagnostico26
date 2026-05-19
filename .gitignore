@@ -8,6 +8,7 @@
 .specify/
 .specs/
 CLAUDE.md
+AGENTS.md
 
 # ============ DEPENDENCIAS ============
 node_modules/
@@ -110,9 +111,7 @@ $RECYCLE.BIN/
 
 # ============ IDEs Y EDITORES ============
 # VS Code
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
+.vscode/
 
 # IntelliJ / WebStorm
 .idea/

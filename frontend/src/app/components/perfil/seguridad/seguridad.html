@@ -1,0 +1,52 @@
+<div class="seguridad-shell">
+
+  <section class="seguridad-section">
+    <h3 class="section-title">Correo electrónico</h3>
+    <p class="section-desc">Correo actual: <strong>{{ emailLabel }}</strong></p>
+
+    @if (emailSuccess) {
+      <div class="alert alert-success mt-sm">{{ emailSuccess }}</div>
+    }
+    @if (emailError) {
+      <div class="alert alert-error mt-sm">{{ emailError }}</div>
+    }
+
+    <div class="seguridad-form">
+      <label class="field">
+        <span class="field-label">Nuevo correo electrónico</span>
+        <input type="email" [(ngModel)]="newEmail" class="field-input" placeholder="tu@nuevoemail.com"/>
+      </label>
+      <button class="btn btn-primary" (click)="updateEmail()">Actualizar correo</button>
+    </div>
+  </section>
+
+  <hr class="section-divider"/>
+
+  <section class="seguridad-section">
+    <h3 class="section-title">Cambiar contraseña</h3>
+
+    @if (passwordSuccess) {
+      <div class="alert alert-success mt-sm">{{ passwordSuccess }}</div>
+    }
+    @if (passwordError) {
+      <div class="alert alert-error mt-sm">{{ passwordError }}</div>
+    }
+
+    <div class="seguridad-form">
+      <label class="field">
+        <span class="field-label">Contraseña actual</span>
+        <input type="password" [(ngModel)]="currentPassword" class="field-input" placeholder="••••••••"/>
+      </label>
+      <label class="field">
+        <span class="field-label">Nueva contraseña</span>
+        <input type="password" [(ngModel)]="newPassword" class="field-input" placeholder="Mínimo 6 caracteres"/>
+      </label>
+      <label class="field">
+        <span class="field-label">Confirmar nueva contraseña</span>
+        <input type="password" [(ngModel)]="confirmPassword" class="field-input" placeholder="Repite la contraseña"/>
+      </label>
+      <button class="btn btn-primary" (click)="updatePassword()">Cambiar contraseña</button>
+    </div>
+  </section>
+
+</div>

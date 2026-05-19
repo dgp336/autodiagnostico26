@@ -1,0 +1,38 @@
+<div class="vehiculo-shell">
+  @if (isLoading) {
+    <p class="text-muted">Cargando...</p>
+  } @else if (tracking) {
+    <h3 class="section-title">Vehículo en taller</h3>
+    <p class="section-desc">Información de tu vehículo y su estado actual en el taller.</p>
+
+    <div class="tracking-card">
+      <div class="tracking-header">
+        <div class="tracking-vehicle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+          <div>
+            <span class="tracking-car-name">{{ tracking.carInfo }}</span>
+            <span class="tracking-problem">{{ tracking.problemDescription }}</span>
+          </div>
+        </div>
+        <span class="tracking-status tracking-status--{{ tracking.status }}">{{ statusLabel(tracking.status) }}</span>
+      </div>
+
+      @if (tracking.latestUpdate) {
+        <div class="tracking-update">
+          <span class="tracking-update-label">Última actualización</span>
+          <p class="tracking-update-text">{{ tracking.latestUpdate }}</p>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="vehiculo-empty">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true" class="vehiculo-icon">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+      </svg>
+      <h3>Sin vehículo asignado</h3>
+      <p>{{ errorMessage }}</p>
+    </div>
+  }
+</div>

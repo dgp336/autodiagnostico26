@@ -21,6 +21,8 @@ export interface AuthUserResponse {
   role: AuthUserRole;
   avatarUrl: string;
   createdAt: string;
+  city?: string;
+  postalCode?: string;
 }
 
 export interface ChatJoinResponse {
@@ -115,6 +117,18 @@ export interface VehicleVariant {
   transmission: TransmissionType | null;
   engineName: string | null;
   engineType: EngineType | null;
+}
+
+export interface UpdateUserRequest {
+  fullName?: string;
+  email?: string;
+  city?: string;
+  postalCode?: string;
+}
+
+export interface UpdatePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
 }
 
 export interface VehicleSearchContext {
