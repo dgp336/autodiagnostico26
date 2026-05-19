@@ -22,19 +22,22 @@ import org.springframework.transaction.annotation.Transactional;
  * está vacía, para poder probar el flujo de autodiagnóstico sin depender del
  * scraper de UltimateSpecs.
  *
- * <p><b>REVERTIR DESPUÉS DE LA PRIMERA EJECUCIÓN</b>: cuando ya haya vehículos
+ * <p>
+ * <b>REVERTIR DESPUÉS DE LA PRIMERA EJECUCIÓN</b>: cuando ya haya vehículos
  * persistidos en MySQL (o cuando arranques el scraper), basta con:
  * <ul>
- *   <li>Borrar este fichero, o</li>
- *   <li>Añadir {@code app.seed.vehicles.enabled=false} en application.properties.</li>
+ * <li>Borrar este fichero, o</li>
+ * <li>Añadir {@code app.seed.vehicles.enabled=false} en
+ * application.properties.</li>
  * </ul>
  *
- * <p>Por defecto el seed está habilitado. Es idempotente: si ya hay registros
+ * <p>
+ * Por defecto el seed está habilitado. Es idempotente: si ya hay registros
  * en la tabla {@code vehicle}, no hace nada.
  */
 @Component
 @RequiredArgsConstructor
-@ConditionalOnProperty(name = "app.seed.vehicles.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "app.seed.vehicles.enabled", havingValue = "true", matchIfMissing = false)
 @Order(1)
 @Slf4j
 public class VehiclesSeedInitializer implements ApplicationRunner {
@@ -55,17 +58,21 @@ public class VehiclesSeedInitializer implements ApplicationRunner {
 
         Engine ePetrol = saveEngine("1.5 TSI", EngineType.PETROL);
         Engine eDiesel = saveEngine("2.0 TDI", EngineType.DIESEL);
-        Engine eBev    = saveEngine("Permanent Magnet AC", EngineType.BEV);
-        Engine eHev    = saveEngine("1.8 Hybrid", EngineType.HEV);
-        Engine ePhev   = saveEngine("1.4 e-Hybrid", EngineType.PHEV);
-        Engine eReev   = saveEngine("Range Extender 1.5", EngineType.REEV);
+        Engine eBev = saveEngine("Permanent Magnet AC", EngineType.BEV);
+        Engine eHev = saveEngine("1.8 Hybrid", EngineType.HEV);
+        Engine ePhev = saveEngine("1.4 e-Hybrid", EngineType.PHEV);
+        Engine eReev = saveEngine("Range Extender 1.5", EngineType.REEV);
 
-        seed("Volkswagen", "Golf",     "Golf 1.5 TSI 130 CV", 2020, TransmissionType.MT,  ePetrol);
-        seed("Audi",       "A4",       "A4 2.0 TDI 150 CV",   2018, TransmissionType.AT,  eDiesel);
-        seed("Tesla",      "Model 3",  "Model 3 Standard",    2023, TransmissionType.AT,  eBev);
-        seed("Toyota",     "Corolla",  "Corolla Hybrid 1.8",  2022, TransmissionType.eCVT, eHev);
-        seed("Volkswagen", "Passat",   "Passat GTE 1.4",      2021, TransmissionType.DCT, ePhev);
-        seed("BMW",        "i3",       "i3 REx",              2019, TransmissionType.AT,  eReev);
+        seed("Volkswagen", "Golf", "Golf 1.5 TSI 130 CV", 2020, TransmissionType.MT,
+                ePetrol);
+        seed("Audi", "A4", "A4 2.0 TDI 150 CV", 2018, TransmissionType.AT, eDiesel);
+        seed("Tesla", "Model 3", "Model 3 Standard", 2023, TransmissionType.AT,
+                eBev);
+        seed("Toyota", "Corolla", "Corolla Hybrid 1.8", 2022, TransmissionType.eCVT,
+                eHev);
+        seed("Volkswagen", "Passat", "Passat GTE 1.4", 2021, TransmissionType.DCT,
+                ePhev);
+        seed("BMW", "i3", "i3 REx", 2019, TransmissionType.AT, eReev);
 
         log.info("Seed completado: {} vehículos, {} modelos.",
                 vehicleRepository.count(), vehicleModelRepository.count());
@@ -78,7 +85,7 @@ public class VehiclesSeedInitializer implements ApplicationRunner {
     }
 
     private void seed(String brand, String name, String variantName, int year,
-                      TransmissionType transmission, Engine engine) {
+            TransmissionType transmission, Engine engine) {
         Vehicle vehicle = Vehicle.builder()
                 .brand(brand)
                 .name(name)
