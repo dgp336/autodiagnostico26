@@ -6,6 +6,16 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/../../" && pwd)"
 BACKEND_DIR="$ROOT_DIR"
 
+# --- Load .env file if it exists ---
+ENV_FILE="$ROOT_DIR/../.env"
+ENV_FILE_PARAM=""
+if [ -f "$ENV_FILE" ]; then
+    echo "Using .env file: $ENV_FILE"
+    ENV_FILE_PARAM="--env-file $ENV_FILE"
+else
+    echo "Warning: .env file not found at $ENV_FILE. Skipping --env-file."
+fi
+
 # Docker network
 DOCKER_NETWORK="autodiagnostico-net"
 
@@ -52,6 +62,7 @@ sudo docker rm -f "$MAVEN_CONTAINER" >/dev/null 2>&1 || true
 # Skip tests with "-DskipTests for production"
 (sudo docker run --name "$MAVEN_CONTAINER" --rm \
     --network "$DOCKER_NETWORK" \
+    $ENV_FILE_PARAM \
     -v "$BACKEND_DIR":/usr/src/mymaven \
     -w /usr/src/mymaven \
     -p 8081:8081 \
