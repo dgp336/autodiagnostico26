@@ -14,17 +14,18 @@
 
   <p *ngIf="error()" class="alert">{{ error() }}</p>
 
+
   <div class="workshop-layout" *ngIf="!loading(); else loadingState">
-    <section class="workshop-list" aria-label="Listado de talleres">
-      <!-- Modern Premium Filter Controls -->
+
+    <!-- Panel izquierdo: filtros + lista + detalle del taller seleccionado -->
+    <section class="left-panel" aria-label="Listado de talleres">
+      <!-- Filtros -->
       <div class="filter-card">
         <div class="filter-header">
           <h3>🔍 Filtros de taller</h3>
           <button type="button" class="clear-filters-btn" (click)="resetFilters()">Limpiar</button>
         </div>
-        
         <div class="filter-grid">
-          <!-- Toggle: Horarios de apertura -->
           <div class="filter-control">
             <label>Horario</label>
             <button
@@ -37,8 +38,6 @@
               {{ onlyOpen() ? '🟢 Solo Abiertos' : 'Mostrar todos' }}
             </button>
           </div>
-
-          <!-- Select: Ocupación -->
           <div class="filter-control">
             <label>Ocupación</label>
             <div class="select-wrapper">
@@ -53,8 +52,6 @@
               </select>
             </div>
           </div>
-
-          <!-- Slider: Radio de distancia -->
           <div class="filter-control distance-control">
             <label class="distance-label">
               <span>Distancia máxima</span>
@@ -74,7 +71,7 @@
         </div>
       </div>
 
-      <!-- Workshop List -->
+      <!-- Lista de tarjetas de taller -->
       <button
         type="button"
         class="workshop-item"
@@ -89,14 +86,12 @@
             <span class="selected-pill" *ngIf="workshop.selectedByClient">Seleccionado</span>
           </span>
           <span>{{ workshop.address }}</span>
-          
           <span class="workshop-item__schedule-line">
             <span class="status-badge" [class.status-badge--open]="isOpenNow(workshop.schedule)">
               {{ isOpenNow(workshop.schedule) ? 'Abierto' : 'Cerrado' }}
             </span>
             <span class="schedule-text">{{ workshop.schedule }}</span>
           </span>
-
           <span class="workshop-item__meta">
             <span class="meta-stats">{{ workshop.mechanicName }} · {{ workshop.activeVehicles }}/{{ workshop.vehicleLimit }} vehiculos</span>
             <span class="meta-distance" *ngIf="getDistanceLabel(workshop) as dist">
@@ -105,109 +100,114 @@
           </span>
         </span>
       </button>
-      
+
       <div class="no-workshops-fallback" *ngIf="workshops().length === 0">
         <p>No se encontraron talleres con los filtros seleccionados.</p>
         <button type="button" class="reset-link-btn" (click)="resetFilters()">Restablecer filtros</button>
       </div>
-    </section>
 
-    <section class="workshop-detail" *ngIf="selectedWorkshop() as workshop">
-      <div class="detail-media">
-        <img [src]="workshop.photoUrl" [alt]="workshop.name" />
-      </div>
-
-      <div class="detail-content">
-        <div class="detail-title">
-          <div>
-            <p class="eyebrow">Taller asignable</p>
-            <h2>{{ workshop.name }}</h2>
-          </div>
-          <span class="availability" [class.availability--full]="isFull(workshop)">
-            {{ occupancyLabel(workshop) }}
-          </span>
+      <!-- Panel de detalle del taller seleccionado -->
+      <section class="workshop-detail" *ngIf="selectedWorkshop() as workshop">
+        <div class="detail-media">
+          <img [src]="workshop.photoUrl" [alt]="workshop.name" />
         </div>
 
-        <div class="mechanic-row">
-          <img [src]="workshop.mechanicAvatar" [alt]="workshop.mechanicName" />
-          <div>
-            <strong>{{ workshop.mechanicName }}</strong>
-            <span>Mecanico responsable</span>
-          </div>
-        </div>
-
-        <dl class="contact-grid">
-          <div>
-            <dt>Direccion</dt>
-            <dd>{{ workshop.address }}</dd>
-          </div>
-          <div>
-            <dt>Telefono</dt>
-            <dd>{{ workshop.phone }}</dd>
-          </div>
-          <div>
-            <dt>Email</dt>
-            <dd>{{ workshop.email }}</dd>
-          </div>
-          <div>
-            <dt>Horario</dt>
-            <dd>
-              {{ workshop.schedule }}
-              <span class="detail-status-pill" [class.detail-status-pill--open]="isOpenNow(workshop.schedule)">
-                {{ isOpenNow(workshop.schedule) ? '🟢 Abierto ahora' : '🔴 Cerrado' }}
-              </span>
-            </dd>
-          </div>
-        </dl>
-
-        <div class="occupancy-block">
-          <div class="occupancy-copy">
-            <strong>Ocupacion del taller</strong>
-            <span>{{ workshop.activeVehicles }} de {{ workshop.vehicleLimit }} plazas activas</span>
-          </div>
-          <div class="occupancy-meter" aria-hidden="true">
-            <span [style.width.%]="occupancyPercent(workshop)"></span>
-          </div>
-        </div>
-
-        <section class="vehicle-section">
-          <h3>Coches tuyos en reparacion</h3>
-          <button
-            type="button"
-            class="vehicle-row"
-            *ngFor="let vehicle of workshop.vehiclesInRepair"
-            (click)="goToTracking(workshop.sessionUuid)"
-          >
-            <span>
-              <strong>{{ vehicle.name }}</strong>
-              <small>{{ vehicle.plate }}</small>
+        <div class="detail-content">
+          <div class="detail-title">
+            <div>
+              <p class="eyebrow">Taller asignable</p>
+              <h2>{{ workshop.name }}</h2>
+            </div>
+            <span class="availability" [class.availability--full]="isFull(workshop)">
+              {{ occupancyLabel(workshop) }}
             </span>
-            <span class="status-pill">{{ vehicle.status }}</span>
-          </button>
-          <p *ngIf="workshop.vehiclesInRepair.length === 0" class="empty-copy">
-            Aun no tienes vehiculos en reparacion en este taller.
-          </p>
-        </section>
+          </div>
 
-        <app-map
-          [workshops]="workshops()"
-          [selectedWorkshop]="selectedWorkshop()"
-          (workshopSelected)="selectPreview($event)"
-        ></app-map>
+          <div class="mechanic-row">
+            <img [src]="workshop.mechanicAvatar" [alt]="workshop.mechanicName" />
+            <div>
+              <strong>{{ workshop.mechanicName }}</strong>
+              <span>Mecanico responsable</span>
+            </div>
+          </div>
 
-        <div class="actions">
-          <button
-            type="button"
-            class="primary-button"
-            (click)="chooseWorkshop(workshop)"
-            [disabled]="selecting() || isFull(workshop)"
-          >
-            {{ workshop.selectedByClient ? 'Ir al seguimiento' : 'Elegir este taller' }}
-          </button>
-          <span *ngIf="selecting()" class="saving-copy">Creando sesion...</span>
+          <dl class="contact-grid">
+            <div>
+              <dt>Direccion</dt>
+              <dd>{{ workshop.address }}</dd>
+            </div>
+            <div>
+              <dt>Telefono</dt>
+              <dd>{{ workshop.phone }}</dd>
+            </div>
+            <div>
+              <dt>Email</dt>
+              <dd>{{ workshop.email }}</dd>
+            </div>
+            <div>
+              <dt>Horario</dt>
+              <dd>
+                {{ workshop.schedule }}
+                <span class="detail-status-pill" [class.detail-status-pill--open]="isOpenNow(workshop.schedule)">
+                  {{ isOpenNow(workshop.schedule) ? '🟢 Abierto ahora' : '🔴 Cerrado' }}
+                </span>
+              </dd>
+            </div>
+          </dl>
+
+          <div class="occupancy-block">
+            <div class="occupancy-copy">
+              <strong>Ocupacion del taller</strong>
+              <span>{{ workshop.activeVehicles }} de {{ workshop.vehicleLimit }} plazas activas</span>
+            </div>
+            <div class="occupancy-meter" aria-hidden="true">
+              <span [style.width.%]="occupancyPercent(workshop)"></span>
+            </div>
+          </div>
+
+          <section class="vehicle-section">
+            <h3>Coches tuyos en reparacion</h3>
+            <button
+              type="button"
+              class="vehicle-row"
+              *ngFor="let vehicle of workshop.vehiclesInRepair"
+              (click)="goToTracking(workshop.sessionUuid)"
+            >
+              <span>
+                <strong>{{ vehicle.name }}</strong>
+                <small>{{ vehicle.plate }}</small>
+              </span>
+              <span class="status-pill">{{ vehicle.status }}</span>
+            </button>
+            <p *ngIf="workshop.vehiclesInRepair.length === 0" class="empty-copy">
+              Aun no tienes vehiculos en reparacion en este taller.
+            </p>
+          </section>
+
+          <div class="actions">
+            <button
+              type="button"
+              class="primary-button"
+              (click)="chooseWorkshop(workshop)"
+              [disabled]="selecting() || isFull(workshop)"
+            >
+              {{ workshop.selectedByClient ? 'Ir al seguimiento' : 'Elegir este taller' }}
+            </button>
+            <span *ngIf="selecting()" class="saving-copy">Creando sesion...</span>
+          </div>
         </div>
-      </div>
+      </section>
     </section>
+
+    <!-- Panel derecho: Mapa (sticky en desktop) -->
+    <div class="right-panel">
+      <app-map
+        [workshops]="workshops()"
+        [selectedWorkshop]="selectedWorkshop()"
+        (workshopSelected)="selectPreview($event)"
+      ></app-map>
+    </div>
+
   </div>
 
   <ng-template #loadingState>
