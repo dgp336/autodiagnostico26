@@ -32,7 +32,7 @@
               type="button"
               class="toggle-btn"
               [class.toggle-btn--active]="onlyOpen()"
-              (click)="onlyOpen.set(!onlyOpen())"
+              (click)="toggleOnlyOpen()"
             >
               <span class="pulse-indicator" *ngIf="onlyOpen()"></span>
               {{ onlyOpen() ? '🟢 Solo Abiertos' : 'Mostrar todos' }}
