@@ -9,16 +9,16 @@ import { AuthStateService } from '../../../services/auth-state.service';
   standalone: true,
   imports: [RouterLink, RouterLinkActive, FormsModule, CommonModule],
   templateUrl: './header.html',
-  styleUrl: './header.css'
+  styleUrls: ['./header.css']
 })
 export class HeaderComponent implements OnInit {
   readonly authStateService = inject(AuthStateService);
   private readonly router = inject(Router);
 
-  menuOpen     = false;
+  menuOpen = false;
   mobileMenuOpen = false;
-  searchQuery  = '';
-  isDarkTheme  = false;
+  searchQuery = '';
+  isDarkTheme = false;
 
   ngOnInit(): void {
     if (typeof window !== 'undefined') {
