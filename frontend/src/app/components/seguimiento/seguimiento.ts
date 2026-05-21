@@ -119,26 +119,56 @@ export class SeguimientoComponent implements OnInit {
             this.router.navigate(['/usuario/seguimiento']);
           });
         }
-      });
-  }
-  loadChatData(): void {
+        this.hasTracking = true;
+        this.tracking = tracking;
 
-    this.chatApiService
-      .isUserOnline(this.sessionUuid, this.participantId)
-      .subscribe({
-        next: (isOnline) => {
-          this.userOnline = isOnline;
-          this.cdr.detectChanges();
-        }
-      });
+        this.sessionUuid = tracking.sessionUuid ?? '';
+        localStorage.setItem(
+          'trackingSessionUuid',
+          this.sessionUuid
+         );
+        this.cdr.detectChanges();
+        console.log('USER TRACKING', tracking);
+        console.log('USER UUID', this.sessionUuid);
 
-    this.chatApiService
-      .unreadCount(this.sessionUuid)
-      .subscribe({
-        next: (count) => {
-          this.unreadCount = count;
-        }
-      });
-  }
+        this.cdr.detectChanges();
+
+        setTimeout(() => {
+          this.router.navigate(['/usuario/seguimiento/chat']);
+        });
+      },
+
+      error: (err) => {
+        if (err.status !== 404) {
+          console.error(err);
+        }        
+        this.hasTracking = false;
+        this.cdr.detectChanges();
+        setTimeout(() => {
+          this.router.navigate(['/usuario/seguimiento']);
+        });     
+      }
+    });
+}
+loadChatData(): void {
+
+  this.chatApiService
+    .isUserOnline(this.sessionUuid, this.participantId)
+    .subscribe({
+      next: (isOnline) => {
+        this.userOnline = isOnline;
+        this.cdr.detectChanges();
+      }
+    });
+
+  this.chatApiService
+    .unreadCount(this.sessionUuid)
+    .subscribe({
+      next: (count) => {
+        this.unreadCount = count;
+        this.cdr.detectChanges();
+      }
+    });
+}
 
 }
