@@ -6,7 +6,8 @@ public enum IssueStatus {
     BUDGET_ACCEPTED,
     IN_PROGRESS,
     RESOLVED,
-    CANCELLED;
+    CANCELLED,
+    FIXED;
 
     public static IssueStatus from(String value) {
         if (value == null || value.isBlank()) {

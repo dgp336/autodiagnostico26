@@ -4,19 +4,24 @@
     <p>Estado de reparación y comunicación directa.</p>
   </header>
 
-  @if (hasTracking) {
+  <mat-horizontal-stepper [linear]="false" #stepper>
 
-  <nav class="seguimiento-nav" aria-label="Navegación de seguimiento">
-    <a routerLink="chat" routerLinkActive="tab--active" class="tab">
-      Chat
-      @if (!userOnline && unreadCount > 0) {
-      <span class="badge" aria-label="Mensajes pendientes">
-        {{ unreadCount }}
-      </span>
-      }
-    </a>
-  </nav>
-  }
+    <mat-step label="Cita Agendada"
+      [completed]="issueStatus === 'IN WORKSHOP' || issueStatus === 'IN PROGRESS' || issueStatus === 'FIXED'"
+      [editable]="isMechanic">
+      <p>Cita Agendada</p>
+    </mat-step>
+
+    <mat-step label="En Revisión" [completed]="issueStatus === 'IN PROGRESS' || issueStatus === 'FIXED'"
+      [editable]="isMechanic">
+      <p>En Revisión</p>
+    </mat-step>
+
+    <mat-step label="Reparado" [completed]="issueStatus === 'FIXED'" [editable]="false">
+      <p>Reparado</p>
+    </mat-step>
+
+  </mat-horizontal-stepper>
 
   <div class="seguimiento-content">
 

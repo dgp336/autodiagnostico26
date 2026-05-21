@@ -1,6 +1,18 @@
+/* --- Light Theme (existing) --- */
 :host {
   display: block;
+  --bg-light: #ffffff;
+  --bg-dark: #1f2937;
+  --text-light: #111827;
+  --text-dark: #f3f4f6;
+  --badge-bg-light: #dc2626;
+  --badge-bg-dark: #f87171;
+  --badge-text-light: #ffffff;
+  --badge-text-dark: #111827;
+  background-color: var(--bg-light);
+  color: var(--text-light);
 }
+
 
 .seguimiento-shell {
   max-width: 1024px;
@@ -40,6 +52,8 @@
   border-bottom-color: #1a6bbd;
 }
 
+
+
 .badge {
   min-width: 1.4rem;
   height: 1.4rem;
@@ -56,4 +70,77 @@
 
 .seguimiento-content {
   margin-top: 1rem;
+}
+
+/* --- Dark Theme Variant --- */
+:host(.dark) {
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+
+:host(.dark) .seguimiento-head h1 {
+  color: var(--text-dark);
+}
+
+:host(.dark) .seguimiento-head p {
+  color: #9ca3af; /* keep subtle gray */
+}
+
+:host(.dark) .seguimiento-nav {
+  border-bottom: 1px solid #374151;
+}
+
+:host(.dark) .tab {
+  color: #d1d5db;
+}
+
+:host(.dark) .tab--active {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+}
+
+:host(.dark) .mechanic-shell {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+:host(.dark) .badge {
+  background: var(--badge-bg-dark);
+  color: var(--badge-text-dark);
+}
+
+
+/* :host(.dark) .seguimiento-content {
+  /* Optional: add subtle background for content blocks */
+/* background-color: #111827; */
+/* } */
+
+/* Steps Widget */
+.steps {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-around;
+  margin-top: 1rem;
+}
+.step {
+  text-align: center;
+}
+.step .icon {
+  font-size: 1.5rem;
+}
+.step.completed .icon {
+  color: var(--badge-bg-light);
+}
+.step.green .icon {
+  color: #10b981; /* verde */
+}
+.step.yellow .icon {
+  color: #fbbf24; /* amarillo */
+}
+.step.orange .icon {
+  color: #f97316; /* naranja */
+}
+.step.red .icon {
+  color: #ef4444; /* rojo */
 }
