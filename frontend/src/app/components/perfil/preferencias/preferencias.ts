@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { MechanicService, MechanicClient } from '../../../services/mechanic.service';
 import { AuthStateService } from '../../../services/auth-state.service';
 import { RouterLink } from '@angular/router';
@@ -13,6 +13,7 @@ import { RouterLink } from '@angular/router';
 export class PerfilPreferenciasComponent implements OnInit {
   private readonly authStateService = inject(AuthStateService);
   private readonly mechanicService = inject(MechanicService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   tracking: MechanicClient | null = null;
   isLoading = true;
@@ -30,10 +31,12 @@ export class PerfilPreferenciasComponent implements OnInit {
       next: (data) => {
         this.tracking = data;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.isLoading = false;
         this.errorMessage = 'No tienes ningún seguimiento activo en este momento.';
+        this.cdr.detectChanges();
       }
     });
   }

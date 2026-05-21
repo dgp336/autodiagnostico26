@@ -1,9 +1,20 @@
+:host {
+  --bg-light: #ffffff;
+  --bg-dark: #1f2937;
+  --text-light: #111827;
+  --text-dark: #f3f4f6;
+}
 .mechanic-shell {
   min-height: 100vh;
   padding: 24px;
-  background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
-  color: #e5e7eb;
+  background: var(--bg-light);
+  color: var(--text-light);
 }
+:host(.dark) .mechanic-shell {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+
 
 .mechanic-header {
   display: flex;

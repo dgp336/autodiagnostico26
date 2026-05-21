@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthStateService } from '../../services/auth-state.service';
 import { UserApiService } from '../../services/user-api.service';
@@ -14,6 +14,7 @@ export class PerfilComponent {
   private readonly authStateService = inject(AuthStateService);
   private readonly userApiService = inject(UserApiService);
   private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   showDeleteModal = false;
 
@@ -39,9 +40,13 @@ export class PerfilComponent {
     if (userId === null) return;
     this.showDeleteModal = false;
     this.userApiService.deleteAccount(userId).subscribe({
-      next: () => this.onLogout(),
+      next: () => {
+        this.cdr.detectChanges();
+        this.onLogout();
+      },
       error: () => {
         this.showDeleteModal = false;
+        this.cdr.detectChanges();
       }
     });
   }

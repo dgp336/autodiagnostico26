@@ -167,6 +167,11 @@ interface DiagnosticoNavState {
       }
       .boton-aceptar:hover { background: #1f5e24; }
       .boton-aceptar:disabled { opacity: 0.7; cursor: not-allowed; }
+      /* Dark theme overrides for diagnostico component */
+      :host(.dark) .diagnostico-page {
+        color: #ffffff;
+        background: #1f2937;
+      }
     `,
   ],
 })

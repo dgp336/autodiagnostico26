@@ -23,9 +23,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets"
             ],
             "styles": [
+              "src/material-theme.scss",
               "node_modules/leaflet/dist/leaflet.css",
               "src/styles.css"
             ],
