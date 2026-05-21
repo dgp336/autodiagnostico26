@@ -38,8 +38,7 @@
         <ul class="footer-links">
           <li><a routerLink="/diagnostico" class="footer-link">Diagnóstico de vehículos</a></li>
           <li><a routerLink="/taller"      class="footer-link">Buscar taller</a></li>
-          <li><a routerLink="/repuestos"   class="footer-link">Catálogo de repuestos</a></li>
-          <li><a routerLink="/presupuesto" class="footer-link">Solicitar presupuesto</a></li>
+
           @if (authStateService.canAccessSeguimiento()) {
             <li><a routerLink="/usuario/seguimiento" class="footer-link">Seguimiento en tiempo real</a></li>
           }
@@ -68,9 +67,7 @@
         <ul class="footer-links">
           <li><a routerLink="/contacto"      class="footer-link">Contacto</a></li>
           <li><a routerLink="/sobre-nosotros" class="footer-link">Sobre nosotros</a></li>
-          <li><a routerLink="/privacidad"    class="footer-link">Política de privacidad</a></li>
-          <li><a routerLink="/terminos"      class="footer-link">Términos de uso</a></li>
-          <li><a routerLink="/faq"           class="footer-link">Preguntas frecuentes</a></li>
+
           <li>
             <a routerLink="/registro-taller" class="footer-link footer-link--highlight">
               ¿Eres un taller? Trabaja con nosotros
@@ -89,9 +86,7 @@
   <div class="footer-bottom">
     <div class="footer-bottom-inner">
       <p class="footer-copy">
-        © 2026 AutoDiagnóstico · Universidad de Almería ·
-        <a routerLink="/privacidad" class="footer-copy-link">Privacidad</a> ·
-        <a routerLink="/terminos"   class="footer-copy-link">Términos</a>
+        © 2026 AutoDiagnóstico · Universidad de Almería
       </p>
       <p class="footer-made">
         Hecho con ❤️ por estudiantes de

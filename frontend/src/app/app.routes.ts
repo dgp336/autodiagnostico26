@@ -2,10 +2,8 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home';
 import { DiagnosticoComponent } from './components/diagnostico/diagnostico';
 import { TallerComponent } from './components/taller/taller';
-import { RepuestosComponent } from './components/repuestos/repuestos';
 import { SeguimientoComponent } from './components/seguimiento/seguimiento';
 import { SeguimientoChatComponent } from './components/seguimiento/chat/chat';
-import { PresupuestoComponent } from './components/presupuesto/presupuesto';
 import { HistorialComponent } from './components/historial/historial';
 import { ContactoComponent } from './components/contacto/contacto';
 import { PerfilComponent } from './components/perfil/perfil';
@@ -14,9 +12,6 @@ import { LoginComponent } from './components/login/login';
 import { seguimientoGuard } from './auth/seguimiento.guard';
 import { SobreNosotros } from './components/sobre-nosotros/sobre-nosotros';
 import { authGuard } from './auth/auth.guard';
-import { Privacidad } from './components/privacidad/privacidad';
-import { Terminos } from './components/terminos/terminos';
-import { Faq } from './components/faq/faq';
 import { RegistroTallerComponent } from './components/registro-taller/registro-taller';
 
 export const routes: Routes = [
@@ -24,7 +19,6 @@ export const routes: Routes = [
 	{ path: 'home', component: HomeComponent },
 	{ path: 'diagnostico', component: DiagnosticoComponent },
 	{ path: 'taller', component: TallerComponent },
-	{ path: 'repuestos', component: RepuestosComponent },
 	{ path: 'mecanico', loadComponent: () => import('./mecanico/mecanico.component').then((m) => m.MecanicoComponent) },
 	{
 		path: 'usuario/seguimiento',
@@ -34,7 +28,7 @@ export const routes: Routes = [
 			{ path: 'chat', component: SeguimientoChatComponent }
 		]
 	},
-	{ path: 'presupuesto', component: PresupuestoComponent },
+
 	{ path: 'mecanico/seguimiento', loadComponent: () => import('./mecanico/seguimiento/seguimiento.component').then((m) => m.SeguimientoComponent), canActivate: [seguimientoGuard], children: [
 		{ path: '', pathMatch: 'full', redirectTo: 'chat' },
 		{ path: 'chat', loadComponent: () => import('./components/seguimiento/chat/chat').then((m) => m.SeguimientoChatComponent) }
@@ -52,9 +46,6 @@ export const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
 	{ path: 'registro', component: LoginComponent },
 	{ path: 'sobre-nosotros', component: SobreNosotros },
-	{ path: 'privacidad', component: Privacidad },
-	{ path: 'terminos', component: Terminos },
-	{ path: 'faq', component: Faq },
 	{ path: 'registro-taller', component: RegistroTallerComponent },
 
 	{ path: '**', redirectTo: 'login' }
