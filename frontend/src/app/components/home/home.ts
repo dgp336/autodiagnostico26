@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -20,6 +20,7 @@ export class HomeComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly auth = inject(AuthStateService);
   private readonly personalVehicleApi = inject(PersonalVehicleApiService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   vehicleContext: VehicleSearchContext | null = null;
   seleccion: ProblemaSeleccion = { problemas: [], descripcionLibre: '' };
@@ -55,6 +56,7 @@ export class HomeComponent {
         this.personalVehicles = vehicles;
         if (preselectId && vehicles.some(v => v.id === preselectId)) {
           this.applyPersonalVehicle(preselectId);
+          this.cdr.detectChanges();
           return;
         }
 
@@ -62,15 +64,19 @@ export class HomeComponent {
         const storedId = storedIdRaw ? Number(storedIdRaw) : null;
         if (storedId && vehicles.some(v => v.id === storedId)) {
           this.applyPersonalVehicle(storedId);
+          this.cdr.detectChanges();
           return;
         }
 
         if (vehicles.length === 1) {
           this.applyPersonalVehicle(vehicles[0].id);
         }
+
+        this.cdr.detectChanges();
       },
       error: () => {
         // silencioso: el usuario puede seguir introduciendo a mano
+        this.cdr.detectChanges();
       },
     });
   }
@@ -139,11 +145,13 @@ export class HomeComponent {
         this.selectedPersonalVehicleId = created.id;
         localStorage.setItem('selectedPersonalVehicleId', String(created.id));
         this.creatingVehicle = false;
+        this.cdr.detectChanges();
         this.navigateToDiagnostico(clientId, created.id);
       },
       error: () => {
         this.creatingVehicle = false;
         this.submitError = 'No se pudo guardar tu coche automáticamente. Revísalo en Mis Vehículos e inténtalo de nuevo.';
+        this.cdr.detectChanges();
       },
     });
   }
@@ -179,5 +187,6 @@ export class HomeComponent {
       transmission: vehicle.transmission,
       year: vehicle.year,
     };
+    this.cdr.detectChanges();
   }
 }
