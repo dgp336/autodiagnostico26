@@ -62,6 +62,8 @@ export class TallerComponent implements OnInit {
   });
 
   readonly selectedWorkshop = signal<Workshop | null>(null);
+  /** Controla la visibilidad del popup de "sin vehículo seleccionado". */
+  readonly vehicleAlert = signal(false);
   readonly loading = signal(true);
   readonly selecting = signal(false);
   readonly error = signal('');
@@ -113,7 +115,8 @@ export class TallerComponent implements OnInit {
 
     const personalVehicleId = this.getSelectedPersonalVehicleId();
     if (!personalVehicleId) {
-      this.error.set('Selecciona un vehiculo antes de elegir un taller.');
+      this.vehicleAlert.set(true);
+      setTimeout(() => this.vehicleAlert.set(false), 4000);
       return;
     }
 
