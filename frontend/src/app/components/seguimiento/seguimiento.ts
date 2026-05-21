@@ -15,7 +15,7 @@ import { MatStepper } from '@angular/material/stepper';
   standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive, MatStepperModule, MatButtonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './seguimiento.html',
-  styleUrl: './seguimiento.css'
+  styleUrls: ['./seguimiento.css']
 })
 
 export class SeguimientoComponent implements OnInit {
@@ -78,97 +78,57 @@ export class SeguimientoComponent implements OnInit {
     }
   }
   loadTracking(): void {
-
-    this.mechanicService
-      .getTrackingForClient(this.participantId)
-      .subscribe({
-
-        next: (tracking) => {
-          if (!tracking) {
-
-            this.hasTracking = false;
-            this.cdr.detectChanges();
-            return;
-          }
-          this.hasTracking = true;
-          this.tracking = tracking;
-
-          this.sessionUuid = tracking.sessionUuid ?? '';
-          localStorage.setItem(
-            'trackingSessionUuid',
-            this.sessionUuid
-          );
-          this.cdr.detectChanges();
-          console.log('USER TRACKING', tracking);
-          console.log('USER UUID', this.sessionUuid);
-
-          this.cdr.detectChanges();
-
-          setTimeout(() => {
-            this.router.navigate(['/usuario/seguimiento/chat']);
-          });
-        },
-
-        error: (err) => {
-          if (err.status !== 404) {
-            console.error(err);
-          }
+    this.mechanicService.getTrackingForClient(this.participantId).subscribe({
+      next: (tracking) => {
+        if (!tracking) {
           this.hasTracking = false;
           this.cdr.detectChanges();
-          setTimeout(() => {
-            this.router.navigate(['/usuario/seguimiento']);
-          });
+          return;
         }
+
         this.hasTracking = true;
         this.tracking = tracking;
 
         this.sessionUuid = tracking.sessionUuid ?? '';
-        localStorage.setItem(
-          'trackingSessionUuid',
-          this.sessionUuid
-         );
-        this.cdr.detectChanges();
-        console.log('USER TRACKING', tracking);
-        console.log('USER UUID', this.sessionUuid);
+        localStorage.setItem('trackingSessionUuid', this.sessionUuid);
 
         this.cdr.detectChanges();
+
+        console.log('USER TRACKING', tracking);
+        console.log('USER UUID', this.sessionUuid);
 
         setTimeout(() => {
           this.router.navigate(['/usuario/seguimiento/chat']);
         });
       },
-
       error: (err) => {
         if (err.status !== 404) {
           console.error(err);
-        }        
+        }
+
         this.hasTracking = false;
         this.cdr.detectChanges();
+
         setTimeout(() => {
           this.router.navigate(['/usuario/seguimiento']);
-        });     
+        });
       }
     });
-}
-loadChatData(): void {
+  }
 
-  this.chatApiService
-    .isUserOnline(this.sessionUuid, this.participantId)
-    .subscribe({
+  loadChatData(): void {
+    this.chatApiService.isUserOnline(this.sessionUuid, this.participantId).subscribe({
       next: (isOnline) => {
         this.userOnline = isOnline;
         this.cdr.detectChanges();
       }
     });
 
-  this.chatApiService
-    .unreadCount(this.sessionUuid)
-    .subscribe({
+    this.chatApiService.unreadCount(this.sessionUuid).subscribe({
       next: (count) => {
         this.unreadCount = count;
         this.cdr.detectChanges();
       }
     });
-}
-
+  }
 }
