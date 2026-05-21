@@ -95,7 +95,7 @@
           <span class="workshop-item__meta">
             <span class="meta-stats">{{ workshop.mechanicName }} · {{ workshop.activeVehicles }}/{{ workshop.vehicleLimit }} vehiculos</span>
             <span class="meta-distance" *ngIf="getDistanceLabel(workshop) as dist">
-              📍 A {{ dist }}
+              <img src="Pin-location.png" alt="Ubicación" class="pin-icon" /> A {{ dist }}
             </span>
           </span>
         </span>
@@ -213,4 +213,11 @@
   <ng-template #loadingState>
     <div class="loading-state">Cargando talleres...</div>
   </ng-template>
+  <!-- Toast: sin vehículo seleccionado -->
+  <div class="vehicle-alert-toast" [class.vehicle-alert-toast--visible]="vehicleAlert()">
+    <span class="vehicle-alert-toast__icon">⚠️</span>
+    <span>Selecciona un vehículo antes de elegir un taller.</span>
+    <button type="button" class="vehicle-alert-toast__close" (click)="vehicleAlert.set(false)">&#x2715;</button>
+  </div>
+
 </section>
