@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthStateService } from '../../services/auth-state.service';
@@ -17,6 +17,7 @@ export class MisVehiculosComponent implements OnInit {
   private readonly auth = inject(AuthStateService);
   private readonly api = inject(PersonalVehicleApiService);
   private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @ViewChild(IntroducirVehiculo) introducirVehiculo?: IntroducirVehiculo;
 
@@ -58,10 +59,12 @@ export class MisVehiculosComponent implements OnInit {
         this.vehicles = [created, ...this.vehicles];
         this.introducirVehiculo?.notifySaved();
         this.showAddForm = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMessage = 'No se pudo guardar el vehículo';
         this.introducirVehiculo?.notifySaveFailed();
+        this.cdr.detectChanges();
       },
     });
   }
@@ -78,9 +81,11 @@ export class MisVehiculosComponent implements OnInit {
     this.api.delete(vehicle.id, ownerId).subscribe({
       next: () => {
         this.vehicles = this.vehicles.filter(v => v.id !== vehicle.id);
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMessage = 'No se pudo eliminar el vehículo';
+        this.cdr.detectChanges();
       },
     });
   }
@@ -100,10 +105,12 @@ export class MisVehiculosComponent implements OnInit {
       next: (list: PersonalVehicleResponse[]) => {
         this.vehicles = list;
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.errorMessage = 'No se pudieron cargar tus vehículos';
         this.loading = false;
+        this.cdr.detectChanges();
       },
     });
   }

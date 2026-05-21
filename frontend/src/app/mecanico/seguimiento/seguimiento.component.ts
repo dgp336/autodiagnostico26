@@ -128,6 +128,7 @@ export class SeguimientoComponent {
         console.log('SESSION UUID', tracking.sessionUuid);
 
         this.loading = false;
+        this.cdr.detectChanges();
       },
 
       error: (err: any) => {
@@ -135,6 +136,7 @@ export class SeguimientoComponent {
         console.error(err);
 
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
 }

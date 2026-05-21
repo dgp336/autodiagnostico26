@@ -107,6 +107,7 @@ loadChatData(): void {
     .subscribe({
       next: (count) => {
         this.unreadCount = count;
+        this.cdr.detectChanges();
       }
     });
 }
