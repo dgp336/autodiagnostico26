@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { MechanicService, MechanicClient } from '../../../services/mechanic.service';
 import { AuthStateService } from '../../../services/auth-state.service';
 
@@ -11,6 +11,7 @@ import { AuthStateService } from '../../../services/auth-state.service';
 export class PerfilVehiculoComponent implements OnInit {
   private readonly authStateService = inject(AuthStateService);
   private readonly mechanicService = inject(MechanicService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   tracking: MechanicClient | null = null;
   isLoading = true;
@@ -28,10 +29,12 @@ export class PerfilVehiculoComponent implements OnInit {
       next: (data) => {
         this.tracking = data;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.isLoading = false;
         this.errorMessage = 'No tienes ningún vehículo asignado a un taller todavía.';
+        this.cdr.detectChanges();
       }
     });
   }

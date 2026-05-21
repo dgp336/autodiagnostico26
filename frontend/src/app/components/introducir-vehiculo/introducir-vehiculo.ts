@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, OnChanges, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom, Subject, takeUntil } from 'rxjs';
@@ -93,7 +93,10 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private vehicleApi: VehicleApiService) {}
+  constructor(
+    private vehicleApi: VehicleApiService,
+    private readonly cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.loadBrands();
@@ -150,8 +153,15 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
     if (brand) {
       this.loadingModels = true;
       this.vehicleApi.getModels(brand).pipe(takeUntil(this.destroy$)).subscribe({
-        next: (models: VehicleModelSummary[]) => { this.models = models; this.loadingModels = false; },
-        error: () => { this.loadingModels = false; },
+        next: (models: VehicleModelSummary[]) => {
+          this.models = models;
+          this.loadingModels = false;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.loadingModels = false;
+          this.cdr.detectChanges();
+        },
       });
     }
     this.emitContext();
@@ -164,8 +174,15 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
     if (modelId) {
       this.loadingVariants = true;
       this.vehicleApi.getVariants(modelId).pipe(takeUntil(this.destroy$)).subscribe({
-        next: (variants: VehicleVariant[]) => { this.variants = variants; this.loadingVariants = false; },
-        error: () => { this.loadingVariants = false; },
+        next: (variants: VehicleVariant[]) => {
+          this.variants = variants;
+          this.loadingVariants = false;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.loadingVariants = false;
+          this.cdr.detectChanges();
+        },
       });
     }
     this.emitContext();
@@ -205,10 +222,12 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
   notifySaved(): void {
     this.saving = false;
     this.resetForm();
+    this.cdr.detectChanges();
   }
 
   notifySaveFailed(): void {
     this.saving = false;
+    this.cdr.detectChanges();
   }
 
   private loadBrands(): void {
@@ -220,10 +239,12 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
         .subscribe({
           next: (brands: string[]) => {
             this.brands = brands;
-            setTimeout(() => { this.loadingBrands = false; });
+            this.loadingBrands = false;
+              this.cdr.detectChanges();
           },
           error: () => {
-            setTimeout(() => { this.loadingBrands = false; });
+            this.loadingBrands = false;
+              this.cdr.detectChanges();
           },
         });
     });
@@ -253,6 +274,7 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
       // silencioso: el usuario puede continuar manualmente
     }
     this.emitContext();
+    this.cdr.detectChanges();
   }
 
   private emitContext(): void {
