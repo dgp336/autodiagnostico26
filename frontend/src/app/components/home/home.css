@@ -44,3 +44,14 @@
   font-size: 0.95rem;
   cursor: pointer;
 }
+
+.home-variant-warning {
+  margin: -2px 0 0;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  background: #fffbeb;
+  color: #92400e;
+  border: 1px solid #f59e0b;
+  font-size: 0.86rem;
+  line-height: 1.25;
+}

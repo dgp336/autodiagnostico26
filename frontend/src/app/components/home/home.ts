@@ -177,7 +177,7 @@ export class HomeComponent {
     if (!vehicle) return;
     this.selectedPersonalVehicleId = id;
     localStorage.setItem('selectedPersonalVehicleId', String(id));
-    this.prefillContext = {
+    const selectedContext: VehicleSearchContext = {
       brand: vehicle.brand,
       modelId: null,
       modelName: vehicle.vehicleName,
@@ -187,6 +187,9 @@ export class HomeComponent {
       transmission: vehicle.transmission,
       year: vehicle.year,
     };
+
+    this.prefillContext = selectedContext;
+    this.vehicleContext = selectedContext;
     this.cdr.detectChanges();
   }
 }
