@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Workshop } from '../../services/api.models';
 import { AuthStateService } from '../../services/auth-state.service';
@@ -67,6 +67,16 @@ export class TallerComponent implements OnInit {
   readonly error = signal('');
   readonly userId = computed(() => this.authState.userId());
 
+  constructor() {
+    effect(() => {
+      const list = this.workshops();
+      const selected = this.selectedWorkshop();
+      if (selected && !list.some(w => w.id === selected.id)) {
+        this.selectedWorkshop.set(null);
+      }
+    });
+  }
+
   private getSelectedPersonalVehicleId(): number | null {
     const stored = localStorage.getItem('selectedPersonalVehicleId');
     if (!stored) {
@@ -88,9 +98,7 @@ export class TallerComponent implements OnInit {
     this.workshopService.listWorkshops(this.userId()).subscribe({
       next: (workshops) => {
         this._workshops.set(workshops);
-        // Preseleccionar respetando el orden por proximidad
-        const sorted = this.workshops();
-        this.selectedWorkshop.set(sorted.find((w) => w.selectedByClient) ?? sorted[0] ?? null);
+        this.selectedWorkshop.set(null);
         this.loading.set(false);
       },
       error: () => {
@@ -182,6 +190,11 @@ export class TallerComponent implements OnInit {
     this.onlyOpen.set(false);
     this.occupancyFilter.set('ALL');
     this.maxDistance.set(Infinity);
+    this.selectedWorkshop.set(null);
+  }
+
+  toggleOnlyOpen(): void {
+    this.onlyOpen.update(v => !v);
   }
 
   getDistanceLabel(workshop: Workshop): string | null {
