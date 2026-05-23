@@ -50,6 +50,6 @@ export const routes: Routes = [
 	{ path: 'admin', component: AdminComponent, canActivate: [adminGuard] },
 	{ path: 'sobre-nosotros', component: SobreNosotros },
 	{ path: 'registro-taller', component: RegistroTallerComponent },
-
+	{ path: 'privacidad', loadComponent: () => import('./components/privacidad/privacidad').then((m) => m.Privacidad) },
 	{ path: '**', redirectTo: 'login' }
 ];
