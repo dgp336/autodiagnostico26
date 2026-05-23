@@ -196,6 +196,8 @@ Con este flujo, el sistema queda asi:
 - el chat persiste aunque se reinicie el frontend
 - existen datos demo para probar el recorrido sin Gemini
 
+Para detalles sobre el nuevo flujo de registro/solicitudes de talleres y las relaciones en la base de datos, ver: [WorkshopApplication — Solicitudes de registro de talleres](workshop-application.md)
+
 ## Orden de Dependencias
 
 El orden correcto de arranque de datos es:
