@@ -22,8 +22,8 @@ export class LoginComponent implements OnInit {
 
   mode: 'login' | 'register' = 'login';
   fullName = '';
-  email = 'admin@autodiagnostico.local';
-  password = 'admin123!';
+  email = '';
+  password = '';
   confirmPassword = '';
   selectedRole: AuthUserRole = 'USER';
   keepSession = true;
