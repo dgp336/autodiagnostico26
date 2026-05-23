@@ -25,6 +25,37 @@ export interface AuthUserResponse {
   postalCode?: string;
 }
 
+export interface WorkshopApplicationRequest {
+  fullName: string;
+  email: string;
+  password: string;
+  workshopName: string;
+  address: string;
+  phone: string;
+  schedule: string;
+  photoUrl: string;
+  vehicleLimit: number;
+}
+
+export type WorkshopApplicationStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+
+export interface WorkshopApplicationResponse {
+  id: number;
+  fullName: string;
+  email: string;
+  workshopName: string;
+  address: string;
+  phone: string;
+  schedule: string;
+  photoUrl: string;
+  vehicleLimit: number;
+  status: WorkshopApplicationStatus;
+  approvedWorkshopId: number | null;
+  approvedMechanicId: number | null;
+  createdAt: string;
+  reviewedAt: string | null;
+}
+
 export interface ChatJoinResponse {
   roomType: ChatRoomType;
   participantId: number;

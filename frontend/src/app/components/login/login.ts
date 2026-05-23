@@ -22,8 +22,8 @@ export class LoginComponent implements OnInit {
 
   mode: 'login' | 'register' = 'login';
   fullName = '';
-  email = 'admin'; // TODO: TEMPORAL - Quitar cuando se conecte al backend
-  password = 'admin'; // TODO: TEMPORAL - Quitar cuando se conecte al backend
+  email = 'admin@autodiagnostico.local';
+  password = 'admin123!';
   confirmPassword = '';
   selectedRole: AuthUserRole = 'USER';
   keepSession = true;
@@ -189,9 +189,13 @@ private completeSession(user: AuthUserResponse): void {
 
     this.isSubmitting = false;
     this.cdr.detectChanges();
-    // Si es Taller o Admin, lo enviamos a su dashboard de mecánico
-    if (user.role === 'TALLER' || user.role === 'ADMIN') {
+    if (user.role === 'TALLER') {
       void this.router.navigate(['/mecanico']);
+      return;
+    }
+
+    if (user.role === 'ADMIN') {
+      void this.router.navigate(['/admin']);
       return;
     }
 

@@ -28,6 +28,10 @@ export class WorkshopService {
     });
   }
 
+  deleteWorkshop(workshopId: number): Observable<void> {
+    return this.http.delete<void>(`${API_BASE_URL}/workshop-applications/workshops/${workshopId}`);
+  }
+
   getNearbyWorkshops(
     lat: number,
     lng: number
