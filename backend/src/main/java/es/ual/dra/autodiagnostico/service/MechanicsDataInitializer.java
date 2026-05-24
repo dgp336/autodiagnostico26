@@ -57,6 +57,13 @@ public class MechanicsDataInitializer implements CommandLineRunner {
     }
 
     private void initializeMechanicsAndClients() {
+        upsertUser(
+                "admin@autodiagnostico.local",
+                "admin",
+                UserRole.ADMIN,
+                "admin123!",
+                "https://api.dicebear.com/9.x/initials/svg?seed=ADMIN&backgroundColor=1a6bbd");
+
         // Ensure mechanics exist (idempotent by email).
         List<AppUser> mechanics = new ArrayList<>();
         for (int i = 1; i <= 4; i++) {

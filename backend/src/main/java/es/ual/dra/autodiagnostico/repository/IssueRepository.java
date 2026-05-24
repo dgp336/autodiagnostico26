@@ -34,5 +34,7 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
 
     Optional<Issue> findByWorkshopMechanicIdAndPersonalVehicleOwnerIdAndActiveTrue(Long mechanicId, Long ownerId);
 
+    long countByWorkshopId(Long workshopId);
+
     long countByWorkshopMechanicIdAndActiveTrue(Long mechanicId);
 }

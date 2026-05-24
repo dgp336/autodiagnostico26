@@ -42,6 +42,12 @@
         <!-- ── FORMULARIO ── -->
         <form class="rt-form card" (ngSubmit)="onSubmit()" #tallerForm="ngForm" novalidate>
 
+          @if (submitError) {
+            <div class="rt-error-box" role="alert">
+              {{ submitError }}
+            </div>
+          }
+
           <div class="rt-form-header">
             <h2 class="rt-form-title">Solicitud de registro</h2>
             <p class="rt-form-sub">Rellena los datos de tu taller. Nos pondremos en contacto contigo en menos de 48 horas.</p>
@@ -60,14 +66,15 @@
               <input
                 id="name"
                 type="text"
-               
-                placeholder="Ej: Taller García Automoción"
                 [(ngModel)]="formData.name"
                 name="name"
                 required
                 maxlength="160"
                 autocomplete="organization"
+                (input)="onWorkshopNameInput()"
+                placeholder="Taller García Automoción"
               />
+              <small class="rt-help">Escribe el nombre como aparecerá públicamente. Se ajustará la capitalización automáticamente.</small>
             </div>
 
             <!-- address -->
@@ -76,14 +83,15 @@
               <input
                 id="address"
                 type="text"
-               
                 placeholder="Calle, número, municipio y provincia"
                 [(ngModel)]="formData.address"
                 name="address"
                 required
                 maxlength="240"
                 autocomplete="street-address"
+                (input)="onAddressInput()"
               />
+              <small class="rt-help">Incluye calle, número, municipio y provincia. El sistema limpia espacios duplicados.</small>
             </div>
 
             <div class="rt-grid-2">
@@ -93,14 +101,16 @@
                 <input
                   id="phone"
                   type="tel"
-                 
                   placeholder="Ej: 600 123 456"
                   [(ngModel)]="formData.phone"
                   name="phone"
                   required
                   maxlength="40"
                   autocomplete="tel"
+                  inputmode="tel"
+                  (input)="onPhoneInput()"
                 />
+                <small class="rt-help">Se normaliza a formato español con prefijo +34 y grupos separados: +34 600 123 456.</small>
               </div>
 
               <!-- email -->
@@ -109,14 +119,15 @@
                 <input
                   id="email"
                   type="email"
-                 
                   placeholder="taller@ejemplo.com"
                   [(ngModel)]="formData.email"
                   name="email"
                   required
                   maxlength="180"
                   autocomplete="email"
+                  (input)="onEmailInput()"
                 />
+                <small class="rt-help">Se guardará en minúsculas y sin espacios sobrantes.</small>
               </div>
             </div>
 
@@ -126,13 +137,14 @@
               <input
                 id="schedule"
                 type="text"
-               
                 placeholder="Ej: Lun–Vie 08:00–18:00, Sáb 09:00–14:00"
                 [(ngModel)]="formData.schedule"
                 name="schedule"
                 required
                 maxlength="160"
+                (input)="onScheduleInput()"
               />
+              <small class="rt-help">Ejemplo: Lun - Vie 08:00 - 18:00, Sáb 09:00 - 14:00.</small>
             </div>
 
             <div class="rt-grid-2">
@@ -144,7 +156,6 @@
                 <input
                   id="vehicleLimit"
                   type="number"
-                 
                   placeholder="Ej: 5"
                   [(ngModel)]="formData.vehicleLimit"
                   name="vehicleLimit"
@@ -160,7 +171,6 @@
                 <input
                   id="photoUrl"
                   type="url"
-                 
                   placeholder="https://mi-taller.es/logo.png"
                   [(ngModel)]="formData.photoUrl"
                   name="photoUrl"
@@ -184,14 +194,15 @@
               <input
                 id="fullName"
                 type="text"
-               
                 placeholder="Nombre y apellidos"
                 [(ngModel)]="formData.fullName"
                 name="fullName"
                 required
                 maxlength="150"
                 autocomplete="name"
+                (input)="onNameInput()"
               />
+              <small class="rt-help">Usa el nombre del responsable. Se corrige a formato de nombre propio.</small>
             </div>
 
             <div class="rt-grid-2">
@@ -201,7 +212,6 @@
                 <input
                   id="password"
                   type="password"
-                 
                   placeholder="Mínimo 8 caracteres"
                   [(ngModel)]="formData.password"
                   name="password"
@@ -217,7 +227,6 @@
                 <input
                   id="confirmPassword"
                   type="password"
-                 
                   [class.rt-input--error]="passwordMismatch()"
                   placeholder="Repite la contraseña"
                   [(ngModel)]="formData.confirmPassword"

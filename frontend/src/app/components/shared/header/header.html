@@ -64,14 +64,21 @@
 
         @if (menuOpen) {
         <div class="dropdown" role="menu">
-          <a routerLink="/perfil" class="dropdown-item" role="menuitem">Mi perfil</a>
-          <a routerLink="/mis-vehiculos" class="dropdown-item" role="menuitem">Mis vehículos</a>
-          @if (authStateService.canAccessSeguimiento()) {
-          <a routerLink="/usuario/seguimiento" class="dropdown-item" role="menuitem">Seguimiento</a>
+          @if (authStateService.role() === 'ADMIN') {
+            <a routerLink="/admin" class="dropdown-item" role="menuitem">Administración</a>
+            <hr class="dropdown-divider" />
+            <button class="dropdown-item dropdown-item--danger" (click)="onLogout()" role="menuitem">Cerrar sesión</button>
           }
-          <hr class="dropdown-divider" />
-          <button class="dropdown-item dropdown-item--danger" (click)="onLogout()" role="menuitem">Cerrar
-            sesión</button>
+          @if (authStateService.role() !== 'ADMIN') {
+            <a routerLink="/perfil" class="dropdown-item" role="menuitem">Mi perfil</a>
+            <a routerLink="/mis-vehiculos" class="dropdown-item" role="menuitem">Mis vehículos</a>
+            @if (authStateService.canAccessSeguimiento()) {
+            <a routerLink="/usuario/seguimiento" class="dropdown-item" role="menuitem">Seguimiento</a>
+            }
+            <hr class="dropdown-divider" />
+            <button class="dropdown-item dropdown-item--danger" (click)="onLogout()" role="menuitem">Cerrar
+              sesión</button>
+          }
         </div>
         }
         }
@@ -100,7 +107,17 @@
         Seguimiento
       </a>
       }
-      @if (authStateService.role() !== 'TALLER') {
+      @if (authStateService.role() === 'ADMIN') {
+      <a routerLink="/admin" routerLinkActive="nav-item--active" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          aria-hidden="true">
+          <path d="M3 3h18v6H3z" />
+          <path d="M3 11h18v10H3z" />
+        </svg>
+        Administración
+      </a>
+      }
+      @if (authStateService.role() === 'USER') {
       <a routerLink="/home" routerLinkActive="nav-item--active" class="nav-item">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           aria-hidden="true">
@@ -157,7 +174,10 @@
         <a routerLink="/mecanico" class="mobile-nav-link" (click)="toggleMobileMenu()">Lista de clientes</a>
         <a routerLink="/mecanico/seguimiento" class="mobile-nav-link" (click)="toggleMobileMenu()">Seguimiento</a>
       }
-      @if (authStateService.role() !== 'TALLER') {
+      @if (authStateService.role() === 'ADMIN') {
+        <a routerLink="/admin" class="mobile-nav-link" (click)="toggleMobileMenu()">Administración</a>
+      }
+      @if (authStateService.role() === 'USER') {
         <a routerLink="/home" class="mobile-nav-link" (click)="toggleMobileMenu()">Inicio</a>
         <a routerLink="/diagnostico" class="mobile-nav-link" (click)="toggleMobileMenu()">Diagnóstico</a>
         <a routerLink="/taller" class="mobile-nav-link" (click)="toggleMobileMenu()">Taller</a>

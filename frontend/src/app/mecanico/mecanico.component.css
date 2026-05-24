@@ -10,7 +10,7 @@
   background: var(--bg-light);
   color: var(--text-light);
 }
-:host(.dark) .mechanic-shell {
+:host-context(body.dark) .mechanic-shell {
   background: var(--bg-dark);
   color: var(--text-dark);
 }
@@ -25,6 +25,7 @@
   border-radius: 20px;
   background: rgba(15, 23, 42, 0.9);
   border: 1px solid rgba(148, 163, 184, 0.18);
+  color: var(--text-dark);
 }
 
 .eyebrow {
@@ -38,6 +39,7 @@
 .mechanic-header h1 {
   margin: 0;
   font-size: 28px;
+  color: inherit;
 }
 
 .workshop {
@@ -83,6 +85,7 @@
 .client-topline h2 {
   margin: 0;
   font-size: 18px;
+  color: #f8fafc;
 }
 
 .status-pill {
@@ -97,6 +100,17 @@
 .client-details p {
   margin: 10px 0 0;
   color: #cbd5e1;
+}
+
+.client-details strong {
+  color: #f8fafc;
+}
+
+.recommended-parts,
+.recommended-parts strong,
+.recommended-parts ul,
+.recommended-parts li {
+  color: #e2e8f0;
 }
 
 .client-action {
@@ -135,4 +149,18 @@
 
 .rojo .status-pill {
   color: #fca5a5;
+}
+
+@media (max-width: 768px) {
+  .mechanic-shell {
+    padding: 16px;
+  }
+
+  .mechanic-header {
+    padding: 16px 18px;
+  }
+
+  .client-card {
+    padding: 16px;
+  }
 }
