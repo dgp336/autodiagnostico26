@@ -31,7 +31,10 @@ public class GeneralPartsInitializer implements ApplicationRunner {
                 return;
             }
 
-            InputStream is = getClass().getClassLoader().getResourceAsStream("general-car-parts.json");
+            InputStream is = getClass().getClassLoader().getResourceAsStream("static/general-car-parts.json");
+            if (is == null) {
+                is = getClass().getClassLoader().getResourceAsStream("general-car-parts.json");
+            }
             if (is == null) {
                 log.warn("general-car-parts.json not found on classpath");
                 return;
