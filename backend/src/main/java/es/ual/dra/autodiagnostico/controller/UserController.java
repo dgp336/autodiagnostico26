@@ -66,4 +66,12 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @PutMapping("/{id}/role")
+    public ResponseEntity<AuthUserResponseDTO> upgradeRole(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        String newRole = body.get("role");
+        return ResponseEntity.ok(userService.upgradeRole(id, newRole));
+    }
 }

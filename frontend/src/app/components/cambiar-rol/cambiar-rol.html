@@ -1,0 +1,70 @@
+<section class="cr-page">
+  <div class="cr-container card">
+    @if (!success()) {
+      <div class="cr-header">
+        <span class="cr-badge">Mejora tu cuenta</span>
+        <h1 class="cr-title">Conviértete en Mecánico Asociado</h1>
+        <p class="cr-sub">
+          Únete a la red de profesionales de AutoDiagnóstico. Cambia tu tipo de cuenta para poder registrar tu propio taller y empezar a recibir clientes.
+        </p>
+      </div>
+
+      <div class="cr-benefits">
+        <div class="cr-benefit">
+          <div class="cr-icon">✅</div>
+          <div class="cr-text">
+            <strong>Atrae nuevos clientes</strong>
+            <span>Los usuarios podrán encontrar tu taller en nuestra plataforma.</span>
+          </div>
+        </div>
+        <div class="cr-benefit">
+          <div class="cr-icon">✅</div>
+          <div class="cr-text">
+            <strong>Gestiona reparaciones</strong>
+            <span>Actualiza el estado de los vehículos en tiempo real de forma sencilla.</span>
+          </div>
+        </div>
+        <div class="cr-benefit">
+          <div class="cr-icon">✅</div>
+          <div class="cr-text">
+            <strong>Herramientas avanzadas</strong>
+            <span>Acceso al panel exclusivo para talleres asociados.</span>
+          </div>
+        </div>
+      </div>
+
+      @if (error()) {
+        <p class="cr-error">{{ error() }}</p>
+      }
+
+      <div class="cr-actions">
+        @if (isAlreadyMechanic) {
+          <p class="cr-already">Ya eres un mecánico en nuestra plataforma.</p>
+          <button class="btn btn-primary" (click)="upgradeToMechanic()" disabled>Cuenta mejorada</button>
+        } @else {
+          <button class="btn btn-primary cr-submit-btn" (click)="upgradeToMechanic()" [disabled]="isUpgrading()">
+            @if (isUpgrading()) {
+              <span class="cr-spinner" aria-hidden="true"></span>
+              Actualizando cuenta...
+            } @else {
+              Convertir mi cuenta a Mecánico
+            }
+          </button>
+        }
+      </div>
+    } @else {
+      <div class="cr-success">
+        <div class="cr-success-icon" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <h2 class="cr-success-title">¡Cuenta actualizada!</h2>
+        <p class="cr-success-text">
+          Tu cuenta ha sido actualizada con éxito al rol de mecánico. Serás redirigido en breve para que puedas registrar tu taller.
+        </p>
+      </div>
+    }
+  </div>
+</section>

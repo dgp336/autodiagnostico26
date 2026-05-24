@@ -11,6 +11,7 @@ import es.ual.dra.autodiagnostico.dto.AuthUserResponseDTO;
 import es.ual.dra.autodiagnostico.dto.UpdatePasswordRequestDTO;
 import es.ual.dra.autodiagnostico.dto.UpdateUserRequestDTO;
 import es.ual.dra.autodiagnostico.model.entitity.user.AppUser;
+import es.ual.dra.autodiagnostico.model.entitity.user.UserRole;
 import es.ual.dra.autodiagnostico.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -83,6 +84,22 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
 
         user.setAvatarUrl(avatarUrl);
+        return mapToResponse(userRepository.save(user));
+    }
+
+    @Override
+    public AuthUserResponseDTO upgradeRole(Long id, String newRole) {
+        AppUser user = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+
+        UserRole role;
+        try {
+            role = UserRole.fromValue(newRole);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Rol no valido: " + newRole);
+        }
+
+        user.setRole(role);
         return mapToResponse(userRepository.save(user));
     }
 
