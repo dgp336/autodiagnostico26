@@ -151,26 +151,6 @@ export class RegistroTallerComponent implements OnInit {
     });
   }
 
-  resetForm(): void {
-    this.formData = {
-      name: '',
-      address: '',
-      phone: '',
-      email: '',
-      schedule: '',
-      photoUrl: '',
-      vehicleLimit: 1,
-      latitude: null,
-      longitude: null,
-      fullName: '',
-      password: '',
-      confirmPassword: '',
-      aceptaTerminos: false,
-    };
-    this.enviado.set(false);
-    this.submitError = '';
-  }
-
   private normalizeTitleCase(value: string): string {
     return value
       .replace(/\s+/g, ' ')

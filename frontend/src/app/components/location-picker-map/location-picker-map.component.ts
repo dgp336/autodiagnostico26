@@ -38,11 +38,26 @@ export class LocationPickerMapComponent implements OnDestroy {
 
       // Centrar en la ubicación del usuario cuando esté disponible
       effect(() => {
-        const state = this.geoService.locationState();
+        let state = this.geoService.locationState();
+        if (state.error) {
+          this.geoService.getIpFallback();
+          state = this.geoService.locationState();
+        }
         if (this.mapReady() && state.coords && !this.marker) {
           this.map.setView([state.coords.lat, state.coords.lng], 13);
         }
       });
+    }
+  }
+
+  public onRefreshClick(): void {
+    let state = this.geoService.locationState();
+    if (state.error) {
+      this.geoService.getIpFallback();
+      state = this.geoService.locationState();
+    }
+    if (this.mapReady() && state.coords) {
+      this.map.setView([state.coords.lat, state.coords.lng], 13);
     }
   }
 
@@ -61,7 +76,13 @@ export class LocationPickerMapComponent implements OnDestroy {
 
     setTimeout(() => {
       // Centro por defecto: España
-      this.map = this.L.map(this.mapContainer.nativeElement).setView([40.0, -3.7], 6);
+      this.map = this.L.map(this.mapContainer.nativeElement, {
+        zoomControl: true,
+        scrollWheelZoom: true,
+        dragging: true,
+        touchZoom: true,
+        doubleClickZoom: true
+      }).setView([40.0, -3.7], 6);
 
       this.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,

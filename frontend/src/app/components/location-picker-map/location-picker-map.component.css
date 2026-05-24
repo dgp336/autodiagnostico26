@@ -14,7 +14,8 @@
   height: 340px;
   border-radius: 10px;
   border: 1px solid #e2e8f0;
-  z-index: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .picker-hint {
