@@ -1,6 +1,5 @@
-import { isPlatformBrowser, } from '@angular/common';
-
-import { Component, ViewChild, inject, Inject, OnInit, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, ViewChild, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ChatApiService } from '../../services/chat-api.service';
 import { AuthStateService } from '../../services/auth-state.service';
@@ -19,8 +18,7 @@ import { MatStepper } from '@angular/material/stepper';
 })
 
 export class SeguimientoComponent implements OnInit {
-  // Flag indicating if the current user is a mechanic. Determines if steps are editable.
-  isMechanic: boolean = false;
+  canEditTracking: boolean = false;
   private readonly mechanicService = inject(MechanicService);
   private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -47,7 +45,7 @@ export class SeguimientoComponent implements OnInit {
     }
 
     const role = this.authStateService.role();
-    this.isMechanic = role === 'TALLER';
+    this.canEditTracking = role === 'TALLER' || role === 'ADMIN';
     const userId = this.authStateService.userId();
 
     if (!userId) {
@@ -58,24 +56,28 @@ export class SeguimientoComponent implements OnInit {
     this.issueStatus = this.tracking?.status ?? '';
 
     this.loadTracking();
-
-    // if (!this.isMechanic) {
-    //   // Remove click behavior on step headers
-    //   const stepHeaders = this.stepper._stepHeader;
-    //   stepHeaders.forEach((header: any) => {
-    //     header._elementRef.nativeElement.style.pointerEvents = 'none';
-    //   });
-    // }
   }
 
-  ngAfterViewInit = () => {
-    if (!this.isMechanic) {
-      // Remove click behavior on step headers
-      const stepHeaders = this.stepper._stepHeader;
-      stepHeaders.forEach((header: any) => {
-        header._elementRef.nativeElement.style.pointerEvents = 'none';
-      });
+  ngAfterViewInit(): void {
+    if (this.canEditTracking) {
+      return;
     }
+
+    queueMicrotask(() => {
+      const stepHeaders = this.stepper?._stepHeader ?? [];
+
+      stepHeaders.forEach((header: any) => {
+        const element = header?._elementRef?.nativeElement;
+
+        if (!element) {
+          return;
+        }
+
+        element.style.pointerEvents = 'none';
+        element.tabIndex = -1;
+        element.setAttribute('aria-disabled', 'true');
+      });
+    });
   }
   loadTracking(): void {
     this.mechanicService.getTrackingForClient(this.participantId).subscribe({
