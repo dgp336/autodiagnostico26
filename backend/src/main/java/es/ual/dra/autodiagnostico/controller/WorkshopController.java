@@ -1,6 +1,7 @@
 package es.ual.dra.autodiagnostico.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,5 +42,11 @@ public class WorkshopController {
             @PathVariable Long workshopId,
             @RequestBody WorkshopSelectionRequestDTO request) {
         return ResponseEntity.ok(workshopService.selectWorkshop(workshopId, request));
+    }
+
+    @GetMapping("/exists-for-mechanic/{mechanicId}")
+    public ResponseEntity<Map<String, Boolean>> existsForMechanic(@PathVariable Long mechanicId) {
+        boolean exists = workshopService.existsForMechanic(mechanicId);
+        return ResponseEntity.ok(Map.of("exists", exists));
     }
 }

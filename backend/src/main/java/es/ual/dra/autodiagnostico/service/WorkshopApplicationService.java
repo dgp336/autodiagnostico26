@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -39,17 +40,28 @@ public class WorkshopApplicationService {
     @Transactional
     public WorkshopApplicationResponseDTO submit(WorkshopApplicationRequestDTO request) {
         String applicantEmail = normalizeEmail(request.getEmail());
-        if (userRepository.existsByEmailIgnoreCase(applicantEmail)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe una cuenta con ese correo");
+        Optional<AppUser> existingUserOpt = userRepository.findByEmailIgnoreCase(applicantEmail);
+        if (existingUserOpt.isPresent()) {
+            AppUser existingUser = existingUserOpt.get();
+            if (existingUser.getRole() == UserRole.TALLER && workshopRepository.existsByMechanicId(existingUser.getId())) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Este correo ya tiene un taller asignado en la plataforma");
+            }
+        } else {
+            if (userRepository.existsByEmailIgnoreCase(applicantEmail)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe una cuenta con ese correo");
+            }
         }
         if (applicationRepository.existsByApplicantEmailIgnoreCaseAndStatus(applicantEmail, WorkshopApplicationStatus.PENDING)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe una solicitud pendiente con ese correo");
+        }
+        if (applicationRepository.existsByApplicantEmailIgnoreCaseAndStatus(applicantEmail, WorkshopApplicationStatus.APPROVED)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Este correo ya tiene un taller aprobado en la plataforma");
         }
 
         WorkshopApplication application = WorkshopApplication.builder()
                 .applicantFullName(request.getFullName().trim())
                 .applicantEmail(applicantEmail)
-            .passwordHash(passwordEncoder.encode(request.getPassword()))
+                .passwordHash(passwordEncoder.encode(request.getPassword()))
                 .workshopName(request.getWorkshopName().trim())
                 .address(request.getAddress().trim())
                 .phone(request.getPhone().trim())
@@ -57,6 +69,8 @@ public class WorkshopApplicationService {
                 .schedule(request.getSchedule().trim())
                 .photoUrl(defaultPhoto(request.getPhotoUrl()))
                 .vehicleLimit(request.getVehicleLimit())
+                .latitude(request.getLatitude())
+                .longitude(request.getLongitude())
                 .status(WorkshopApplicationStatus.PENDING)
                 .build();
 
@@ -78,21 +92,26 @@ public class WorkshopApplicationService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "La solicitud ya fue procesada");
         }
 
-        if (userRepository.existsByEmailIgnoreCase(application.getApplicantEmail())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe una cuenta con ese correo");
+        AppUser mechanic;
+        Optional<AppUser> existingUserOpt = userRepository.findByEmailIgnoreCase(application.getApplicantEmail());
+        
+        if (existingUserOpt.isPresent()) {
+            mechanic = existingUserOpt.get();
+            if (mechanic.getRole() == UserRole.TALLER && workshopRepository.existsByMechanicId(mechanic.getId())) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Este mecanico ya tiene un taller asignado");
+            }
+            mechanic.setRole(UserRole.TALLER);
+            mechanic = userRepository.save(mechanic);
+        } else {
+            mechanic = new AppUser();
+            mechanic.setFullName(application.getApplicantFullName());
+            mechanic.setEmail(application.getApplicantEmail());
+            mechanic.setPasswordHash(application.getPasswordHash());
+            mechanic.setRole(UserRole.TALLER);
+            mechanic.setAvatarUrl(buildAvatarUrl(application.getApplicantFullName(), UserRole.TALLER));
+            mechanic.setCreatedAt(LocalDateTime.now());
+            mechanic = userRepository.save(mechanic);
         }
-        if (workshopRepository.findByNameIgnoreCase(application.getWorkshopName()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un taller con ese nombre");
-        }
-
-        AppUser mechanic = new AppUser();
-        mechanic.setFullName(application.getApplicantFullName());
-        mechanic.setEmail(application.getApplicantEmail());
-        mechanic.setPasswordHash(application.getPasswordHash());
-        mechanic.setRole(UserRole.TALLER);
-        mechanic.setAvatarUrl(buildAvatarUrl(application.getApplicantFullName(), UserRole.TALLER));
-        mechanic.setCreatedAt(LocalDateTime.now());
-        mechanic = userRepository.save(mechanic);
 
         Workshop workshop = Workshop.builder()
                 .name(application.getWorkshopName())
@@ -103,8 +122,8 @@ public class WorkshopApplicationService {
                 .photoUrl(defaultPhoto(application.getPhotoUrl()))
                 .vehicleLimit(application.getVehicleLimit())
                 .mechanicId(mechanic.getId())
-                .latitude(36.8381)
-                .longitude(-2.4597)
+                .latitude(application.getLatitude())
+                .longitude(application.getLongitude())
                 .build();
         workshop = workshopRepository.save(workshop);
 
@@ -163,6 +182,8 @@ public class WorkshopApplicationService {
                 .schedule(application.getSchedule())
                 .photoUrl(application.getPhotoUrl())
                 .vehicleLimit(application.getVehicleLimit())
+                .latitude(application.getLatitude())
+                .longitude(application.getLongitude())
                 .status(application.getStatus())
                 .approvedWorkshopId(application.getApprovedWorkshop() == null ? null : application.getApprovedWorkshop().getId())
                 .approvedMechanicId(application.getApprovedMechanic() == null ? null : application.getApprovedMechanic().getId())

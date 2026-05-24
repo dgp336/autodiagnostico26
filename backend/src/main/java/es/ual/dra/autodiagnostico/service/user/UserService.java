@@ -10,4 +10,5 @@ public interface UserService {
     void updatePassword(Long id, UpdatePasswordRequestDTO request);
     void deleteUser(Long id);
     AuthUserResponseDTO updateAvatar(Long id, String avatarUrl);
+    AuthUserResponseDTO upgradeRole(Long id, String newRole);
 }

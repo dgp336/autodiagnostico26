@@ -68,11 +68,19 @@
           <li><a routerLink="/contacto"      class="footer-link">Contacto</a></li>
           <li><a routerLink="/sobre-nosotros" class="footer-link">Sobre nosotros</a></li>
           <li><a routerLink="/privacidad"    class="footer-link">Política de privacidad</a></li>
-          <li>
-            <a routerLink="/registro-taller" class="footer-link footer-link--highlight">
-              ¿Eres un taller? Trabaja con nosotros
-            </a>
-          </li>
+          @if (authStateService.role() !== 'TALLER') {
+            <li>
+              <a routerLink="/cambiar-rol" class="footer-link footer-link--highlight">
+                ¿Eres mecánico? Trabaja con nosotros
+              </a>
+            </li>
+          } @else {
+            <li>
+              <a routerLink="/registro-taller" class="footer-link footer-link--highlight">
+                ¿Tienes un taller? Registra tu taller
+              </a>
+            </li>
+          }
         </ul>
       </div>
 

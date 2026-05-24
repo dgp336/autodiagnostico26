@@ -15,6 +15,7 @@ import { SobreNosotros } from './components/sobre-nosotros/sobre-nosotros';
 import { authGuard } from './auth/auth.guard';
 import { RegistroTallerComponent } from './components/registro-taller/registro-taller';
 import { AdminComponent } from './admin/admin.component';
+import { CambiarRolComponent } from './components/cambiar-rol/cambiar-rol';
 
 export const routes: Routes = [
 	{ path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -51,5 +52,7 @@ export const routes: Routes = [
 	{ path: 'sobre-nosotros', component: SobreNosotros },
 	{ path: 'registro-taller', component: RegistroTallerComponent },
 	{ path: 'privacidad', loadComponent: () => import('./components/privacidad/privacidad').then((m) => m.Privacidad) },
+	{ path: 'cambiar-rol', component: CambiarRolComponent, canActivate: [authGuard] },
+
 	{ path: '**', redirectTo: 'login' }
 ];

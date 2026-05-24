@@ -25,6 +25,8 @@ public class WorkshopApplicationResponseDTO {
     private String schedule;
     private String photoUrl;
     private int vehicleLimit;
+    private double latitude;
+    private double longitude;
     private WorkshopApplicationStatus status;
     private Long approvedWorkshopId;
     private Long approvedMechanicId;
