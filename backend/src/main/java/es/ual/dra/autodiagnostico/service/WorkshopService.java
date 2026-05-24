@@ -18,12 +18,14 @@ import es.ual.dra.autodiagnostico.model.entitity.core.Issue;
 import es.ual.dra.autodiagnostico.model.entitity.core.IssueStatus;
 import es.ual.dra.autodiagnostico.model.entitity.core.PersonalVehicle;
 import es.ual.dra.autodiagnostico.model.entitity.core.Workshop;
+import es.ual.dra.autodiagnostico.model.entitity.core.WorkshopApplicationStatus;
 import es.ual.dra.autodiagnostico.model.entitity.user.AppUser;
 import es.ual.dra.autodiagnostico.model.entitity.user.UserRole;
 import es.ual.dra.autodiagnostico.repository.IssueRepository;
 import es.ual.dra.autodiagnostico.repository.PersonalVehicleRepository;
 import es.ual.dra.autodiagnostico.repository.UserRepository;
 import es.ual.dra.autodiagnostico.repository.WorkshopRepository;
+import es.ual.dra.autodiagnostico.repository.WorkshopApplicationRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -34,6 +36,7 @@ public class WorkshopService {
     private final IssueRepository issueRepository;
     private final UserRepository userRepository;
     private final PersonalVehicleRepository personalVehicleRepository;
+    private final WorkshopApplicationRepository workshopApplicationRepository;
 
     @Transactional(readOnly = true)
     public List<WorkshopDTO> listWorkshops(Long clientId) {
@@ -101,7 +104,11 @@ public class WorkshopService {
     @Transactional(readOnly = true)
     public boolean existsForMechanic(Long mechanicId) {
         if (mechanicId == null) return false;
-        return workshopRepository.existsByMechanicId(mechanicId);
+        
+        return workshopRepository.existsByMechanicId(mechanicId) || 
+               userRepository.findById(mechanicId)
+                   .map(user -> workshopApplicationRepository.existsByApplicantEmailIgnoreCaseAndStatus(user.getEmail(), WorkshopApplicationStatus.PENDING))
+                   .orElse(false);
     }
 
     private Workshop getWorkshopOrThrow(Long workshopId) {

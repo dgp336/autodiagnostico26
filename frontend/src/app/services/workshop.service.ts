@@ -41,5 +41,8 @@ export class WorkshopService {
       `${this.baseUrl}`
     );
   }
-  
-}  
+
+  existsForMechanic(mechanicId: number): Observable<{ exists: boolean }> {
+    return this.http.get<{ exists: boolean }>(`${this.baseUrl}/exists-for-mechanic/${mechanicId}`);
+  }
+}

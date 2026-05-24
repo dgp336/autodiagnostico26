@@ -40,8 +40,16 @@ public class WorkshopApplicationService {
     @Transactional
     public WorkshopApplicationResponseDTO submit(WorkshopApplicationRequestDTO request) {
         String applicantEmail = normalizeEmail(request.getEmail());
-        if (userRepository.existsByEmailIgnoreCase(applicantEmail)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe una cuenta con ese correo");
+        Optional<AppUser> existingUserOpt = userRepository.findByEmailIgnoreCase(applicantEmail);
+        if (existingUserOpt.isPresent()) {
+            AppUser existingUser = existingUserOpt.get();
+            if (existingUser.getRole() == UserRole.TALLER && workshopRepository.existsByMechanicId(existingUser.getId())) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Este correo ya tiene un taller asignado en la plataforma");
+            }
+        } else {
+            if (userRepository.existsByEmailIgnoreCase(applicantEmail)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe una cuenta con ese correo");
+            }
         }
         if (applicationRepository.existsByApplicantEmailIgnoreCaseAndStatus(applicantEmail, WorkshopApplicationStatus.PENDING)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe una solicitud pendiente con ese correo");
@@ -84,21 +92,26 @@ public class WorkshopApplicationService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "La solicitud ya fue procesada");
         }
 
-        if (userRepository.existsByEmailIgnoreCase(application.getApplicantEmail())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe una cuenta con ese correo");
+        AppUser mechanic;
+        Optional<AppUser> existingUserOpt = userRepository.findByEmailIgnoreCase(application.getApplicantEmail());
+        
+        if (existingUserOpt.isPresent()) {
+            mechanic = existingUserOpt.get();
+            if (mechanic.getRole() == UserRole.TALLER && workshopRepository.existsByMechanicId(mechanic.getId())) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Este mecanico ya tiene un taller asignado");
+            }
+            mechanic.setRole(UserRole.TALLER);
+            mechanic = userRepository.save(mechanic);
+        } else {
+            mechanic = new AppUser();
+            mechanic.setFullName(application.getApplicantFullName());
+            mechanic.setEmail(application.getApplicantEmail());
+            mechanic.setPasswordHash(application.getPasswordHash());
+            mechanic.setRole(UserRole.TALLER);
+            mechanic.setAvatarUrl(buildAvatarUrl(application.getApplicantFullName(), UserRole.TALLER));
+            mechanic.setCreatedAt(LocalDateTime.now());
+            mechanic = userRepository.save(mechanic);
         }
-        if (workshopRepository.findByNameIgnoreCase(application.getWorkshopName()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un taller con ese nombre");
-        }
-
-        AppUser mechanic = new AppUser();
-        mechanic.setFullName(application.getApplicantFullName());
-        mechanic.setEmail(application.getApplicantEmail());
-        mechanic.setPasswordHash(application.getPasswordHash());
-        mechanic.setRole(UserRole.TALLER);
-        mechanic.setAvatarUrl(buildAvatarUrl(application.getApplicantFullName(), UserRole.TALLER));
-        mechanic.setCreatedAt(LocalDateTime.now());
-        mechanic = userRepository.save(mechanic);
 
         Workshop workshop = Workshop.builder()
                 .name(application.getWorkshopName())
