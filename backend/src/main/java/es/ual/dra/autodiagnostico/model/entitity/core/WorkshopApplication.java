@@ -63,6 +63,12 @@ public class WorkshopApplication {
     @Column(name = "vehicle_limit", nullable = false)
     private int vehicleLimit;
 
+    @Column(nullable = false)
+    private double latitude;
+
+    @Column(nullable = false)
+    private double longitude;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private WorkshopApplicationStatus status;

@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -45,11 +46,14 @@ public class WorkshopApplicationService {
         if (applicationRepository.existsByApplicantEmailIgnoreCaseAndStatus(applicantEmail, WorkshopApplicationStatus.PENDING)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe una solicitud pendiente con ese correo");
         }
+        if (applicationRepository.existsByApplicantEmailIgnoreCaseAndStatus(applicantEmail, WorkshopApplicationStatus.APPROVED)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Este correo ya tiene un taller aprobado en la plataforma");
+        }
 
         WorkshopApplication application = WorkshopApplication.builder()
                 .applicantFullName(request.getFullName().trim())
                 .applicantEmail(applicantEmail)
-            .passwordHash(passwordEncoder.encode(request.getPassword()))
+                .passwordHash(passwordEncoder.encode(request.getPassword()))
                 .workshopName(request.getWorkshopName().trim())
                 .address(request.getAddress().trim())
                 .phone(request.getPhone().trim())
@@ -57,6 +61,8 @@ public class WorkshopApplicationService {
                 .schedule(request.getSchedule().trim())
                 .photoUrl(defaultPhoto(request.getPhotoUrl()))
                 .vehicleLimit(request.getVehicleLimit())
+                .latitude(request.getLatitude())
+                .longitude(request.getLongitude())
                 .status(WorkshopApplicationStatus.PENDING)
                 .build();
 
@@ -103,8 +109,8 @@ public class WorkshopApplicationService {
                 .photoUrl(defaultPhoto(application.getPhotoUrl()))
                 .vehicleLimit(application.getVehicleLimit())
                 .mechanicId(mechanic.getId())
-                .latitude(36.8381)
-                .longitude(-2.4597)
+                .latitude(application.getLatitude())
+                .longitude(application.getLongitude())
                 .build();
         workshop = workshopRepository.save(workshop);
 
@@ -163,6 +169,8 @@ public class WorkshopApplicationService {
                 .schedule(application.getSchedule())
                 .photoUrl(application.getPhotoUrl())
                 .vehicleLimit(application.getVehicleLimit())
+                .latitude(application.getLatitude())
+                .longitude(application.getLongitude())
                 .status(application.getStatus())
                 .approvedWorkshopId(application.getApprovedWorkshop() == null ? null : application.getApprovedWorkshop().getId())
                 .approvedMechanicId(application.getApprovedMechanic() == null ? null : application.getApprovedMechanic().getId())

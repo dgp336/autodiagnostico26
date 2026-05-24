@@ -35,6 +35,8 @@ export interface WorkshopApplicationRequest {
   schedule: string;
   photoUrl: string;
   vehicleLimit: number;
+  latitude: number;
+  longitude: number;
 }
 
 export type WorkshopApplicationStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
@@ -49,6 +51,8 @@ export interface WorkshopApplicationResponse {
   schedule: string;
   photoUrl: string;
   vehicleLimit: number;
+  latitude: number;
+  longitude: number;
   status: WorkshopApplicationStatus;
   approvedWorkshopId: number | null;
   approvedMechanicId: number | null;

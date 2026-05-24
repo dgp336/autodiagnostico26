@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { WorkshopApplicationApiService } from '../../services/workshop-application-api.service';
 import { WorkshopApplicationRequest } from '../../services/api.models';
+import { LocationPickerMapComponent } from '../location-picker-map/location-picker-map.component';
 
 @Component({
   selector: 'app-registro-taller',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, LocationPickerMapComponent],
   templateUrl: './registro-taller.html',
   styleUrl: './registro-taller.css',
 })
@@ -25,6 +26,8 @@ export class RegistroTallerComponent {
     schedule: '',
     photoUrl: '',
     vehicleLimit: 1,
+    latitude: null as number | null,
+    longitude: null as number | null,
     // AppUser fields
     fullName: '',
     password: '',
@@ -78,11 +81,19 @@ export class RegistroTallerComponent {
       !!d.email &&
       !!d.schedule &&
       d.vehicleLimit >= 1 &&
+      d.latitude !== null &&
+      d.longitude !== null &&
       !!d.fullName &&
       !!d.password &&
       d.password === d.confirmPassword &&
       d.aceptaTerminos
     );
+  }
+
+  /** Actualiza las coordenadas cuando el mapa emite una ubicación. */
+  onLocationSelected(coords: { lat: number; lng: number }): void {
+    this.formData.latitude = coords.lat;
+    this.formData.longitude = coords.lng;
   }
 
   /** Simulación de envío (solo frontend — sin llamada al backend) */
@@ -101,6 +112,8 @@ export class RegistroTallerComponent {
       schedule: this.formData.schedule.trim(),
       photoUrl: this.formData.photoUrl.trim(),
       vehicleLimit: this.formData.vehicleLimit,
+      latitude: this.formData.latitude!,
+      longitude: this.formData.longitude!,
     };
 
     this.applicationApi.submit(payload).subscribe({
@@ -124,6 +137,8 @@ export class RegistroTallerComponent {
       schedule: '',
       photoUrl: '',
       vehicleLimit: 1,
+      latitude: null,
+      longitude: null,
       fullName: '',
       password: '',
       confirmPassword: '',

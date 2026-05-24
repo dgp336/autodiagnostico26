@@ -98,6 +98,12 @@ public class WorkshopService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
+    public boolean existsForMechanic(Long mechanicId) {
+        if (mechanicId == null) return false;
+        return workshopRepository.existsByMechanicId(mechanicId);
+    }
+
     private Workshop getWorkshopOrThrow(Long workshopId) {
         return workshopRepository.findById(workshopId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Taller no encontrado"));

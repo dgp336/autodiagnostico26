@@ -11,4 +11,6 @@ import es.ual.dra.autodiagnostico.model.entitity.core.Workshop;
 public interface WorkshopRepository extends JpaRepository<Workshop, Long> {
 
     Optional<Workshop> findByNameIgnoreCase(String name);
+
+    boolean existsByMechanicId(Long mechanicId);
 }

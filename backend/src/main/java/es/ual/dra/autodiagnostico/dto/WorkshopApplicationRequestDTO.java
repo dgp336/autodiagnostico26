@@ -35,6 +35,12 @@ public class WorkshopApplicationRequestDTO {
     @Min(1)
     private Integer vehicleLimit;
 
+    @NotNull
+    private Double latitude;
+
+    @NotNull
+    private Double longitude;
+
     public String getFullName() {
         return fullName;
     }
@@ -105,5 +111,21 @@ public class WorkshopApplicationRequestDTO {
 
     public void setVehicleLimit(Integer vehicleLimit) {
         this.vehicleLimit = vehicleLimit;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }

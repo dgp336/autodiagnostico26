@@ -179,6 +179,23 @@
               </div>
             </div>
 
+            <!-- Ubicación del taller (mapa) -->
+            <div class="rt-field">
+              <label class="rt-label">Ubicación del taller <span class="rt-required">*</span></label>
+              <app-location-picker-map
+                (locationSelected)="onLocationSelected($event)"
+              ></app-location-picker-map>
+              @if (formData.latitude !== null && formData.longitude !== null) {
+                <span class="rt-coords-badge">
+                  Ubicación seleccionada: {{ formData.latitude | number:'1.4-4' }}, {{ formData.longitude | number:'1.4-4' }}
+                </span>
+              } @else {
+                <span class="rt-coords-badge rt-coords-badge--pending">
+                  Haz clic en el mapa para seleccionar la ubicación
+                </span>
+              }
+            </div>
+
           </fieldset>
 
           <!-- ══ SECCIÓN 2: Cuenta de acceso (AppUser) ══ -->
