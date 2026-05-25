@@ -16,8 +16,8 @@ export class SobreNosotros {
   teamMembers = [
     {
       id: 1,
-      name: 'David Casado Fernández',
-      initials: 'DC',
+      name: 'David Granados Pérez',
+      initials: 'DG',
       role: 'Gestor del proyecto y frontend developer',
       description: 'Coordinación general, diseño de la interfaz y desarrollo frontend.',
       technologies: ['Angular', 'TypeScript', 'CSS'],
@@ -35,8 +35,8 @@ export class SobreNosotros {
     },
     {
       id: 3,
-      name: 'David Granados Pérez',
-      initials: 'DG',
+      name: 'David Casado Fernández',
+      initials: 'DC',
       role: 'Frontend Developer/UI',
       description: 'Diseño de interfaces modernas y mejora de experiencia de usuario.',
       technologies: ['Angular', 'TypeScript', 'CSS', 'HTML'],

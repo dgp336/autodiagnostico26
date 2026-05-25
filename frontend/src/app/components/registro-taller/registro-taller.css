@@ -306,6 +306,27 @@
   to { transform: rotate(360deg); }
 }
 
+/* ── Coordenadas badge ── */
+.rt-coords-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  margin-top: 6px;
+}
+
+.rt-coords-badge--pending {
+  background: #fffbeb;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
 /* ════════════════════════════════
    ESTADO ÉXITO
    Usa .card de styles.css. Solo se añade la alineación central.

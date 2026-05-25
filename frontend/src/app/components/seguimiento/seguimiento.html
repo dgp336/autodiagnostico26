@@ -4,16 +4,22 @@
     <p>Estado de reparación y comunicación directa.</p>
   </header>
 
-  <mat-horizontal-stepper [linear]="false" #stepper>
+  <mat-horizontal-stepper
+    #stepper
+    [linear]="false"
+    [class.seguimiento-stepper--readonly]="!canEditTracking">
 
-    <mat-step label="Cita Agendada"
+    <mat-step
+      label="Cita Agendada"
       [completed]="issueStatus === 'IN WORKSHOP' || issueStatus === 'IN PROGRESS' || issueStatus === 'FIXED'"
-      [editable]="isMechanic">
+      [editable]="canEditTracking">
       <p>Cita Agendada</p>
     </mat-step>
 
-    <mat-step label="En Revisión" [completed]="issueStatus === 'IN PROGRESS' || issueStatus === 'FIXED'"
-      [editable]="isMechanic">
+    <mat-step
+      label="En Revisión"
+      [completed]="issueStatus === 'IN PROGRESS' || issueStatus === 'FIXED'"
+      [editable]="canEditTracking">
       <p>En Revisión</p>
     </mat-step>
 

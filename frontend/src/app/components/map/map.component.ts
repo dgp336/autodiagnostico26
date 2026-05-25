@@ -108,7 +108,13 @@ export class MapComponent implements OnDestroy {
     if (!this.L || !this.mapContainer) return;
 
     setTimeout(() => {
-      this.map = this.L.map(this.mapContainer.nativeElement).setView([0, 0], 2);
+      this.map = this.L.map(this.mapContainer.nativeElement, {
+        zoomControl: true,
+        scrollWheelZoom: true,
+        dragging: true,
+        touchZoom: true,
+        doubleClickZoom: true
+      }).setView([0, 0], 2);
 
       this.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,

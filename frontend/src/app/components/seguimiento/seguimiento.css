@@ -72,6 +72,18 @@
   margin-top: 1rem;
 }
 
+.seguimiento-stepper--readonly {
+  user-select: none;
+}
+
+.seguimiento-stepper--readonly :where(.mat-step-header, .mat-step-label, .mat-step-text-label) {
+  cursor: default;
+}
+
+.seguimiento-stepper--readonly ::ng-deep .mat-step-header {
+  pointer-events: none;
+}
+
 /* --- Dark Theme Variant --- */
 :host(.dark) {
   background-color: var(--bg-dark);

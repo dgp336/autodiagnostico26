@@ -149,6 +149,7 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
     this.models = [];
     this.variants = [];
     this.selectedModelId = null;
+    this.detailValue = { variantId: null, year: null, engineType: null, transmission: null };
 
     if (brand) {
       this.loadingModels = true;
@@ -165,11 +166,13 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
       });
     }
     this.emitContext();
+    this.cdr.detectChanges();
   }
 
   onModelChange(modelId: number | null): void {
     this.selectedModelId = modelId;
     this.variants = [];
+    this.detailValue = { variantId: null, year: null, engineType: null, transmission: null };
 
     if (modelId) {
       this.loadingVariants = true;
@@ -186,11 +189,13 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
       });
     }
     this.emitContext();
+    this.cdr.detectChanges();
   }
 
   onDetailChange(value: DetalleVehiculoValue): void {
     this.detailValue = value;
     this.emitContext();
+    this.cdr.detectChanges();
   }
 
   onClickGuardarCoche(): void {
@@ -198,6 +203,7 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
       return;
     }
     this.saving = true;
+    this.cdr.detectChanges();
     this.guardarCoche.emit({
       vehicleModelId: this.detailValue.variantId,
       plate: this.plate.trim() || null,
@@ -217,6 +223,7 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
     this.buildDate = '';
     this.saving = false;
     this.emitContext();
+    this.cdr.detectChanges();
   }
 
   notifySaved(): void {
@@ -254,27 +261,76 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
     if (!ctx.brand) {
       return;
     }
+
+    this.loadingModels = true;
     this.selectedBrand = ctx.brand;
+    this.cdr.detectChanges();
 
     try {
       const models = await firstValueFrom(this.vehicleApi.getModels(ctx.brand));
       this.models = models;
-      if (ctx.modelId) {
-        this.selectedModelId = ctx.modelId;
-        const variants = await firstValueFrom(this.vehicleApi.getVariants(ctx.modelId));
+      this.loadingModels = false;
+
+      let resolvedModelId = ctx.modelId;
+
+      if (!resolvedModelId && ctx.modelName) {
+        const normalize = (value: string) => value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+        const normalizedModelName = normalize(ctx.modelName);
+        const modelByName = models.find((model) => {
+          const candidate = normalize(model.name);
+          return candidate === normalizedModelName
+            || candidate.includes(normalizedModelName)
+            || normalizedModelName.includes(candidate);
+        });
+        if (modelByName) {
+          resolvedModelId = modelByName.id;
+        }
+      }
+
+      if (!resolvedModelId && ctx.variantId) {
+        resolvedModelId = await this.findModelIdByVariantId(ctx.variantId, models);
+      }
+
+      if (resolvedModelId) {
+        this.selectedModelId = resolvedModelId;
+        this.loadingVariants = true;
+        this.cdr.detectChanges();
+        const variants = await firstValueFrom(this.vehicleApi.getVariants(resolvedModelId));
         this.variants = variants;
+        this.loadingVariants = false;
+
+        const selectedVariant = variants.find((variant) => variant.id === ctx.variantId);
         this.detailValue = {
           variantId: ctx.variantId,
           year: ctx.year,
-          engineType: ctx.engineType,
-          transmission: ctx.transmission,
+          engineType: ctx.engineType ?? selectedVariant?.engineType ?? null,
+          transmission: ctx.transmission ?? selectedVariant?.transmission ?? null,
         };
       }
     } catch {
       // silencioso: el usuario puede continuar manualmente
+      this.loadingModels = false;
+      this.loadingVariants = false;
     }
     this.emitContext();
     this.cdr.detectChanges();
+  }
+
+  private async findModelIdByVariantId(
+    variantId: number,
+    models: VehicleModelSummary[],
+  ): Promise<number | null> {
+    const checkedModels = await Promise.all(
+      models.map(async (model) => {
+        const variants = await firstValueFrom(this.vehicleApi.getVariants(model.id));
+        return {
+          modelId: model.id,
+          hasVariant: variants.some((variant) => variant.id === variantId),
+        };
+      }),
+    );
+
+    return checkedModels.find((model) => model.hasVariant)?.modelId ?? null;
   }
 
   private emitContext(): void {

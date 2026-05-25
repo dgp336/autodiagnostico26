@@ -31,4 +31,8 @@ export class UserApiService {
   deleteAccount(userId: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${userId}`);
   }
+
+  upgradeRole(userId: number, role: string): Observable<AuthUserResponse> {
+    return this.http.put<AuthUserResponse>(`${this.baseUrl}/${userId}/role`, { role });
+  }
 }

@@ -10,9 +10,12 @@ import { PerfilComponent } from './components/perfil/perfil';
 import { MisVehiculosComponent } from './components/mis-vehiculos/mis-vehiculos';
 import { LoginComponent } from './components/login/login';
 import { seguimientoGuard } from './auth/seguimiento.guard';
+import { adminGuard } from './auth/admin.guard';
 import { SobreNosotros } from './components/sobre-nosotros/sobre-nosotros';
 import { authGuard } from './auth/auth.guard';
 import { RegistroTallerComponent } from './components/registro-taller/registro-taller';
+import { AdminComponent } from './admin/admin.component';
+import { CambiarRolComponent } from './components/cambiar-rol/cambiar-rol';
 
 export const routes: Routes = [
 	{ path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -45,8 +48,11 @@ export const routes: Routes = [
 	{ path: 'mis-vehiculos', component: MisVehiculosComponent },
 	{ path: 'login', component: LoginComponent },
 	{ path: 'registro', component: LoginComponent },
+	{ path: 'admin', component: AdminComponent, canActivate: [adminGuard] },
 	{ path: 'sobre-nosotros', component: SobreNosotros },
 	{ path: 'registro-taller', component: RegistroTallerComponent },
+	{ path: 'privacidad', loadComponent: () => import('./components/privacidad/privacidad').then((m) => m.Privacidad) },
+	{ path: 'cambiar-rol', component: CambiarRolComponent, canActivate: [authGuard] },
 
 	{ path: '**', redirectTo: 'login' }
 ];
