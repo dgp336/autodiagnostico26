@@ -1,0 +1,86 @@
+<section class="diagnostico-page">
+    @if (successMessage()) {
+    <div class="estado estado--success" role="status" aria-live="polite">
+        <p>{{ successMessage() }}</p>
+    </div>
+    }
+
+    @if (loading()) {
+    <div class="estado estado--loading">
+        <p>Analizando síntomas con el asistente IA…</p>
+    </div>
+    } @else if (errorMessage()) {
+    <div class="estado estado--error">
+        <h2>No se pudo completar el diagnóstico</h2>
+        <p>{{ errorMessage() }}</p>
+        <button type="button" (click)="volverAHome()">Volver</button>
+    </div>
+    } @else if (resultado(); as r) {
+    <header class="cabecera">
+        <h1>Diagnóstico estimado</h1>
+        <p class="diagnosis">{{ r.diagnosis }}</p>
+
+        <div class="confidence" [attr.aria-label]="'Confianza ' + (r.confidence * 100 | number:'1.0-0') + '%'">
+            <span class="confidence__label">Confianza:</span>
+            <div class="confidence__bar">
+                <div class="confidence__fill" [style.width.%]="r.confidence * 100"></div>
+            </div>
+            <span class="confidence__value">{{ (r.confidence * 100) | number:'1.0-0' }}%</span>
+        </div>
+
+        @if (r.explanation) {
+        <p class="explanation">{{ r.explanation }}</p>
+        }
+    </header>
+
+    @if (r.suggestedParts.length > 0) {
+    <h2>Piezas sugeridas</h2>
+    <ul class="piezas">
+        @for (p of r.suggestedParts; track p.idProduct) {
+        <li class="pieza">
+            @if (p.image) {
+            <img [src]="p.image" [alt]="p.name" loading="lazy" />
+            }
+            <div class="pieza__info">
+                <h3>{{ p.name }}</h3>
+                @if (p.description) {
+                <p>{{ p.description }}</p>
+                }
+                @if (p.lowRangePrice !== null || p.highRangePrice !== null) {
+                <p class="pieza__precio">
+                    @if (p.lowRangePrice !== null && p.highRangePrice !== null) {
+                    {{ p.lowRangePrice }}€ – {{ p.highRangePrice }}€
+                    } @else if (p.lowRangePrice !== null) {
+                    desde {{ p.lowRangePrice }}€
+                    } @else {
+                    hasta {{ p.highRangePrice }}€
+                    }
+                </p>
+                }
+            </div>
+        </li>
+        }
+    </ul>
+    } @else {
+    <p class="sin-piezas">
+        No se han identificado piezas concretas para reemplazar. Se recomienda revisión profesional.
+    </p>
+    }
+
+    @if (r.unresolvedPartNames.length > 0) {
+    <aside class="aviso">
+        <strong>Aviso:</strong> el asistente sugirió piezas que no figuran en nuestro
+        catálogo y han sido descartadas
+        ({{ r.unresolvedPartNames.join(', ') }}).
+    </aside>
+    }
+
+    <button type="button" class="boton-volver" (click)="volverAHome()">
+        Hacer otro diagnóstico
+    </button>
+
+    <button type="button" class="boton-aceptar" (click)="aceptarDiagnostico()" [disabled]="savingIssue()">
+        {{ savingIssue() ? 'Guardando diagnóstico...' : 'Aceptar diagnóstico y elegir taller' }}
+    </button>
+    }
+</section>
