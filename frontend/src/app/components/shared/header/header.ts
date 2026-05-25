@@ -53,6 +53,10 @@ export class HeaderComponent implements OnInit {
   toggleMenu(): void { this.menuOpen = !this.menuOpen; }
   toggleMobileMenu(): void { this.mobileMenuOpen = !this.mobileMenuOpen; }
 
+  get seguimientoLink(): string {
+    return this.authStateService.role() === 'TALLER' ? '/mecanico' : '/usuario/seguimiento';
+  }
+
   onLogin(): void {
     void this.router.navigate(['/login']);
   }
