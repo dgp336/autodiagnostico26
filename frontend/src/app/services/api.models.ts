@@ -126,6 +126,10 @@ export interface MechanicClientTracking {
   aiDiagnosis: string;
   recommendedParts: DiagnosedPart[];
   estimatedPrice: number | null;
+  createdAt: string;
+  acceptedAt: string | null;
+  inProgressAt: string | null;
+  fixedAt: string | null;
   status: string;
   latestUpdate?: string;
   sessionUuid: string;

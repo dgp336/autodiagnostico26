@@ -1,9 +1,9 @@
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, ViewChild, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { ChatApiService } from '../../services/chat-api.service';
 import { AuthStateService } from '../../services/auth-state.service';
-import { MechanicService } from '../../services/mechanic.service';
+import { MechanicService, MechanicClient } from '../../services/mechanic.service';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -12,7 +12,8 @@ import { MatStepper } from '@angular/material/stepper';
 @Component({
   selector: 'app-seguimiento-page',
   standalone: true,
-  imports: [RouterOutlet, MatStepperModule, MatButtonModule, ReactiveFormsModule, FormsModule],
+  imports: [RouterOutlet, MatStepperModule, MatButtonModule, ReactiveFormsModule, FormsModule, DatePipe],
+  providers: [DatePipe],
   templateUrl: './seguimiento.html',
   styleUrls: ['./seguimiento.css']
 })
@@ -26,7 +27,7 @@ export class SeguimientoComponent implements OnInit {
 
   participantId = 0;
   sessionUuid = '';
-  tracking: any = null;
+  tracking: MechanicClient | null = null;
   hasTracking = false;
   userOnline = false;
   unreadCount = 0;
@@ -89,9 +90,10 @@ export class SeguimientoComponent implements OnInit {
         }
 
         this.hasTracking = true;
-        this.tracking = tracking;
+        this.tracking = tracking as MechanicClient;
+        this.issueStatus = this.tracking?.status ?? '';
 
-        this.sessionUuid = tracking.sessionUuid ?? '';
+        this.sessionUuid = this.tracking?.sessionUuid ?? '';
         localStorage.setItem('trackingSessionUuid', this.sessionUuid);
 
         this.cdr.detectChanges();

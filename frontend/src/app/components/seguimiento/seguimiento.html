@@ -11,20 +11,23 @@
 
     <mat-step
       label="Cita Agendada"
-      [completed]="issueStatus === 'IN WORKSHOP' || issueStatus === 'IN PROGRESS' || issueStatus === 'FIXED'"
+      [completed]="!!tracking?.createdAt"
       [editable]="canEditTracking">
       <p>Cita Agendada</p>
+      <div class="step-date">{{ tracking?.createdAt | date:'short' }}</div>
     </mat-step>
 
     <mat-step
       label="En Revisión"
-      [completed]="issueStatus === 'IN PROGRESS' || issueStatus === 'FIXED'"
+      [completed]="!!(tracking?.inProgressAt || tracking?.acceptedAt)"
       [editable]="canEditTracking">
       <p>En Revisión</p>
+      <div class="step-date">{{ (tracking?.inProgressAt || tracking?.acceptedAt) | date:'short' }}</div>
     </mat-step>
 
-    <mat-step label="Reparado" [completed]="issueStatus === 'FIXED'" [editable]="false">
+    <mat-step label="Reparado" [completed]="!!tracking?.fixedAt" [editable]="false">
       <p>Reparado</p>
+      <div class="step-date">{{ tracking?.fixedAt | date:'short' }}</div>
     </mat-step>
 
   </mat-horizontal-stepper>
