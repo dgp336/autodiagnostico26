@@ -730,6 +730,19 @@ app-map {
   margin-top: 10px;
 }
 
+:host-context(.dark) .no-workshops-fallback {
+  text-align: center;
+  padding: 40px 20px;
+  background: #1e293b;
+  border: 1px dashed #8c9db1;
+  border-radius: 12px;
+  color: #e5e7eb;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+
+
 .reset-link-btn {
   background: none;
   border: none;
