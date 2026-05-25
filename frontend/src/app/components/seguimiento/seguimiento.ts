@@ -1,6 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, ViewChild, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { ChatApiService } from '../../services/chat-api.service';
 import { AuthStateService } from '../../services/auth-state.service';
 import { MechanicService } from '../../services/mechanic.service';
@@ -12,7 +12,7 @@ import { MatStepper } from '@angular/material/stepper';
 @Component({
   selector: 'app-seguimiento-page',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatStepperModule, MatButtonModule, ReactiveFormsModule, FormsModule],
+  imports: [RouterOutlet, MatStepperModule, MatButtonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './seguimiento.html',
   styleUrls: ['./seguimiento.css']
 })
