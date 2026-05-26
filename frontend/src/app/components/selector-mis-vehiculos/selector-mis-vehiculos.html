@@ -1,0 +1,18 @@
+<div class="smv-card">
+  <label class="smv-label" for="smv-select">
+    ¿Diagnosticar uno de tus coches?
+  </label>
+  <select
+    id="smv-select"
+    class="smv-select"
+    [ngModel]="selectedId"
+    (ngModelChange)="onChange($event)"
+  >
+    <option [ngValue]="null">— Introducir uno nuevo —</option>
+    @for (vehicle of vehicles; track vehicle.id) {
+      <option [ngValue]="vehicle.id">
+        {{ displayName(vehicle) }}@if (vehicle.plate) { · {{ vehicle.plate }} }
+      </option>
+    }
+  </select>
+</div>

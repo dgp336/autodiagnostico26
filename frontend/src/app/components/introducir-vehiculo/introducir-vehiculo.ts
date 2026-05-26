@@ -271,25 +271,7 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
       this.models = models;
       this.loadingModels = false;
 
-      let resolvedModelId = ctx.modelId;
-
-      if (!resolvedModelId && ctx.modelName) {
-        const normalize = (value: string) => value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-        const normalizedModelName = normalize(ctx.modelName);
-        const modelByName = models.find((model) => {
-          const candidate = normalize(model.name);
-          return candidate === normalizedModelName
-            || candidate.includes(normalizedModelName)
-            || normalizedModelName.includes(candidate);
-        });
-        if (modelByName) {
-          resolvedModelId = modelByName.id;
-        }
-      }
-
-      if (!resolvedModelId && ctx.variantId) {
-        resolvedModelId = await this.findModelIdByVariantId(ctx.variantId, models);
-      }
+      const resolvedModelId = ctx.modelId ?? this.matchModelByName(ctx.modelName, models);
 
       if (resolvedModelId) {
         this.selectedModelId = resolvedModelId;
@@ -316,21 +298,18 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
     this.cdr.detectChanges();
   }
 
-  private async findModelIdByVariantId(
-    variantId: number,
+  private matchModelByName(
+    modelName: string | null | undefined,
     models: VehicleModelSummary[],
-  ): Promise<number | null> {
-    const checkedModels = await Promise.all(
-      models.map(async (model) => {
-        const variants = await firstValueFrom(this.vehicleApi.getVariants(model.id));
-        return {
-          modelId: model.id,
-          hasVariant: variants.some((variant) => variant.id === variantId),
-        };
-      }),
-    );
-
-    return checkedModels.find((model) => model.hasVariant)?.modelId ?? null;
+  ): number | null {
+    if (!modelName) return null;
+    const normalize = (value: string) => value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+    const target = normalize(modelName);
+    const found = models.find((model) => {
+      const candidate = normalize(model.name);
+      return candidate === target || candidate.includes(target) || target.includes(candidate);
+    });
+    return found?.id ?? null;
   }
 
   private emitContext(): void {

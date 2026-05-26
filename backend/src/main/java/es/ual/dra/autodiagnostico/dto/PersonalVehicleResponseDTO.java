@@ -18,6 +18,7 @@ public class PersonalVehicleResponseDTO {
     private Long id;
     private Long ownerId;
     private Long vehicleModelId;
+    private Long vehicleId;
 
     private String brand;
     private String vehicleName;

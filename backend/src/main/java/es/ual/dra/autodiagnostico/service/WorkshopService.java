@@ -1,7 +1,6 @@
 package es.ual.dra.autodiagnostico.service;
 
 import java.util.List;
-import java.util.UUID;
 import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
@@ -89,7 +88,6 @@ public class WorkshopService {
         }
 
         issue.setWorkshop(workshop);
-        issue.setSessionUuid(UUID.randomUUID().toString());
         issue.setStatus(IssueStatus.WORKSHOP_ASSIGNED);
         issue.setProgressColor("amarillo");
         issue.setAcceptedAt(LocalDateTime.now());

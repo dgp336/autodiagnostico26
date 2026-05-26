@@ -1,0 +1,24 @@
+.smv-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid #e1e7ee;
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+.smv-label {
+  font-weight: 600;
+  color: #1a6bbd;
+  font-size: 0.95rem;
+}
+
+.smv-select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #b7c3d2;
+  background: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
