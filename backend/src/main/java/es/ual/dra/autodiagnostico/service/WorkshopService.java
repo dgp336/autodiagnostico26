@@ -1,7 +1,6 @@
 package es.ual.dra.autodiagnostico.service;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -88,7 +87,6 @@ public class WorkshopService {
         }
 
         issue.setWorkshop(workshop);
-        issue.setSessionUuid(UUID.randomUUID().toString());
         issue.setStatus(IssueStatus.WORKSHOP_ASSIGNED);
         issue.setProgressColor("amarillo");
         issue.setLatestUpdate("Taller seleccionado. Pendiente de primera revision del mecanico.");

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,6 +58,7 @@ public class IssueService {
                 .status(IssueStatus.DRAFT)
                 .progressColor("gris")
                 .latestUpdate("Diagnóstico IA creado. Pendiente de asignar taller.")
+                .sessionUuid(UUID.randomUUID().toString())
                 .active(true)
                 .build();
 

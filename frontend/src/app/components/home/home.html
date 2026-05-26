@@ -6,29 +6,12 @@
   <app-selecciona-problema (problemaChange)="onProblemaChange($event)" />
 
   @if (isLoggedIn && personalVehicles.length > 0) {
-    <div class="home-mis-coches">
-      <label class="home-mis-coches-label" for="home-personal-vehicle">
-        ¿Diagnosticar uno de tus coches?
-      </label>
-      <select
-        id="home-personal-vehicle"
-        class="home-mis-coches-select"
-        [ngModel]="selectedPersonalVehicleId"
-        (ngModelChange)="onPersonalVehicleSelect($event)"
-      >
-        <option [ngValue]="null">— Introducir uno nuevo —</option>
-        @for (vehicle of personalVehicles; track vehicle.id) {
-          <option [ngValue]="vehicle.id">
-            {{ displayName(vehicle) }}@if (vehicle.plate) { · {{ vehicle.plate }} }
-          </option>
-        }
-      </select>
-    </div>
+    <app-selector-mis-vehiculos
+      [vehicles]="personalVehicles"
+      [selectedId]="selectedPersonalVehicleId"
+      (selectionChange)="onPersonalVehicleSelect($event)"
+    />
   }
-
-  <p class="home-variant-warning">
-    La variante específica puede tardar hasta un minuto en cargarse tanto si eliges un coche de "Mis vehículos" como si lo rellenas manualmente.
-  </p>
 
   <app-introducir-vehiculo
     [tieneProblema]="tieneProblema"
@@ -36,4 +19,29 @@
     (vehicleContextChange)="onVehicleContextChange($event)"
     (enviar)="onEnviar()"
   />
+
+  @if (isLoggedIn && selectedPersonalVehicleId === null) {
+    <div class="home-save-vehicle">
+      <p class="home-save-vehicle-hint">
+        ¿Quieres guardar este coche en tu garaje para no rellenar sus datos la próxima vez?
+      </p>
+      <button
+        type="button"
+        class="home-save-vehicle-btn"
+        [disabled]="!canSaveVehicle"
+        (click)="onGuardarCoche()"
+      >
+        @if (savingVehicle) { Guardando... } @else { Guardar coche en mi garaje }
+      </button>
+      @if (!canSaveVehicle && !savingVehicle) {
+        <p class="home-save-vehicle-sub">Selecciona marca, modelo y variante para poder guardarlo.</p>
+      }
+      @if (saveVehicleMessage) {
+        <p class="home-save-vehicle-success">{{ saveVehicleMessage }}</p>
+      }
+      @if (saveVehicleError) {
+        <p class="home-save-vehicle-error">{{ saveVehicleError }}</p>
+      }
+    </div>
+  }
 </section>

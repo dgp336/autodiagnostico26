@@ -180,8 +180,8 @@ export interface VehicleSearchContext {
 // ── Autodiagnóstico (IA) ───────────────────────────────────────────────────
 
 export interface AutodiagnosisRequest {
-  clientId: number;
-  personalVehicleId: number;
+  clientId: number | null;
+  personalVehicleId: number | null;
   vehicleModelId: number;
   symptoms: string[];
   freeText: string;
@@ -211,6 +211,7 @@ export interface PersonalVehicleResponse {
   id: number;
   ownerId: number;
   vehicleModelId: number;
+  vehicleId: number | null;
   brand: string | null;
   vehicleName: string | null;
   modelName: string | null;

@@ -20,38 +20,57 @@
   font-weight: 600;
 }
 
-.home-mis-coches {
+.home-save-vehicle {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  align-items: flex-start;
+  gap: 8px;
   background: #fff;
   border: 1px solid #e1e7ee;
   border-radius: 12px;
-  padding: 12px 16px;
+  padding: 14px 16px;
 }
 
-.home-mis-coches-label {
+.home-save-vehicle-hint {
+  margin: 0;
   font-weight: 600;
   color: #1a6bbd;
   font-size: 0.95rem;
 }
 
-.home-mis-coches-select {
-  padding: 8px 12px;
+.home-save-vehicle-btn {
+  padding: 8px 16px;
   border-radius: 8px;
-  border: 1px solid #b7c3d2;
-  background: #fff;
+  border: 1px solid #1a6bbd;
+  background: #1a6bbd;
+  color: #fff;
+  font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
 }
 
-.home-variant-warning {
-  margin: -2px 0 0;
-  padding: 0.45rem 0.7rem;
-  border-radius: 999px;
-  background: #fffbeb;
-  color: #92400e;
-  border: 1px solid #f59e0b;
-  font-size: 0.86rem;
-  line-height: 1.25;
+.home-save-vehicle-btn:disabled {
+  background: #b7c3d2;
+  border-color: #b7c3d2;
+  cursor: not-allowed;
+}
+
+.home-save-vehicle-sub {
+  margin: 0;
+  color: #555;
+  font-size: 0.85rem;
+}
+
+.home-save-vehicle-success {
+  margin: 0;
+  color: #1f5e24;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.home-save-vehicle-error {
+  margin: 0;
+  color: #b00020;
+  font-weight: 600;
+  font-size: 0.9rem;
 }

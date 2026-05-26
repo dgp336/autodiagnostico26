@@ -87,6 +87,7 @@ public class PersonalVehicleService {
                 .id(pv.getId())
                 .ownerId(pv.getOwner() == null ? null : pv.getOwner().getId())
                 .vehicleModelId(model == null ? null : model.getIdVehicleModel())
+                .vehicleId(vehicle == null ? null : vehicle.getIdVehicle())
                 .brand(vehicle == null ? null : vehicle.getBrand())
                 .vehicleName(vehicle == null ? null : vehicle.getName())
                 .modelName(model == null ? null : model.getModelName())
