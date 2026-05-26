@@ -30,6 +30,15 @@
       </div>
     }
 
+    @if (!loading) {
+      <div class="tracking-badge-row">
+        <span class="tracking-badge tracking-badge--{{ tracking?.status || 'amarillo' }}">
+          {{ getStatusLabel(tracking?.status || 'amarillo') }}
+        </span>
+        <span class="tracking-badge tracking-badge--session">Sesión {{ tracking?.sessionUuid | slice:0:8 }}</span>
+      </div>
+    }
+
     <mat-horizontal-stepper
       [linear]="false"
       [selectedIndex]="selectedStepIndex"
@@ -62,7 +71,7 @@
     </mat-horizontal-stepper>
 
     <div class="status-row">
-      <label>Estado de alerta:</label>
+      <label>Estado del coche:</label>
       <div class="status-controls">
         <button type="button" (click)="setStatus('verde')" [class.active]="status==='verde'">Verde</button>
         <button type="button" (click)="setStatus('amarillo')" [class.active]="status==='amarillo'">Amarillo</button>
@@ -100,7 +109,6 @@
   <aside class="right">
     @if (tracking?.sessionUuid) {
     <app-seguimiento-chat
-      [participantIdInput]="chatParticipantId"
       [sessionUuidInput]="tracking!.sessionUuid">
     </app-seguimiento-chat>
     }

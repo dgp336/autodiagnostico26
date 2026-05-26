@@ -4,6 +4,7 @@ import { DiagnosticoComponent } from './components/diagnostico/diagnostico';
 import { TallerComponent } from './components/taller/taller';
 import { SeguimientoComponent } from './components/seguimiento/seguimiento';
 import { SeguimientoChatComponent } from './components/seguimiento/chat/chat';
+import { SeguimientoDetalleComponent } from './components/seguimiento/detalle/seguimiento-detalle';
 import { HistorialComponent } from './components/historial/historial';
 import { ContactoComponent } from './components/contacto/contacto';
 import { PerfilComponent } from './components/perfil/perfil';
@@ -28,6 +29,7 @@ export const routes: Routes = [
 		component: SeguimientoComponent,
 		canActivate: [seguimientoGuard],
 		children: [
+			{ path: 'detalle', component: SeguimientoDetalleComponent },
 			{ path: 'chat', component: SeguimientoChatComponent }
 		]
 	},

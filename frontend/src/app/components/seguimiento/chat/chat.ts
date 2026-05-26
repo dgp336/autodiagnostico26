@@ -2,7 +2,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject, Input, NgZone, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChatApiService } from '../../../services/chat-api.service';
-import { ChatMessageRequest, ChatMessageResponse, ChatRoomType, ChatSenderRole } from '../../../services/api.models';
+import { ChatMessageRequest, ChatMessageResponse, ChatSenderRole } from '../../../services/api.models';
 import { AuthStateService } from '../../../services/auth-state.service';
 
 type ChatAuthor = 'mecanico' | 'usuario';
@@ -24,7 +24,6 @@ interface ChatMessage {
   styleUrl: './chat.css'
 })
 export class SeguimientoChatComponent implements OnInit, OnDestroy {
-  private readonly roomType: ChatRoomType = 'SEGUIMIENTO';
   private messageRefreshTimerId: number | null = null;
   private latestMessageId: number | null = null;
 
@@ -185,7 +184,6 @@ loadMessages(): void {
 
     const payload: ChatMessageRequest = {
       participantId: this.participantId,
-      roomType: this.roomType,
       senderRole: this.senderRole,
       sessionUuid: this.sessionUuid,
       commentText: value

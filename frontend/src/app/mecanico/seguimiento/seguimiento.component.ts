@@ -36,12 +36,12 @@ export class SeguimientoComponent implements OnInit {
   selectedStepIndex = 0;
 
   clientId = 0;
+  sessionUuid = '';
 
   constructor() {
-    const param = this.route.snapshot.queryParamMap.get('clientId') ?? this.route.snapshot.queryParamMap.get('clientid') ?? this.route.snapshot.queryParamMap.get('client');
-    const parsed = Number(param);
-    if (!Number.isNaN(parsed) && parsed > 0) {
-      this.clientId = parsed;
+    const sessionParam = this.route.snapshot.queryParamMap.get('sessionUuid');
+    if (sessionParam) {
+      this.sessionUuid = sessionParam;
     }
 
   }
@@ -49,6 +49,15 @@ export class SeguimientoComponent implements OnInit {
   get isMechanic(): boolean {
     const role = this.auth.role();
     return role === 'TALLER' || role === 'ADMIN';
+  }
+
+  getStatusLabel(status: string): string {
+    return {
+      verde: 'Reparado',
+      amarillo: 'Pendiente',
+      naranja: 'En revisión',
+      rojo: 'Urgente'
+    }[status] || status;
   }
 
   get status(): ClientStatus {
@@ -59,16 +68,16 @@ export class SeguimientoComponent implements OnInit {
     this.canEditTracking = this.isMechanic;
 
     this.route.queryParamMap.subscribe(params => {
-      const clientId = Number(params.get('clientId') ?? params.get('clientid') ?? params.get('client'));
-      if (!clientId) {
+      const sessionUuid = params.get('sessionUuid') ?? '';
+      if (!sessionUuid) {
         return;
       }
 
-      this.clientId = clientId;
+      this.sessionUuid = sessionUuid;
       this.loadTracking();
     });
 
-    if (this.clientId > 0) {
+    if (this.sessionUuid) {
       this.loadTracking();
     }
   }
@@ -97,7 +106,12 @@ export class SeguimientoComponent implements OnInit {
       return;
     }
 
-    this.mechanicService.updateClientStatus(mechanicId, this.clientId, status).subscribe({
+    const sessionUuid = this.tracking?.sessionUuid ?? this.sessionUuid;
+    if (!sessionUuid) {
+      return;
+    }
+
+    this.mechanicService.updateTrackingStatus(mechanicId, sessionUuid, status).subscribe({
       next: () => {
         if (this.tracking) {
           this.tracking.status = status;
@@ -123,7 +137,12 @@ export class SeguimientoComponent implements OnInit {
       return;
     }
 
-    this.mechanicService.updateTrackingMessage(mechanicId, this.clientId, trimmed).subscribe({
+    const sessionUuid = this.tracking?.sessionUuid ?? this.sessionUuid;
+    if (!sessionUuid) {
+      return;
+    }
+
+    this.mechanicService.updateTrackingMessageBySessionUuid(mechanicId, sessionUuid, trimmed).subscribe({
       next: () => {
         this.updates = [trimmed, ...this.updates].slice(0, 8);
         if (this.tracking) {
@@ -145,15 +164,25 @@ export class SeguimientoComponent implements OnInit {
   }
 
   get chatSessionUuid(): string {
-    return this.tracking?.sessionUuid ?? '';
+    return this.tracking?.sessionUuid ?? this.sessionUuid ?? '';
   }
 
   loadTracking(): void {
     this.loading = true;
 
-    this.mechanicService.getTracking(this.clientId).subscribe({
+    if (!this.sessionUuid) {
+      this.loading = false;
+      this.cdr.detectChanges();
+      return;
+    }
+
+    const tracking$ = this.mechanicService.getTrackingBySessionUuid(this.sessionUuid);
+
+    tracking$.subscribe({
       next: (tracking: MechanicClient) => {
         this.tracking = tracking;
+        this.clientId = tracking.clientId;
+        this.sessionUuid = tracking.sessionUuid;
         this.selectedStepIndex = this.computeStepIndex();
         this.loadUpdateHistoryFromChat();
 
@@ -174,13 +203,12 @@ export class SeguimientoComponent implements OnInit {
     }
 
     const mechanicId = this.auth.userId();
-    if (!mechanicId || !this.clientId) {
+    if (!mechanicId) {
       return;
     }
 
     this.chatApi.sendMessage({
-      participantId: this.clientId,
-      roomType: 'SEGUIMIENTO',
+      participantId: mechanicId,
       senderRole: 'MECANICO',
       sessionUuid: this.tracking.sessionUuid,
       commentText: `${SeguimientoComponent.TRACKING_UPDATE_PREFIX}${updateText}`
