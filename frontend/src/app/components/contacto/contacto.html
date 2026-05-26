@@ -1,0 +1,104 @@
+<section class="workshop-shell">
+  <header class="workshop-heading">
+    <div>
+      <p class="eyebrow">Contacto</p>
+      <h2>Estamos aquí para ayudarte</h2>
+      <p>
+        Selecciona uno de nuestros talleres asociados y envíanos tu consulta.
+        Te atenderemos a la mayor brevedad posible.
+      </p>
+    </div>
+    <button type="button" class="refresh-button" (click)="loadWorkshops()" [disabled]="loading()">
+      Actualizar
+    </button>
+  </header>
+
+  <p *ngIf="error()" class="alert">{{ error() }}</p>
+
+  <div class="workshop-layout" *ngIf="!loading(); else loadingState">
+
+    <section class="left-panel" aria-label="Listado de talleres">
+
+      <div class="search-wrapper">
+        <input
+          type="text"
+          class="location-input"
+          placeholder="Busca por ciudad o código postal..."
+          (input)="onSearchInput($event)"
+        />
+      </div>
+
+      <ng-container *ngFor="let workshop of workshops()">
+        <div
+          class="workshop-item"
+          [class.workshop-item--selected]="selectedWorkshop()?.id === workshop.id"
+        >
+          <img [src]="workshop.photoUrl" [alt]="workshop.name" />
+          <div class="workshop-item__content">
+            <span class="workshop-item__topline">
+              <strong>{{ workshop.name }}</strong>
+            </span>
+            <span>{{ workshop.address }}</span>
+            <span>{{ workshop.phone }}</span>
+            <span class="workshop-item__schedule-line">
+              <span class="status-badge" [class.status-badge--open]="isOpenNow(workshop.schedule)">
+                {{ isOpenNow(workshop.schedule) ? 'Abierto' : 'Cerrado' }}
+              </span>
+              <span class="schedule-text">{{ workshop.schedule }}</span>
+            </span>
+            <span class="workshop-item__meta">
+              <span class="meta-distance" *ngIf="getDistanceLabel(workshop) as dist">
+                A {{ dist }}
+              </span>
+            </span>
+          </div>
+          <div class="workshop-item__actions">
+            <button
+              *ngIf="selectedWorkshop()?.id !== workshop.id; else contactBtn"
+              type="button"
+              class="select-btn"
+              (click)="selectWorkshop(workshop)"
+            >
+              Seleccionar
+            </button>
+            <ng-template #contactBtn>
+              <button
+                type="button"
+                class="contact-btn"
+                (click)="contactToForm()"
+              >
+                Contactar
+              </button>
+            </ng-template>
+          </div>
+        </div>
+
+        <app-formulario-contacto
+          *ngIf="showForm() && selectedWorkshop()?.id === workshop.id"
+          [workshopId]="workshop.id"
+          (done)="onFormDone()"
+          (cancel)="cancelForm()"
+        ></app-formulario-contacto>
+      </ng-container>
+
+      <div class="no-workshops-fallback" *ngIf="workshops().length === 0">
+        <p>No se encontraron talleres. Prueba con otro término de búsqueda.</p>
+      </div>
+
+    </section>
+
+    <div class="right-panel">
+      <app-map
+        [workshops]="workshops()"
+        [selectedWorkshop]="selectedWorkshop()"
+        (workshopSelected)="selectWorkshop($event)"
+      ></app-map>
+    </div>
+
+  </div>
+
+  <ng-template #loadingState>
+    <div class="loading-state">Cargando talleres...</div>
+  </ng-template>
+
+</section>
