@@ -76,6 +76,12 @@ public class Issue {
     @Column(name = "accepted_at")
     private LocalDateTime acceptedAt;
 
+    @Column(name = "in_progress_at")
+    private LocalDateTime inProgressAt;
+
+    @Column(name = "fixed_at")
+    private LocalDateTime fixedAt;
+
     @Column(name = "active", nullable = false)
     private boolean active;
 

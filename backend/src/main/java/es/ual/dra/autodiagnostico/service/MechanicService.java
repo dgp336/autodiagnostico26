@@ -45,6 +45,16 @@ public class MechanicService {
 
         validateProgressColor(newStatus);
         issue.setProgressColor(newStatus.toLowerCase());
+
+        LocalDateTime now = LocalDateTime.now();
+        if ("amarillo".equalsIgnoreCase(newStatus) && issue.getAcceptedAt() == null) {
+            issue.setAcceptedAt(now);
+        } else if ("naranja".equalsIgnoreCase(newStatus) && issue.getInProgressAt() == null) {
+            issue.setInProgressAt(now);
+        } else if ("verde".equalsIgnoreCase(newStatus) && issue.getFixedAt() == null) {
+            issue.setFixedAt(now);
+        }
+
         issue.setUpdatedAt(LocalDateTime.now());
         issueRepository.save(issue);
     }
@@ -83,9 +93,13 @@ public class MechanicService {
                 .clientAvatar(client.getAvatarUrl())
                 .carInfo(buildCarInfo(issue))
                 .problemDescription(issue.getDescription())
-            .aiDiagnosis(issue.getAiDiagnosis())
-            .recommendedParts(readRecommendedParts(issue.getRecommendedParts()))
-            .estimatedPrice(issue.getEstimatedPrice())
+                .aiDiagnosis(issue.getAiDiagnosis())
+                .recommendedParts(readRecommendedParts(issue.getRecommendedParts()))
+                .estimatedPrice(issue.getEstimatedPrice())
+                .createdAt(issue.getCreatedAt())
+                .acceptedAt(issue.getAcceptedAt())
+                .inProgressAt(issue.getInProgressAt())
+                .fixedAt(issue.getFixedAt())
                 .status(issue.getProgressColor())
                 .latestUpdate(issue.getLatestUpdate())
                 .sessionUuid(issue.getSessionUuid())
