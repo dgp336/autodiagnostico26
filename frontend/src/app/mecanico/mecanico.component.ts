@@ -10,7 +10,7 @@ import { AuthStateService } from '../services/auth-state.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './mecanico.component.html',
-  styleUrl: './mecanico.component.css'
+  styleUrls: ['./mecanico.component.css']
 })
 export class MecanicoComponent implements OnInit, OnDestroy {
   mechanicName = 'Mecánico';

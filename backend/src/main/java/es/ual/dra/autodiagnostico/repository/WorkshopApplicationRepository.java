@@ -15,4 +15,6 @@ public interface WorkshopApplicationRepository extends JpaRepository<WorkshopApp
     Optional<WorkshopApplication> findFirstByApplicantEmailIgnoreCaseAndStatus(String applicantEmail, WorkshopApplicationStatus status);
 
     boolean existsByApplicantEmailIgnoreCaseAndStatus(String applicantEmail, WorkshopApplicationStatus status);
+
+    java.util.List<WorkshopApplication> findByApprovedWorkshopId(Long workshopId);
 }
