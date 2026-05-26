@@ -74,3 +74,40 @@
   font-weight: 600;
   font-size: 0.9rem;
 }
+
+/* Dark mode variants */
+:host-context(.dark) .home-submit-error {
+  color: #ff6b6b;
+}
+
+:host-context(.dark) .home-save-vehicle {
+  background: #1e293b;
+  border: 1px solid #444;
+}
+
+:host-context(.dark) .home-save-vehicle-hint {
+  color: #ffffff;
+}
+
+:host-context(.dark) .home-save-vehicle-btn {
+  background: #21304a;
+  border-color: #21304a;
+  color: #ffffff
+}
+
+:host-context(.dark) .home-save-vehicle-btn:disabled {
+  background: #555;
+  border-color: #555;
+}
+
+:host-context(.dark) .home-save-vehicle-sub {
+  color: #bbb;
+}
+
+:host-context(.dark) .home-save-vehicle-success {
+  color: #81c784;
+}
+
+:host-context(.dark) .home-save-vehicle-error {
+  color: #ff6b6b;
+}
