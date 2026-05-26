@@ -1,0 +1,71 @@
+<div class="contact-form-card">
+  <h3>Contactar con el taller</h3>
+  <p class="form-intro">Rellena el formulario y te responderán lo antes posible.</p>
+
+  <div class="form-success" *ngIf="success">
+    <span class="form-success__icon">&#10003;</span>
+    <span>Consulta enviada correctamente. Te contactaremos pronto.</span>
+  </div>
+
+  <form (ngSubmit)="submit()" #contactForm="ngForm" *ngIf="!success">
+    <div class="form-field">
+      <label for="contact-name">Nombre *</label>
+      <input
+        id="contact-name"
+        type="text"
+        [(ngModel)]="name"
+        name="name"
+        required
+        placeholder="Tu nombre"
+      />
+    </div>
+
+    <div class="form-field">
+      <label for="contact-email">Email *</label>
+      <input
+        id="contact-email"
+        type="email"
+        [(ngModel)]="email"
+        name="email"
+        required
+        placeholder="tu@email.com"
+      />
+    </div>
+
+    <div class="form-field">
+      <label for="contact-phone">Teléfono</label>
+      <input
+        id="contact-phone"
+        type="tel"
+        [(ngModel)]="phone"
+        name="phone"
+        placeholder="+34 600 000 000"
+      />
+    </div>
+
+    <div class="form-field">
+      <label for="contact-message">Mensaje *</label>
+      <textarea
+        id="contact-message"
+        [(ngModel)]="message"
+        name="message"
+        required
+        rows="4"
+        placeholder="Escribe tu consulta..."
+      ></textarea>
+    </div>
+
+    <p class="form-error" *ngIf="error">{{ error }}</p>
+
+    <div class="form-actions">
+      <button type="button" class="cancel-btn" (click)="cancel.emit()">Cancelar</button>
+      <button
+        type="submit"
+        class="submit-btn"
+        [disabled]="sending || !name || !email || !message"
+      >
+        {{ sending ? 'Enviando...' : 'Enviar consulta' }}
+      </button>
+    </div>
+  </form>
+</div>
