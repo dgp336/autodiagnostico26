@@ -156,6 +156,20 @@ public class WorkshopApplicationService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "No se puede eliminar un taller con casos asociados");
         }
 
+        // Clear any WorkshopApplication references to this workshop (approved_workshop_id)
+        java.util.List<WorkshopApplication> linkedApps = applicationRepository.findByApprovedWorkshopId(workshopId);
+        if (!linkedApps.isEmpty()) {
+            for (WorkshopApplication app : linkedApps) {
+                app.setApprovedWorkshop(null);
+                // also clear approvedMechanic if it points to the mechanic we're about to delete
+                if (app.getApprovedMechanic() != null && app.getApprovedMechanic().getId() != null
+                        && app.getApprovedMechanic().getId().equals(workshop.getMechanicId())) {
+                    app.setApprovedMechanic(null);
+                }
+            }
+            applicationRepository.saveAll(linkedApps);
+        }
+
         Long mechanicId = workshop.getMechanicId();
         workshopRepository.delete(workshop);
 
