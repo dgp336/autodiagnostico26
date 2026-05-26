@@ -23,6 +23,22 @@
       [editable]="canEditTracking">
       <p>En Revisión</p>
       <div class="step-date">{{ (tracking?.inProgressAt || tracking?.acceptedAt) | date:'short' }}</div>
+
+      @if (trackingUpdates.length > 0) {
+        <div class="tracking-updates">
+          <h4>Actualizaciones del mecánico</h4>
+          <ul>
+            @for (update of trackingUpdates; track update.createdAt + update.text) {
+              <li>
+                <p>{{ update.text }}</p>
+                <time>{{ update.createdAt | date:'short' }}</time>
+              </li>
+            }
+          </ul>
+        </div>
+      } @else {
+        <p class="tracking-updates-empty">Aún no hay actualizaciones del mecánico.</p>
+      }
     </mat-step>
 
     <mat-step label="Reparado" [completed]="!!tracking?.fixedAt" [editable]="false">
