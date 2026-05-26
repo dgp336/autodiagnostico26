@@ -73,7 +73,7 @@
             <a routerLink="/perfil" class="dropdown-item" role="menuitem">Mi perfil</a>
             <a routerLink="/mis-vehiculos" class="dropdown-item" role="menuitem">Mis vehículos</a>
             @if (authStateService.canAccessSeguimiento()) {
-            <a routerLink="/usuario/seguimiento" class="dropdown-item" role="menuitem">Seguimiento</a>
+            <a [routerLink]="seguimientoLink" class="dropdown-item" role="menuitem">Seguimiento</a>
             }
             <hr class="dropdown-divider" />
             <button class="dropdown-item dropdown-item--danger" (click)="onLogout()" role="menuitem">Cerrar
@@ -99,7 +99,7 @@
         </svg>
         Lista de clientes
       </a>
-      <a routerLink="/mecanico/seguimiento" routerLinkActive="nav-item--active" class="nav-item">
+      <a routerLink="/mecanico" routerLinkActive="nav-item--active" class="nav-item">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           aria-hidden="true">
           <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
@@ -125,15 +125,6 @@
           <polyline points="9 22 9 12 15 12 15 22" />
         </svg>
         Inicio
-      </a>
-      <a routerLink="/diagnostico" routerLinkActive="nav-item--active" class="nav-item">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          aria-hidden="true">
-          <circle cx="12" cy="12" r="10" />
-          <line x1="12" y1="8" x2="12" y2="12" />
-          <line x1="12" y1="16" x2="12.01" y2="16" />
-        </svg>
-        Diagnóstico
       </a>
       <a routerLink="/taller" routerLinkActive="nav-item--active" class="nav-item">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -172,14 +163,13 @@
     <nav class="mobile-nav" aria-label="Menú móvil">
       @if (authStateService.role() === 'TALLER') {
         <a routerLink="/mecanico" class="mobile-nav-link" (click)="toggleMobileMenu()">Lista de clientes</a>
-        <a routerLink="/mecanico/seguimiento" class="mobile-nav-link" (click)="toggleMobileMenu()">Seguimiento</a>
+        <a routerLink="/mecanico" class="mobile-nav-link" (click)="toggleMobileMenu()">Seguimiento</a>
       }
       @if (authStateService.role() === 'ADMIN') {
         <a routerLink="/admin" class="mobile-nav-link" (click)="toggleMobileMenu()">Administración</a>
       }
       @if (authStateService.role() === 'USER') {
         <a routerLink="/home" class="mobile-nav-link" (click)="toggleMobileMenu()">Inicio</a>
-        <a routerLink="/diagnostico" class="mobile-nav-link" (click)="toggleMobileMenu()">Diagnóstico</a>
         <a routerLink="/taller" class="mobile-nav-link" (click)="toggleMobileMenu()">Taller</a>
         @if (authStateService.canAccessSeguimiento()) {
           <a routerLink="/usuario/seguimiento" class="mobile-nav-link" (click)="toggleMobileMenu()">Seguimiento</a>

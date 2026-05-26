@@ -130,6 +130,10 @@ export interface MechanicClientTracking {
   aiDiagnosis: string;
   recommendedParts: DiagnosedPart[];
   estimatedPrice: number | null;
+  createdAt: string;
+  acceptedAt: string | null;
+  inProgressAt: string | null;
+  fixedAt: string | null;
   status: string;
   latestUpdate?: string;
   sessionUuid: string;
@@ -180,8 +184,8 @@ export interface VehicleSearchContext {
 // ── Autodiagnóstico (IA) ───────────────────────────────────────────────────
 
 export interface AutodiagnosisRequest {
-  clientId: number;
-  personalVehicleId: number;
+  clientId: number | null;
+  personalVehicleId: number | null;
   vehicleModelId: number;
   symptoms: string[];
   freeText: string;
@@ -211,6 +215,7 @@ export interface PersonalVehicleResponse {
   id: number;
   ownerId: number;
   vehicleModelId: number;
+  vehicleId: number | null;
   brand: string | null;
   vehicleName: string | null;
   modelName: string | null;

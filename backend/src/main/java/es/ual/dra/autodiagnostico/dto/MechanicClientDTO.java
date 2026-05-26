@@ -1,6 +1,7 @@
 package es.ual.dra.autodiagnostico.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import es.ual.dra.autodiagnostico.dto.autodiagnosis.DiagnosedPartDTO;
@@ -34,6 +35,14 @@ public class MechanicClientDTO {
     private List<DiagnosedPartDTO> recommendedParts;
 
     private BigDecimal estimatedPrice;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime acceptedAt;
+
+    private LocalDateTime inProgressAt;
+
+    private LocalDateTime fixedAt;
 
     private String status;
 

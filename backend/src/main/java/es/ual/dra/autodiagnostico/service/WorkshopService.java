@@ -1,7 +1,7 @@
 package es.ual.dra.autodiagnostico.service;
 
 import java.util.List;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -75,12 +75,12 @@ public class WorkshopService {
         AppUser mechanic = getMechanic(workshop);
 
         Issue issue = issueRepository
-            .findFirstByPersonalVehicleOwnerIdAndPersonalVehicleIdAndStatusAndActiveTrueOrderByCreatedAtDesc(
-                client.getId(),
-                personalVehicle.getId(),
-                IssueStatus.DRAFT)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "No existe un diagnostico previo para este vehiculo"));
+                .findFirstByPersonalVehicleOwnerIdAndPersonalVehicleIdAndStatusAndActiveTrueOrderByCreatedAtDesc(
+                        client.getId(),
+                        personalVehicle.getId(),
+                        IssueStatus.DRAFT)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "No existe un diagnostico previo para este vehiculo"));
 
         long activeIssues = issueRepository.countByWorkshopMechanicIdAndActiveTrue(mechanic.getId());
         if (activeIssues >= workshop.getVehicleLimit()) {
@@ -88,9 +88,9 @@ public class WorkshopService {
         }
 
         issue.setWorkshop(workshop);
-        issue.setSessionUuid(UUID.randomUUID().toString());
         issue.setStatus(IssueStatus.WORKSHOP_ASSIGNED);
         issue.setProgressColor("amarillo");
+        issue.setAcceptedAt(LocalDateTime.now());
         issue.setLatestUpdate("Taller seleccionado. Pendiente de primera revision del mecanico.");
         issue.setActive(true);
         issue = issueRepository.save(issue);
@@ -119,7 +119,8 @@ public class WorkshopService {
     private AppUser getMechanic(Workshop workshop) {
         return userRepository.findById(workshop.getMechanicId())
                 .filter(user -> user.getRole() == UserRole.TALLER)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mecanico del taller no encontrado"));
+                .orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mecanico del taller no encontrado"));
     }
 
     private WorkshopDTO toDto(Workshop workshop, Long clientId) {
@@ -186,6 +187,10 @@ public class WorkshopService {
                 .aiDiagnosis(issue.getAiDiagnosis())
                 .recommendedParts(deserializeRecommendedParts(issue.getRecommendedParts()))
                 .estimatedPrice(issue.getEstimatedPrice())
+                .createdAt(issue.getCreatedAt())
+                .acceptedAt(issue.getAcceptedAt())
+                .inProgressAt(issue.getInProgressAt())
+                .fixedAt(issue.getFixedAt())
                 .status(issue.getProgressColor())
                 .latestUpdate(issue.getLatestUpdate())
                 .sessionUuid(issue.getSessionUuid())

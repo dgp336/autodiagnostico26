@@ -21,7 +21,7 @@ interface DiagnosticoNavState {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './diagnostico.html',
-  styleUrls: ['./diagnostico.css'],
+  styleUrl: './diagnostico.css',
 })
 export class DiagnosticoComponent implements OnInit {
   private readonly api = inject(AutodiagnosisApiService);
@@ -65,11 +65,6 @@ export class DiagnosticoComponent implements OnInit {
       return;
     }
 
-    if (state.clientId == null || state.personalVehicleId == null) {
-      this.errorMessage.set('No se pudo resolver el cliente o el vehículo seleccionado.');
-      return;
-    }
-
     const payload: AutodiagnosisRequest = {
       clientId: state.clientId,
       personalVehicleId: state.personalVehicleId,
@@ -99,6 +94,11 @@ export class DiagnosticoComponent implements OnInit {
 
   aceptarDiagnostico(): void {
     if (this.savingIssue() || this.payload == null || this.resultado() == null) {
+      return;
+    }
+
+    if (this.payload.clientId == null || this.payload.personalVehicleId == null) {
+      this.errorMessage.set('Para aceptar el diagnóstico y elegir taller, guarda primero tu coche en tu garaje desde el inicio.');
       return;
     }
 

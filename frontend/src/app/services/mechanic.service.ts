@@ -14,6 +14,10 @@ export interface MechanicClient {
   aiDiagnosis: string;
   recommendedParts: DiagnosedPart[];
   estimatedPrice: number | null;
+  createdAt: string;
+  acceptedAt: string | null;
+  inProgressAt: string | null;
+  fixedAt: string | null;
   status: 'verde' | 'amarillo' | 'naranja' | 'rojo';
   latestUpdate?: string;
   sessionUuid: string;
