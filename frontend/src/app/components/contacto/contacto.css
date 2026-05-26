@@ -21,10 +21,7 @@
 
 .workshop-heading h2 {
   margin: 0;
-  letter-spacing: 0;
   color: var(--color-dark);
-  font-size: clamp(2rem, 4vw, 3.4rem);
-  line-height: 1.02;
 }
 
 .workshop-heading p {
