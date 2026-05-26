@@ -20,6 +20,14 @@ public class MechanicClientDTO {
 
     private Long clientId;
 
+    private Long workshopId;
+
+    private String workshopName;
+
+    private Long mechanicId;
+
+    private String mechanicName;
+
     private String clientName;
 
     private String clientEmail;

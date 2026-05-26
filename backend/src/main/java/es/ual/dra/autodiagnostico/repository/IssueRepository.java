@@ -30,6 +30,8 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
 
     List<Issue> findByPersonalVehicleOwnerIdAndActiveTrue(Long ownerId);
 
+    List<Issue> findByPersonalVehicleOwnerIdAndActiveTrueOrderByCreatedAtDesc(Long ownerId);
+
     Optional<Issue> findFirstByPersonalVehicleOwnerIdAndActiveTrue(Long ownerId);
 
     Optional<Issue> findByWorkshopMechanicIdAndPersonalVehicleOwnerIdAndActiveTrue(Long mechanicId, Long ownerId);
