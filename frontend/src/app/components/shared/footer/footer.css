@@ -205,6 +205,29 @@
   }
 }
 
+/* ── Compact TALLER footer ── */
+.footer-main--taller {
+  padding-block: 1rem;
+}
+
+.footer-main--taller .footer-tagline,
+.footer-main--taller .footer-socials {
+  display: none;
+}
+
+.footer-main--taller .footer-brand-col {
+  gap: 0;
+}
+
+.footer-main--taller .footer-brand img {
+  width: 32px;
+  height: 32px;
+}
+
+.footer-main--taller .footer-brand-name {
+  font-size: 0.95rem;
+}
+
 @media (max-width: 640px) {
   .footer-inner {
     grid-template-columns: 1fr;
