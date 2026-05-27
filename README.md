@@ -40,6 +40,9 @@ Nuestra arquitectura se basa en un stack moderno y eficiente:
 *   <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white" /> **Persistencia**: MySQL se encarga del almacenamiento y gestión de los datos.
 
 ---
+## 📚 Documentación
+La documentación técnica y guías están en la carpeta `documentacion`. Empieza por: [documentacion/README.md](documentacion/README.md)
+
 <p align="center">
   <b>© 2026 - Universidad de Almería</b>
 </p>
