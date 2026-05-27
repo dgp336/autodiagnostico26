@@ -20,10 +20,10 @@ import { CambiarRolComponent } from './components/cambiar-rol/cambiar-rol';
 
 export const routes: Routes = [
 	{ path: '', pathMatch: 'full', redirectTo: 'login' },
-	{ path: 'home', component: HomeComponent },
-	{ path: 'diagnostico', component: DiagnosticoComponent },
-	{ path: 'taller', component: TallerComponent },
-	{ path: 'mecanico', loadComponent: () => import('./mecanico/mecanico.component').then((m) => m.MecanicoComponent) },
+	{ path: 'home', component: HomeComponent, canActivate: [authGuard] },
+	{ path: 'diagnostico', component: DiagnosticoComponent, canActivate: [authGuard] },
+	{ path: 'taller', component: TallerComponent, canActivate: [authGuard] },
+	{ path: 'mecanico', loadComponent: () => import('./mecanico/mecanico.component').then((m) => m.MecanicoComponent), canActivate: [authGuard] },
 	{
 		path: 'usuario/seguimiento',
 		component: SeguimientoComponent,
@@ -38,8 +38,8 @@ export const routes: Routes = [
 		{ path: '', pathMatch: 'full', redirectTo: 'chat' },
 		{ path: 'chat', loadComponent: () => import('./components/seguimiento/chat/chat').then((m) => m.SeguimientoChatComponent) }
 	] },
-	{ path: 'historial', component: HistorialComponent },
-	{ path: 'contacto', component: ContactoComponent },
+	{ path: 'historial', component: HistorialComponent, canActivate: [authGuard] },
+	{ path: 'contacto', component: ContactoComponent, canActivate: [authGuard] },
 	{ path: 'perfil', component: PerfilComponent, canActivate: [authGuard], children: [
 		{ path: '', pathMatch: 'full', redirectTo: 'informacion' },
 		{ path: 'informacion', loadComponent: () => import('./components/perfil/informacion/informacion').then((m) => m.PerfilInformacionComponent) },
@@ -47,7 +47,7 @@ export const routes: Routes = [
 		{ path: 'vehiculo', loadComponent: () => import('./components/perfil/vehiculo/vehiculo').then((m) => m.PerfilVehiculoComponent) },
 		{ path: 'preferencias', loadComponent: () => import('./components/perfil/preferencias/preferencias').then((m) => m.PerfilPreferenciasComponent) }
 	] },
-	{ path: 'mis-vehiculos', component: MisVehiculosComponent },
+	{ path: 'mis-vehiculos', component: MisVehiculosComponent, canActivate: [authGuard] },
 	{ path: 'login', component: LoginComponent },
 	{ path: 'registro', component: LoginComponent },
 	{ path: 'admin', component: AdminComponent, canActivate: [adminGuard] },
