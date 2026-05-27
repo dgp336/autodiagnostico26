@@ -12,6 +12,14 @@
 		</div>
 	</header>
 
+	<div class="admin-page-actions">
+		<a routerLink="/admin" class="action-card admin-page-actions__card">
+			<span class="action-card__eyebrow">Volver</span>
+			<strong>Panel general</strong>
+			<p>Regresa a los accesos rápidos del administrador.</p>
+		</a>
+	</div>
+
 	@if (error()) {
 		<div class="alert alert-error">{{ error() }}</div>
 	}
@@ -87,11 +95,4 @@
 		</section>
 	</section>
 
-	<div class="admin-footer-link">
-		<a routerLink="/admin" class="action-card admin-footer-link__card">
-			<span class="action-card__eyebrow">Volver</span>
-			<strong>Panel general</strong>
-			<p>Regresa a los accesos rápidos del administrador.</p>
-		</a>
-	</div>
 </section>
