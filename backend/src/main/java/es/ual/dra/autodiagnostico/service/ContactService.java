@@ -66,7 +66,10 @@ public class ContactService {
             String body = """
                 {"from":"AutoDiagnóstico <onboarding@resend.dev>","to":"%s","subject":"Respuesta de AutoDiagnóstico – %s","text":"%s"}
                 """.formatted(
-                    msg.getEmail(),
+                    // ⚠️ FALSEADO: Resend free plan solo permite enviar al email
+                    // verificado del owner. En produccion, reemplazar por
+                    // msg.getEmail() cuando se configure un dominio real en Resend.
+                    "pmg943@inlumine.ual.es",
                     escapeJson(msg.getName()),
                     escapeJson(reply.message())
                 );
