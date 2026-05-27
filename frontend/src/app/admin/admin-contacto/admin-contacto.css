@@ -1,0 +1,148 @@
+@import '../admin.component.css';
+
+.messages-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card--replied {
+  opacity: 0.75;
+  border-left: 4px solid #22c55e;
+}
+
+:host-context(body.dark) .card--replied {
+  border-left-color: #4ade80;
+}
+
+.card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.card__header h3 {
+  margin: 0 0 0.15rem;
+  font-size: 1.02rem;
+}
+
+.card__email {
+  margin: 0;
+  color: var(--admin-muted);
+  font-size: 0.88rem;
+}
+
+.card__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.date {
+  font-size: 0.8rem;
+  color: var(--admin-muted);
+}
+
+.status--replied {
+  background: #dcfce7;
+  color: #166534;
+}
+
+:host-context(body.dark) .status--replied {
+  background: rgba(34, 197, 94, 0.18);
+  color: #4ade80;
+}
+
+.card__message {
+  margin: 0.6rem 0 0;
+  color: #374151;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+:host-context(body.dark) .card__message {
+  color: #d1d5db;
+}
+
+.card__actions {
+  margin-top: 0.85rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ── Modal de respuesta ── */
+
+.reply-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.reply-modal {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.reply-modal h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+}
+
+.reply-to {
+  margin: 0 0 1rem;
+  color: var(--admin-muted);
+  font-size: 0.9rem;
+}
+
+.reply-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--admin-border);
+  border-radius: 0.8rem;
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: var(--admin-text);
+  background: var(--admin-surface-soft);
+  outline: none;
+  resize: vertical;
+  min-height: 100px;
+  box-sizing: border-box;
+}
+
+.reply-textarea:focus {
+  border-color: var(--admin-accent);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+}
+
+.form-error {
+  color: #dc2626;
+  font-weight: 600;
+  font-size: 0.88rem;
+  margin: 0.5rem 0 0;
+}
+
+:host-context(body.dark) .form-error {
+  color: #f87171;
+}
+
+.reply-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
