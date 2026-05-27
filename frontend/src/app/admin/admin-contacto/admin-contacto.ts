@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ContactApiService } from '../../services/contact-api.service';
 import { ContactMessage } from '../../services/api.models';
@@ -15,6 +15,7 @@ export class AdminContactoComponent implements OnInit {
   private readonly contactApi = inject(ContactApiService);
 
   readonly messages = signal<ContactMessage[]>([]);
+  readonly pendingCount = computed(() => this.messages().filter(m => !m.repliedAt).length);
   readonly loading = signal(true);
   readonly error = signal('');
 

@@ -7,7 +7,7 @@
     </div>
 
     <div class="admin-hero-card">
-      <strong>{{ messages().length }}</strong>
+      <strong>{{ pendingCount() }}</strong>
       <span>mensajes</span>
     </div>
   </header>
@@ -28,6 +28,9 @@
             <div>
               <h3>{{ msg.name }}</h3>
               <p class="card__email">{{ msg.email }}</p>
+              @if (msg.phone) {
+                <p class="card__phone">{{ msg.phone }}</p>
+              }
             </div>
             <div class="card__meta">
               <span class="status" [class.status--replied]="msg.repliedAt">
@@ -39,11 +42,19 @@
 
           <p class="card__message">{{ msg.message }}</p>
 
-          <div class="card__actions">
-            <button type="button" class="btn btn-primary" (click)="openReply(msg)">
-              Responder
-            </button>
-          </div>
+          @if (msg.repliedAt && msg.replyMessage) {
+            <div class="reply-display">
+              <div class="reply-divider"></div>
+              <p class="reply-display__label">Respondido el {{ msg.repliedAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+              <p class="reply-display__text">{{ msg.replyMessage }}</p>
+            </div>
+          } @else {
+            <div class="card__actions">
+              <button type="button" class="btn btn-primary" (click)="openReply(msg)">
+                Responder
+              </button>
+            </div>
+          }
         </article>
       }
     </div>
