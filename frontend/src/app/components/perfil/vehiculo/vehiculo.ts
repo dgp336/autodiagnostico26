@@ -1,53 +1,75 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
-import { MechanicService, MechanicClient } from '../../../services/mechanic.service';
+import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import { AuthStateService } from '../../../services/auth-state.service';
+import { PersonalVehicleApiService } from '../../../services/personal-vehicle-api.service';
+import { PersonalVehicleResponse } from '../../../services/api.models';
 
 @Component({
   selector: 'app-perfil-vehiculo',
   standalone: true,
+  imports: [CommonModule, RouterLink],
   templateUrl: './vehiculo.html',
   styleUrl: './vehiculo.css'
 })
 export class PerfilVehiculoComponent implements OnInit {
-  private readonly authStateService = inject(AuthStateService);
-  private readonly mechanicService = inject(MechanicService);
+  private readonly auth = inject(AuthStateService);
+  private readonly api = inject(PersonalVehicleApiService);
+  private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  tracking: MechanicClient | null = null;
-  isLoading = true;
-  errorMessage = '';
+  vehicles: PersonalVehicleResponse[] = [];
+  loading = false;
+  errorMessage: string | null = null;
 
   ngOnInit(): void {
-    const userId = this.authStateService.userId();
-    if (userId === null) {
-      this.isLoading = false;
-      this.errorMessage = 'No se pudo identificar al usuario.';
-      return;
-    }
+    this.loadVehicles();
+  }
 
-    // Updated service returns an array of trackings
-    this.mechanicService.getTrackingsForClient(userId).subscribe({
-      next: (data: MechanicClient[]) => {
-        // Use the first tracking if available
-        this.tracking = data.length > 0 ? data[0] : null;
-        this.isLoading = false;
+  diagnosticar(vehicle: PersonalVehicleResponse): void {
+    void this.router.navigate(['/home'], { queryParams: { personalVehicleId: vehicle.id } });
+  }
+
+  eliminar(vehicle: PersonalVehicleResponse): void {
+    const ownerId = this.auth.userId();
+    if (ownerId === null) return;
+    if (!confirm('¿Eliminar este vehículo de tu garaje?')) return;
+
+    this.api.delete(vehicle.id, ownerId).subscribe({
+      next: () => {
+        this.vehicles = this.vehicles.filter(v => v.id !== vehicle.id);
         this.cdr.detectChanges();
       },
       error: () => {
-        this.isLoading = false;
-        this.errorMessage = 'No tienes ningún vehículo asignado a un taller todavía.';
+        this.errorMessage = 'No se pudo eliminar el vehículo';
         this.cdr.detectChanges();
-      }
+      },
     });
   }
 
-  statusLabel(status: string): string {
-    const labels: Record<string, string> = {
-      verde: 'Correcto',
-      amarillo: 'En revisión',
-      naranja: 'Atención',
-      rojo: 'Urgente'
-    };
-    return labels[status] || status;
+  displayName(v: PersonalVehicleResponse): string {
+    const parts = [v.brand, v.vehicleName, v.modelName].filter(Boolean);
+    return parts.length > 0 ? parts.join(' ') : 'Vehículo sin nombre';
+  }
+
+  private loadVehicles(): void {
+    const ownerId = this.auth.userId();
+    if (ownerId === null) {
+      this.errorMessage = 'No se pudo identificar al usuario.';
+      return;
+    }
+    this.loading = true;
+    this.api.listByOwner(ownerId).subscribe({
+      next: (list) => {
+        this.vehicles = list;
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.errorMessage = 'No se pudieron cargar tus vehículos';
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+    });
   }
 }
