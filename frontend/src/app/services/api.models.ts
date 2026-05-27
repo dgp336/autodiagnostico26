@@ -70,7 +70,6 @@ export interface ChatJoinResponse {
 
 export interface ChatMessageRequest {
   participantId: number;
-  roomType: ChatRoomType;
   senderRole: ChatSenderRole;
   sessionUuid: string;
   commentText: string;

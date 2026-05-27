@@ -1,0 +1,120 @@
+:host {
+  display: block;
+  background: #fff;
+  color: #111827;
+}
+
+.seguimiento-shell {
+  max-width: 1024px;
+  margin: 2rem auto;
+  padding: 0 1rem 2rem;
+}
+
+.seguimiento-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.seguimiento-head h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.seguimiento-head p {
+  margin: 0.35rem 0 0;
+  color: #6b7280;
+}
+
+.back-button {
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tracking-summary {
+  margin-top: 1.2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.8rem;
+}
+
+.summary-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 0.8rem;
+  background: #f8fafc;
+}
+
+.summary-card--wide {
+  grid-column: span 2;
+}
+
+.summary-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.seguimiento-stepper {
+  margin-top: 1.2rem;
+}
+
+.step-date {
+  margin-top: 0.35rem;
+  color: #475569;
+}
+
+.tracking-updates {
+  margin-top: 0.9rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 0.75rem;
+  background: #f9fafb;
+}
+
+.tracking-updates h4 {
+  margin: 0 0 0.6rem;
+  font-size: 0.92rem;
+  color: #111827;
+}
+
+.tracking-updates ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.tracking-updates li {
+  border: 1px solid #dbeafe;
+  border-radius: 10px;
+  background: #eff6ff;
+  padding: 0.55rem 0.65rem;
+}
+
+.tracking-updates li p {
+  margin: 0;
+  color: #1e293b;
+}
+
+.tracking-updates li time {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #475569;
+}
+
+.tracking-updates-empty {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.chat-panel {
+  margin-top: 1.5rem;
+}

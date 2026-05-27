@@ -1,23 +1,77 @@
-<section class="tracking-shell split">
+<section class="seguimiento-shell split">
   <div class="left">
-    <header>
-      <p class="eyebrow">Seguimiento</p>
-      <h1>Cliente en taller #{{ clientId }}</h1>
+    <header class="seguimiento-head">
+      <h1>Seguimiento</h1>
+      <p>Cliente #{{ clientId }} en taller. Puedes actualizar el estado y el mensaje de seguimiento.</p>
     </header>
 
     @if (loading) {
       <p class="info">Cargando seguimiento...</p>
     }
 
-    @if (!loading && tracking?.latestUpdate) {
-      <div class="last-update">
-        <p class="title">Última actualización guardada</p>
-        <p>{{ tracking?.latestUpdate }}</p>
+    @if (!loading && tracking) {
+      <div class="tracking-summary-grid">
+        <article class="summary-card">
+          <span class="summary-label">Cliente</span>
+          <strong>{{ tracking.clientName }}</strong>
+          <small>{{ tracking.clientEmail }}</small>
+        </article>
+
+        <article class="summary-card">
+          <span class="summary-label">Vehículo</span>
+          <strong>{{ tracking.carInfo || 'Sin datos' }}</strong>
+          <small>Estado: {{ tracking.status | titlecase }}</small>
+        </article>
+
+        <article class="summary-card summary-card--wide">
+          <span class="summary-label">Diagnóstico IA</span>
+          <strong>{{ tracking.aiDiagnosis || 'Pendiente de diagnóstico' }}</strong>
+        </article>
       </div>
     }
 
+    @if (!loading) {
+      <div class="tracking-badge-row">
+        <span class="tracking-badge tracking-badge--{{ tracking?.status || 'amarillo' }}">
+          {{ getStatusLabel(tracking?.status || 'amarillo') }}
+        </span>
+        <span class="tracking-badge tracking-badge--session">Sesión {{ tracking?.sessionUuid | slice:0:8 }}</span>
+      </div>
+    }
+
+    <mat-horizontal-stepper
+      [linear]="false"
+      [selectedIndex]="selectedStepIndex"
+      [class.seguimiento-stepper--readonly]="!canEditTracking"
+      (selectionChange)="onStepperSelectionChange($event)">
+
+      <mat-step
+        label="Cita Agendada"
+        [completed]="!!tracking?.createdAt"
+        [editable]="canEditTracking">
+        <p>Cita Agendada</p>
+        <div class="step-date">{{ tracking?.createdAt | date:'short' }}</div>
+      </mat-step>
+
+      <mat-step
+        label="En Revisión"
+        [completed]="!!(tracking?.inProgressAt || tracking?.acceptedAt)"
+        [editable]="canEditTracking">
+        <p>En Revisión</p>
+        <div class="step-date">{{ (tracking?.inProgressAt || tracking?.acceptedAt) | date:'short' }}</div>
+      </mat-step>
+
+      <mat-step
+        label="Reparado"
+        [completed]="!!tracking?.fixedAt"
+        [editable]="canEditTracking">
+        <p>Reparado</p>
+        <div class="step-date">{{ tracking?.fixedAt | date:'short' }}</div>
+      </mat-step>
+    </mat-horizontal-stepper>
+
     <div class="status-row">
-      <label>Status:</label>
+      <label>Estado del coche:</label>
       <div class="status-controls">
         <button type="button" (click)="setStatus('verde')" [class.active]="status==='verde'">Verde</button>
         <button type="button" (click)="setStatus('amarillo')" [class.active]="status==='amarillo'">Amarillo</button>
@@ -26,6 +80,13 @@
       </div>
     </div>
 
+    @if (!loading && tracking?.latestUpdate) {
+      <div class="last-update">
+        <p class="title">Última actualización guardada</p>
+        <p>{{ tracking?.latestUpdate }}</p>
+      </div>
+    }
+
     <label>
       Actualización para el cliente
       <textarea [(ngModel)]="message" rows="4" placeholder="Escribe una actualización para el usuario"></textarea>
@@ -33,18 +94,23 @@
 
     <button type="button" (click)="addMessage()">Enviar actualización</button>
 
-    <div class="chat-log">
-      <p *ngFor="let update of updates">{{ update }}</p>
-    </div>
+    <section class="updates-panel">
+      <h3>Actualizaciones enviadas al cliente</h3>
+      @if (updates.length > 0) {
+        <div class="chat-log">
+          <p *ngFor="let update of updates">{{ update }}</p>
+        </div>
+      } @else {
+        <p class="updates-empty">Aún no has enviado actualizaciones.</p>
+      }
+    </section>
   </div>
 
- <aside class="right">
-@if (tracking?.sessionUuid) {
-  <app-seguimiento-chat
-    [participantIdInput]="chatParticipantId"
-    [sessionUuidInput]="tracking!.sessionUuid">
-  </app-seguimiento-chat>
-}
-</aside>
-
+  <aside class="right">
+    @if (tracking?.sessionUuid) {
+    <app-seguimiento-chat
+      [sessionUuidInput]="tracking!.sessionUuid">
+    </app-seguimiento-chat>
+    }
+  </aside>
 </section>

@@ -19,7 +19,7 @@
       @if (mode === 'register') {
         <label class="field">
           <span>Nombre completo</span>
-          <input type="text" [(ngModel)]="fullName" name="fullName" autocomplete="name" placeholder="Pablo Martín" />
+          <input type="text" [(ngModel)]="fullName" name="fullName" autocomplete="name" />
         </label>
       }
 
@@ -33,13 +33,13 @@
 
       <label class="field">
         <span>Contraseña</span>
-        <input type="password" [(ngModel)]="password" name="password" autocomplete="current-password" placeholder="••••••••" />
+        <input type="password" [(ngModel)]="password" name="password" autocomplete="current-password" />
       </label>
 
       @if (mode === 'register') {
         <label class="field">
           <span>Confirmar contraseña</span>
-          <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" autocomplete="new-password" placeholder="••••••••" />
+          <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" autocomplete="new-password" />
         </label>
       }
 

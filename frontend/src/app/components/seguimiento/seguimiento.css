@@ -27,6 +27,148 @@
   color: #ffffff;
 }
 
+.tracking-list-panel {
+  margin: 1rem 0 1.2rem;
+  padding: 1rem;
+  border: 1px solid #dbeafe;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.tracking-list-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.tracking-list-head h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+.tracking-list-head p {
+  margin: 0.2rem 0 0;
+  color: #475569;
+}
+
+.tracking-list-count {
+  min-width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 800;
+}
+
+.tracking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.tracking-card {
+  text-align: left;
+  cursor: pointer;
+  border-radius: 14px;
+  border: 1px solid #cbd5e1;
+  padding: 0.9rem;
+  background: #fff;
+  color: #0f172a;
+}
+
+.tracking-card--active {
+  box-shadow: 0 0 0 2px #1a6bbd33;
+}
+
+.tracking-card-top {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.tracking-card-title {
+  margin: 0;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.tracking-card-subtitle,
+.tracking-card-update,
+.tracking-card-meta {
+  margin: 0.25rem 0 0;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.tracking-card-update {
+  margin-top: 0.6rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.tracking-card-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.55rem;
+  font-size: 0.82rem;
+}
+
+.tracking-card-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.tracking-card--verde {
+  border-color: #86efac;
+}
+
+.tracking-card--verde .tracking-card-status {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.tracking-card--amarillo {
+  border-color: #fde68a;
+}
+
+.tracking-card--amarillo .tracking-card-status {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.tracking-card--naranja {
+  border-color: #fdba74;
+}
+
+.tracking-card--naranja .tracking-card-status {
+  background: #ffedd5;
+  color: #9a3412;
+}
+
+.tracking-card--rojo {
+  border-color: #fca5a5;
+}
+
+.tracking-card--rojo .tracking-card-status {
+  background: #fee2e2;
+  color: #991b1b;
+}
 
 .seguimiento-nav {
   margin-top: 1rem;
@@ -67,6 +209,53 @@
 
 .seguimiento-content {
   margin-top: 1rem;
+}
+
+.tracking-updates {
+  margin-top: 0.9rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 0.75rem;
+  background: #f9fafb;
+}
+
+.tracking-updates h4 {
+  margin: 0 0 0.6rem;
+  font-size: 0.92rem;
+  color: #111827;
+}
+
+.tracking-updates ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.tracking-updates li {
+  border: 1px solid #dbeafe;
+  border-radius: 10px;
+  background: #eff6ff;
+  padding: 0.55rem 0.65rem;
+}
+
+.tracking-updates li p {
+  margin: 0;
+  color: #1e293b;
+}
+
+.tracking-updates li time {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #475569;
+}
+
+.tracking-updates-empty {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  color: #6b7280;
 }
 
 .seguimiento-stepper--readonly {
@@ -117,6 +306,29 @@
 :host(.dark) .badge {
   background: var(--badge-bg-dark);
   color: var(--badge-text-dark);
+}
+
+:host(.dark) .tracking-updates {
+  background: #111827;
+  border-color: #374151;
+}
+
+:host(.dark) .tracking-updates h4 {
+  color: #f9fafb;
+}
+
+:host(.dark) .tracking-updates li {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+:host(.dark) .tracking-updates li p {
+  color: #e5e7eb;
+}
+
+:host(.dark) .tracking-updates li time,
+:host(.dark) .tracking-updates-empty {
+  color: #9ca3af;
 }
 
 

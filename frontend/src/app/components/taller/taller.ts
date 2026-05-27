@@ -141,7 +141,7 @@ export class TallerComponent implements OnInit {
         localStorage.setItem('trackingSessionUuid', response.tracking.sessionUuid);
         this.selecting.set(false);
         this.loadWorkshops();
-        this.router.navigate(['/usuario/seguimiento/chat']);
+        this.router.navigate(['/usuario/seguimiento/detalle']);
       },
       error: (err) => {
         this.error.set(err.status === 409
@@ -156,7 +156,7 @@ export class TallerComponent implements OnInit {
     if (sessionUuid) {
       localStorage.setItem('trackingSessionUuid', sessionUuid);
     }
-    this.router.navigate(['/usuario/seguimiento/chat']);
+    this.router.navigate(['/usuario/seguimiento/detalle']);
   }
 
   occupancyPercent(workshop: Workshop): number {

@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import es.ual.dra.autodiagnostico.repository.EngineRepository;
-import es.ual.dra.autodiagnostico.repository.ProductRepository;
 import es.ual.dra.autodiagnostico.repository.VehicleModelRepository;
 import es.ual.dra.autodiagnostico.repository.VehicleRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,20 +21,18 @@ public class CarDataPopulationRunner implements ApplicationRunner {
     private final VehicleRepository vehicleRepository;
     private final VehicleModelRepository vehicleModelRepository;
     private final EngineRepository engineRepository;
-    private final ProductRepository productRepository;
 
     @Override
     public void run(ApplicationArguments args) {
 
         try {
 
-            long count = vehicleRepository.count()
-                    + vehicleModelRepository.count()
-                    + engineRepository.count()
-                    + productRepository.count();
+            long vehicleCount = vehicleRepository.count();
+            long modelCount = vehicleModelRepository.count();
+            long engineCount = engineRepository.count();
 
-            if (count > 0) {
-                log.info("Database already populated");
+            if (vehicleCount + modelCount + engineCount > 0) {
+                log.info("Database already populated (vehicles/models/engines)");
                 return;
             }
 

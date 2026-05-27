@@ -6,6 +6,10 @@ import { DiagnosedPart } from './api.models';
 
 export interface MechanicClient {
   clientId: number;
+  workshopId: number | null;
+  workshopName: string | null;
+  mechanicId?: number | null;
+  mechanicName?: string | null;
   clientName: string;
   clientEmail: string;
   clientAvatar: string;
@@ -21,6 +25,7 @@ export interface MechanicClient {
   status: 'verde' | 'amarillo' | 'naranja' | 'rojo';
   latestUpdate?: string;
   sessionUuid: string;
+  issueId: number;
   tallerAssignmentId: number;
 }
 
@@ -36,12 +41,16 @@ export class MechanicService {
     return this.http.get<MechanicClient[]>(`${this.baseUrl}/${mechanicId}/clients`);
   }
 
-  updateClientStatus(mechanicId: number, clientId: number, status: string): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/${mechanicId}/clients/${clientId}/status`, { status });
+  getTrackingsForClient(clientId: number): Observable<MechanicClient[]> {
+    return this.http.get<MechanicClient[]>(`${this.baseUrl}/client/${clientId}/trackings`);
   }
 
-  updateTrackingMessage(mechanicId: number, clientId: number, message: string): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/${mechanicId}/clients/${clientId}/tracking-update`, { message });
+  updateTrackingStatus(mechanicId: number, sessionUuid: string, status: string): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/${mechanicId}/tracking/${encodeURIComponent(sessionUuid)}/status`, { status });
+  }
+
+  updateTrackingMessageBySessionUuid(mechanicId: number, sessionUuid: string, message: string): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/${mechanicId}/tracking/${encodeURIComponent(sessionUuid)}/tracking-update`, { message });
   }
 
   loadClientsForMechanic(mechanicId: number): void {
@@ -51,12 +60,8 @@ export class MechanicService {
     });
   }
 
-  getTrackingForClient(clientId: number) {
-    return this.http.get<MechanicClient>(`${this.baseUrl}/client/${clientId}/tracking`);
-  }
-
-  getTracking(clientId: number): Observable<MechanicClient> {
-    return this.getTrackingForClient(clientId);
+  getTrackingBySessionUuid(sessionUuid: string): Observable<MechanicClient> {
+    return this.http.get<MechanicClient>(`${this.baseUrl}/tracking/${encodeURIComponent(sessionUuid)}`);
   }
 
 }

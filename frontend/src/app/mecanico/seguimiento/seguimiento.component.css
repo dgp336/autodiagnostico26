@@ -5,14 +5,109 @@
   color: #0f172a;
 }
 
-/* Dark mode base */
-:host-context(.dark) .tracking-shell {
-  background: #11243d;
-  color: #e5e7eb;
+.seguimiento-shell {
+  min-height: 100vh;
+  padding: 28px;
+  background: radial-gradient(circle at 0% 0%, #f0f9ff 0%, #f8fafc 45%, #e2e8f0 100%);
+  color: #0f172a;
 }
 
-:host-context(.dark) h1 {
-  color: var(--text-dark, #e5e7eb);
+.seguimiento-head {
+  margin-bottom: 0.9rem;
+}
+
+.seguimiento-head h1 {
+  margin: 0;
+  font-size: 1.45rem;
+  color: #0f172a;
+}
+
+.seguimiento-head p {
+  margin-top: 0.35rem;
+  color: #334155;
+}
+
+.tracking-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0.9rem 0 1rem;
+}
+
+.tracking-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 0.9rem;
+}
+
+.tracking-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.tracking-badge--session {
+  background: #f8fafc;
+  color: #334155;
+  border-color: #cbd5e1;
+}
+
+.tracking-badge--verde {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #86efac;
+}
+
+.tracking-badge--amarillo {
+  background: #fef9c3;
+  color: #854d0e;
+  border-color: #fde68a;
+}
+
+.tracking-badge--naranja {
+  background: #ffedd5;
+  color: #9a3412;
+  border-color: #fdba74;
+}
+
+.tracking-badge--rojo {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
+.summary-card {
+  border: 1px solid #dbeafe;
+  background: #eff6ff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: grid;
+  gap: 2px;
+}
+
+.summary-card--wide {
+  grid-column: 1 / -1;
+}
+
+.summary-label {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #2563eb;
+}
+
+.summary-card strong {
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.summary-card small {
+  color: #475569;
 }
 
 .split {
@@ -98,8 +193,30 @@
   gap: 8px;
 }
 
-:host-context(.dark) .status-controls {
-  background: transparent;
+.status-controls button {
+  background: #e2e8f0;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+}
+
+.status-controls button.active {
+  color: #ffffff;
+}
+
+.status-controls button:nth-child(1).active {
+  background: #16a34a;
+}
+
+.status-controls button:nth-child(2).active {
+  background: #ca8a04;
+}
+
+.status-controls button:nth-child(3).active {
+  background: #ea580c;
+}
+
+.status-controls button:nth-child(4).active {
+  background: #dc2626;
 }
 
 label {
@@ -141,27 +258,84 @@ button:hover {
   box-shadow: 0 8px 16px rgba(37, 99, 235, 0.25);
 }
 
-:host-context(.dark) button:hover {
-  box-shadow: 0 8px 16px rgba(37, 100, 235, 0.199);
-}
-
-.status-controls button.active {
-  background: #0f172a;
-}
-
-:host-context(.dark) .status-controls button.active {
-  background: #78849e;
-  color: #ffffff;
-}
-
 .chat-log {
   margin-top: 20px;
   display: grid;
   gap: 10px;
 }
 
-:host-context(.dark) .chat-log {
-  background: transparent;
+.updates-panel {
+  margin-top: 1rem;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  background: #f8fbff;
+  padding: 12px;
+}
+
+.updates-panel h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #1d4ed8;
+}
+
+.updates-empty {
+  margin-top: 8px;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+:host-context(body.dark) .seguimiento-shell {
+  background: radial-gradient(circle at 0% 0%, #0f172a 0%, #111827 45%, #020617 100%);
+  color: #e2e8f0;
+}
+
+:host-context(body.dark) .left,
+:host-context(body.dark) .right {
+  background: rgba(15, 23, 42, 0.82);
+  border-color: #334155;
+}
+
+:host-context(body.dark) .seguimiento-head h1 {
+  color: #f8fafc;
+}
+
+:host-context(body.dark) .seguimiento-head p,
+:host-context(body.dark) .info,
+:host-context(body.dark) .updates-empty,
+:host-context(body.dark) .summary-card small {
+  color: #94a3b8;
+}
+
+:host-context(body.dark) .summary-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+:host-context(body.dark) .summary-card strong {
+  color: #e2e8f0;
+}
+
+:host-context(body.dark) .summary-label,
+:host-context(body.dark) .updates-panel h3,
+:host-context(body.dark) .last-update .title {
+  color: #93c5fd;
+}
+
+:host-context(body.dark) .last-update,
+:host-context(body.dark) .updates-panel {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+:host-context(body.dark) .last-update p,
+:host-context(body.dark) .chat-log p {
+  color: #e2e8f0;
+}
+
+:host-context(body.dark) textarea {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-color: #334155;
 }
 
 .chat-log p {
@@ -179,8 +353,40 @@ button:hover {
   color: #d1d5db;
 }
 
+:host-context(body.dark) .tracking-badge--session {
+  background: #0f172a;
+  color: #cbd5e1;
+  border-color: #334155;
+}
+
+:host-context(body.dark) .status-controls button {
+  background: #334155;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+
+:host-context(body.dark) .status-controls button:nth-child(1).active {
+  background: #15803d;
+}
+
+:host-context(body.dark) .status-controls button:nth-child(2).active {
+  background: #a16207;
+}
+
+:host-context(body.dark) .status-controls button:nth-child(3).active {
+  background: #c2410c;
+}
+
+:host-context(body.dark) .status-controls button:nth-child(4).active {
+  background: #b91c1c;
+}
+
 @media (max-width: 980px) {
   .split {
+    grid-template-columns: 1fr;
+  }
+
+  .tracking-summary-grid {
     grid-template-columns: 1fr;
   }
 }

@@ -16,6 +16,7 @@ import es.ual.dra.autodiagnostico.dto.autodiagnosis.DiagnosedPartDTO;
 import es.ual.dra.autodiagnostico.model.entitity.core.Issue;
 import es.ual.dra.autodiagnostico.model.entitity.user.AppUser;
 import es.ual.dra.autodiagnostico.repository.IssueRepository;
+import es.ual.dra.autodiagnostico.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -23,14 +24,17 @@ import lombok.RequiredArgsConstructor;
 public class MechanicService {
 
     private final IssueRepository issueRepository;
+    private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
 
-    public MechanicClientDTO getTrackingForClient(Long clientId) {
-        Issue issue = issueRepository.findFirstByPersonalVehicleOwnerIdAndActiveTrue(clientId).orElse(null);
-        if (issue == null) {
+    public MechanicClientDTO getTrackingBySessionUuid(String sessionUuid) {
+        if (sessionUuid == null || sessionUuid.isBlank()) {
             return null;
         }
-        return toDto(issue);
+
+        return issueRepository.findBySessionUuid(sessionUuid)
+                .map(this::toDto)
+                .orElse(null);
     }
 
     public List<MechanicClientDTO> getClientsForMechanic(Long mechanicId) {
@@ -38,10 +42,15 @@ public class MechanicService {
         return issues.stream().map(this::toDto).collect(Collectors.toList());
     }
 
-    public void updateClientStatus(Long mechanicId, Long clientId, String newStatus) {
-        Issue issue = issueRepository
-                .findByWorkshopMechanicIdAndPersonalVehicleOwnerIdAndActiveTrue(mechanicId, clientId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Expediente no encontrado"));
+    public List<MechanicClientDTO> getTrackingsForClient(Long clientId) {
+        return issueRepository.findByPersonalVehicleOwnerIdAndActiveTrueOrderByCreatedAtDesc(clientId)
+                .stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public void updateClientStatusBySessionUuid(Long mechanicId, String sessionUuid, String newStatus) {
+        Issue issue = resolveIssueForMechanic(mechanicId, sessionUuid);
 
         validateProgressColor(newStatus);
         issue.setProgressColor(newStatus.toLowerCase());
@@ -59,10 +68,8 @@ public class MechanicService {
         issueRepository.save(issue);
     }
 
-    public void updateLatestTrackingMessage(Long mechanicId, Long clientId, String latestUpdate) {
-        Issue issue = issueRepository
-                .findByWorkshopMechanicIdAndPersonalVehicleOwnerIdAndActiveTrue(mechanicId, clientId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Expediente no encontrado"));
+    public void updateLatestTrackingMessageBySessionUuid(Long mechanicId, String sessionUuid, String latestUpdate) {
+        Issue issue = resolveIssueForMechanic(mechanicId, sessionUuid);
 
         String normalized = latestUpdate == null ? "" : latestUpdate.trim();
         if (normalized.length() > 1500) {
@@ -81,13 +88,33 @@ public class MechanicService {
         }
     }
 
+    private Issue resolveIssueForMechanic(Long mechanicId, String sessionUuid) {
+        Issue issue = issueRepository.findBySessionUuid(sessionUuid)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Expediente no encontrado"));
+
+        Long issueMechanicId = issue.getWorkshop() == null ? null : issue.getWorkshop().getMechanicId();
+        if (issueMechanicId == null || !issueMechanicId.equals(mechanicId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Expediente no encontrado");
+        }
+
+        return issue;
+    }
+
     private MechanicClientDTO toDto(Issue issue) {
         AppUser client = issue.getClient();
         if (client == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado");
         }
+        Long mechanicId = issue.getWorkshop() == null ? null : issue.getWorkshop().getMechanicId();
+        String mechanicName = mechanicId == null
+                ? null
+                : userRepository.findById(mechanicId).map(AppUser::getFullName).orElse(null);
         return MechanicClientDTO.builder()
                 .clientId(client.getId())
+                .workshopId(issue.getWorkshop() == null ? null : issue.getWorkshop().getId())
+                .workshopName(issue.getWorkshop() == null ? null : issue.getWorkshop().getName())
+                .mechanicId(mechanicId)
+                .mechanicName(mechanicName)
                 .clientName(client.getFullName())
                 .clientEmail(client.getEmail())
                 .clientAvatar(client.getAvatarUrl())

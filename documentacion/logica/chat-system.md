@@ -13,14 +13,6 @@ usando sesiones compartidas.
 
 # Conceptos Principales
 
-## Room Type
-
-```txt
-SEGUIMIENTO
-```
-
----
-
 # Session UUID
 
 Cada conversación usa:
@@ -190,3 +182,14 @@ Toda persistencia ocurre en backend + MySQL.
 ↓
 
 ## render Angular
+
+---
+
+## Notas recientes
+
+- Se han introducido cambios en el manejo de seguimientos y presencia. Ver resumen en: [Seguimientos: sessionUuid y cambios recientes](seguimiento-sessionUuid.md)
+- Resumen breve:
+
+  - `sessionUuid` es el identificador canónico del seguimiento.
+  - El seed crea `chat_room_presence` para demos y el backend valida presencia antes de `sendMessage`.
+  - Las actualizaciones por parte del mecánico deben usar `sessionUuid` (no `clientId`).
