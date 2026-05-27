@@ -43,6 +43,17 @@ export class HomeComponent {
   }
 
   ngOnInit(): void {
+    const role = this.auth.role();
+    if (role === 'TALLER') {
+      void this.router.navigate(['/mecanico'], { replaceUrl: true });
+      return;
+    }
+
+    if (role === 'ADMIN') {
+      void this.router.navigate(['/admin'], { replaceUrl: true });
+      return;
+    }
+
     if (!this.isLoggedIn) {
       return;
     }

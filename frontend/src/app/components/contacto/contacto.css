@@ -1,0 +1,284 @@
+:host {
+  display: block;
+  background: var(--color-bg-lighter);
+  color: var(--color-ink);
+  min-height: 100%;
+}
+
+.workshop-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 42px 20px 64px;
+}
+
+.workshop-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 26px;
+}
+
+.workshop-heading h2 {
+  margin: 0;
+  color: var(--color-dark);
+}
+
+.workshop-heading p {
+  max-width: 670px;
+  margin: 12px 0 0;
+  color: var(--color-ink-muted);
+  line-height: 1.6;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--color-primary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.refresh-button {
+  background: var(--color-bg-white);
+  color: var(--color-ink);
+  padding: 12px 16px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.refresh-button:hover {
+  transform: translateY(-1px);
+}
+
+.refresh-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+  transform: none;
+}
+
+.alert {
+  border-left: 4px solid var(--color-error);
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--color-error);
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 20px;
+  font-weight: var(--font-weight-medium);
+}
+
+.workshop-layout {
+  display: grid;
+  grid-template-columns: minmax(360px, 420px) 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.right-panel {
+  position: sticky;
+  top: 24px;
+  height: calc(100vh - 140px);
+  min-height: 500px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+.right-panel app-map {
+  height: 100%;
+  margin-bottom: 0;
+}
+
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.location-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  color: var(--color-ink);
+  background: var(--color-bg-white);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.location-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.location-input::placeholder {
+  color: var(--color-ink-muted);
+}
+
+.workshop-item {
+  display: grid;
+  grid-template-columns: 92px 1fr auto;
+  gap: 14px;
+  width: 100%;
+  min-height: 112px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-white);
+  color: inherit;
+  text-align: left;
+  box-shadow: var(--shadow-sm);
+  align-items: center;
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.workshop-item:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.workshop-item--selected {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+.workshop-item img {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+.workshop-item__content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+  color: var(--color-ink-muted);
+  font-size: 0.92rem;
+  min-width: 0;
+}
+
+.workshop-item__content strong {
+  color: var(--color-dark);
+}
+
+.workshop-item__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.workshop-item__actions {
+  display: flex;
+  align-items: center;
+}
+
+.select-btn,
+.contact-btn {
+  border-radius: var(--radius-full);
+  padding: 8px 20px;
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-semibold);
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+  border: 1.5px solid var(--color-primary);
+}
+
+.select-btn {
+  background: var(--color-bg-white);
+  color: var(--color-primary);
+}
+
+.select-btn:hover {
+  background: var(--color-primary-light);
+}
+
+.contact-btn {
+  background: var(--color-primary);
+  color: var(--color-bg-white);
+  border-color: var(--color-primary);
+}
+
+.contact-btn:hover {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.workshop-item__schedule-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--color-ink-muted);
+  margin-top: 2px;
+}
+
+.status-badge {
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--color-error);
+}
+
+.status-badge--open {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--color-success);
+}
+
+.workshop-item__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2px;
+  font-size: 0.85rem;
+}
+
+.meta-distance {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  background: var(--color-primary-light);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.no-workshops-fallback {
+  text-align: center;
+  padding: 40px 20px;
+  background: var(--color-bg-white);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  color: var(--color-ink-muted);
+  font-weight: var(--font-weight-medium);
+  margin-top: 8px;
+}
+
+.loading-state {
+  display: grid;
+  place-items: center;
+  min-height: 320px;
+  color: var(--color-ink-muted);
+  font-weight: var(--font-weight-bold);
+}
