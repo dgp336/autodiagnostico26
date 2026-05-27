@@ -4,12 +4,14 @@
   --text-light: #111827;
   --text-dark: #f3f4f6;
 }
+
 .mechanic-shell {
   min-height: 100vh;
   padding: 24px;
   background: var(--bg-light);
   color: var(--text-light);
 }
+
 :host-context(body.dark) .mechanic-shell {
   background: var(--bg-dark);
   color: var(--text-dark);
@@ -23,8 +25,17 @@
   gap: 16px;
   padding: 20px 24px;
   border-radius: 20px;
-  background: rgba(15, 23, 42, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: var(--text-light);
+}
+
+:host-context(body.dark) .mechanic-header {
+  background: rgba(2, 6, 23, 0.96);
+  border-color: rgba(148, 163, 184, 0.22);
+}
+
+:host-context(body.dark) .mechanic-header h1 {
   color: var(--text-dark);
 }
 
@@ -33,7 +44,15 @@
   font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #93c5fd;
+  color: #003f52;
+}
+
+:host-context(body.dark) .eyebrow {
+  margin: 0 0 6px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffffff;
 }
 
 .mechanic-header h1 {
@@ -44,7 +63,11 @@
 
 .workshop {
   margin: 4px 0 0;
-  color: #cbd5e1;
+  color: #003f52;
+}
+
+:host-context(body.dark) .workshop {
+  color: #94a3b8;
 }
 
 .clients-button {
@@ -53,10 +76,15 @@
   justify-content: center;
   padding: 12px 18px;
   border-radius: 999px;
-  background: #38bdf8;
-  color: #082f49;
+  background: #1a6bbd;
+  color: #ffffff;
   text-decoration: none;
   font-weight: 700;
+}
+
+:host-context(body.dark) .clients-button {
+  background: #3b82f6;
+  color: #e0f2fe;
 }
 
 .clients-panel {
@@ -70,9 +98,16 @@
   cursor: pointer;
   border-radius: 20px;
   padding: 18px;
-  border: 1px solid rgba(148, 163, 184, 0.16);
-  background: rgba(15, 23, 42, 0.88);
-  box-shadow: 0 14px 40px rgba(15, 23, 42, 0.35);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 14px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+:host-context(body.dark) .client-card {
+  background: rgba(3, 7, 18, 0.95);
+  border-color: rgba(148, 163, 184, 0.2);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55);
 }
 
 .client-topline {
@@ -85,7 +120,11 @@
 .client-topline h2 {
   margin: 0;
   font-size: 18px;
-  color: #f8fafc;
+  color: var(--text-light);
+}
+
+:host-context(body.dark) .client-topline h2 {
+  color: var(--text-dark);
 }
 
 .status-pill {
@@ -97,26 +136,50 @@
   background: rgba(255, 255, 255, 0.08);
 }
 
+:host-context(body.dark) .status-pill {
+  background: rgba(255, 255, 255, 0.06);
+}
+
 .client-details p {
   margin: 10px 0 0;
-  color: #cbd5e1;
+  color: var(--text-light);
+}
+
+:host-context(body.dark) .client-details p {
+  color: #94a3b8;
 }
 
 .client-details strong {
-  color: #f8fafc;
+  color: var(--text-light);
+}
+
+:host-context(body.dark) .client-details strong {
+  color: var(--text-dark);
 }
 
 .recommended-parts,
 .recommended-parts strong,
 .recommended-parts ul,
 .recommended-parts li {
-  color: #e2e8f0;
+  color: #111827;
 }
+
+:host-context(body.dark) .recommended-parts,
+:host-context(body.dark) .recommended-parts strong,
+:host-context(body.dark) .recommended-parts ul,
+:host-context(body.dark) .recommended-parts li {
+  color: #cbd5e1;
+}
+
 
 .client-action {
   margin: 16px 0 0;
-  color: #7dd3fc;
+  color: #003f52;
   font-weight: 700;
+}
+
+:host-context(body.dark) .client-action {
+  color: #38bdf8;
 }
 
 .verde {
