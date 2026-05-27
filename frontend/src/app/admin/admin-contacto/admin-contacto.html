@@ -25,11 +25,13 @@
       @for (msg of messages(); track msg.id) {
         <article class="card" [class.card--replied]="msg.repliedAt">
           <div class="card__header">
-            <div>
-              <h3>{{ msg.name }}</h3>
-              <p class="card__email">{{ msg.email }}</p>
+            <div class="card__user-info">
+              <span class="card__name">{{ msg.name }}</span>
+              <span class="card__sep"></span>
+              <span class="card__email">{{ msg.email }}</span>
               @if (msg.phone) {
-                <p class="card__phone">{{ msg.phone }}</p>
+                <span class="card__sep"></span>
+                <span class="card__phone">{{ msg.phone }}</span>
               }
             </div>
             <div class="card__meta">
@@ -40,13 +42,17 @@
             </div>
           </div>
 
-          <p class="card__message">{{ msg.message }}</p>
+          <div class="card__message-box">
+            <p>{{ msg.message }}</p>
+          </div>
 
           @if (msg.repliedAt && msg.replyMessage) {
-            <div class="reply-display">
+            <div class="card__reply-section">
               <div class="reply-divider"></div>
-              <p class="reply-display__label">Respondido el {{ msg.repliedAt | date: 'dd/MM/yyyy HH:mm' }}</p>
-              <p class="reply-display__text">{{ msg.replyMessage }}</p>
+              <p class="reply-label">Respondido el {{ msg.repliedAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+              <div class="card__message-box">
+                <p>{{ msg.replyMessage }}</p>
+              </div>
             </div>
           } @else {
             <div class="card__actions">

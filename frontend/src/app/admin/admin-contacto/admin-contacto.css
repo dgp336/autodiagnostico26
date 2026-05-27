@@ -1,6 +1,7 @@
 @import '../admin.component.css';
 
 :host {
+  --admin-bg: #f3f4f6;
   --admin-surface: #ffffff;
   --admin-surface-soft: #fafafa;
   --admin-text: #0f172a;
@@ -10,6 +11,7 @@
 }
 
 :host-context(body.dark) {
+  --admin-bg: #0f172a;
   --admin-surface: #111827;
   --admin-surface-soft: #1f2937;
   --admin-text: #f8fafc;
@@ -36,31 +38,47 @@
 .card__header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 1rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0;
 }
 
-.card__header h3 {
-  margin: 0 0 0.15rem;
-  font-size: 1.02rem;
+.card__user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.card__name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--admin-text);
+  white-space: nowrap;
+}
+
+.card__sep {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--admin-muted);
+  opacity: 0.35;
+  flex-shrink: 0;
 }
 
 .card__email {
-  margin: 0;
   color: var(--admin-muted);
-  font-size: 0.88rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card__phone {
-  margin: 0.2rem 0 0;
-  font-size: 0.85rem;
   color: var(--admin-muted);
-}
-
-.card__phone::before {
-  content: "\1F4DE";
-  margin-right: 0.3rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
 }
 
 .card__meta {
@@ -86,16 +104,22 @@
   color: #4ade80;
 }
 
-.card__message {
-  margin: 0.6rem 0 0;
-  color: #374151;
-  line-height: 1.5;
-  white-space: pre-wrap;
-  word-break: break-word;
+/* ── Gray message box ── */
+
+.card__message-box {
+  background: var(--admin-bg);
+  border-radius: 0.85rem;
+  padding: 0.85rem 1rem;
+  margin-top: 0.75rem;
 }
 
-:host-context(body.dark) .card__message {
-  color: #d1d5db;
+.card__message-box p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--admin-text);
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .card__actions {
@@ -104,47 +128,31 @@
   gap: 0.5rem;
 }
 
-/* ── Reply display on replied messages ── */
+/* ── Reply section ── */
 
-.reply-display {
-  margin-top: 0.85rem;
+.card__reply-section {
+  margin-top: 0;
+}
+
+.card__reply-section .card__message-box {
+  margin-top: 0;
 }
 
 .reply-divider {
   height: 1px;
   background: var(--admin-border);
-  margin-bottom: 0.75rem;
+  margin: 1rem 0 0.75rem;
 }
 
-.reply-display__label {
-  margin: 0 0 0.35rem;
-  font-size: 0.75rem;
+.reply-label {
+  margin: 0 0 0.75rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
   color: #16a34a;
 }
 
-:host-context(body.dark) .reply-display__label {
+:host-context(body.dark) .reply-label {
   color: #4ade80;
-}
-
-.reply-display__text {
-  margin: 0;
-  font-size: 0.88rem;
-  line-height: 1.55;
-  color: var(--admin-text);
-  white-space: pre-wrap;
-  word-break: break-word;
-  padding: 0.7rem 0.85rem;
-  background: rgba(34, 197, 94, 0.07);
-  border-radius: 0.7rem;
-  border-left: 3px solid #22c55e;
-}
-
-:host-context(body.dark) .reply-display__text {
-  background: rgba(34, 197, 94, 0.1);
-  border-left-color: #4ade80;
 }
 
 /* ── Modal overlay ── */
