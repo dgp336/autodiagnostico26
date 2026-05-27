@@ -16,9 +16,6 @@
   margin: 0 auto;
   padding: 2rem 1.25rem 3rem;
   color: var(--admin-text);
-  background:
-    radial-gradient(circle at top left, rgba(29, 78, 216, 0.08), transparent 30%),
-    linear-gradient(180deg, var(--admin-bg), var(--admin-bg));
 }
 
 .admin-hero {
