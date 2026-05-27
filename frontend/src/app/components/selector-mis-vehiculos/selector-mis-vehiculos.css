@@ -22,3 +22,18 @@
   font-size: 0.95rem;
   cursor: pointer;
 }
+
+:host-context(.dark) .smv-card {
+  background: #1e293b;
+  border: 1px solid #3b4b5a;
+}
+
+:host-context(.dark) .smv-label {
+  color: #ffffff;
+}
+
+:host-context(.dark) .smv-select {
+  background: #1e293b;
+  border: 1px solid #3b4b5a;
+  color: #e0e7ff;
+}

@@ -1,33 +1,30 @@
-/* --- Light Theme (existing) --- */
-:host {
-  display: block;
-  --bg-light: #ffffff;
-  --bg-dark: #1f2937;
-  --text-light: #111827;
-  --text-dark: #f3f4f6;
-  --badge-bg-light: #dc2626;
-  --badge-bg-dark: #f87171;
-  --badge-text-light: #ffffff;
-  --badge-text-dark: #111827;
-  background-color: var(--bg-light);
-  color: var(--text-light);
+:host-context(.dark) .seguimiento-shell {
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
 }
 
 .seguimiento-shell {
   max-width: 1024px;
   margin: 2rem auto;
+  background-color: var(--bg-light);
   padding: 0 1rem 2rem;
-}
-
-.seguimiento-head h1 {
-  margin: 0;
-  color: #111827;
-  font-size: 1.4rem;
 }
 
 .seguimiento-head p {
   margin-top: 0.35rem;
-  color: #6b7280;
+  color: #ffffff;
+}
+
+.seguimiento-head h1 {
+  color: var(--text-light);
+}
+
+.seguimiento-head h1 {
+  color: var(--text-light);
+}
+
+.seguimiento-head p {
+  color: #ffffff;
 }
 
 .tracking-list-panel {
@@ -285,7 +282,7 @@
 }
 
 :host(.dark) .seguimiento-head p {
-  color: #9ca3af; /* keep subtle gray */
+  color: #9ca3af;
 }
 
 :host(.dark) .seguimiento-nav {
@@ -347,24 +344,127 @@
   justify-content: space-around;
   margin-top: 1rem;
 }
+
 .step {
   text-align: center;
 }
+
 .step .icon {
   font-size: 1.5rem;
 }
+
 .step.completed .icon {
   color: var(--badge-bg-light);
 }
+
 .step.green .icon {
-  color: #10b981; /* verde */
+  color: #10b981;
+  /* verde */
 }
+
 .step.yellow .icon {
-  color: #fbbf24; /* amarillo */
+  color: #fbbf24;
+  /* amarillo */
 }
+
 .step.orange .icon {
-  color: #f97316; /* naranja */
+  color: #f97316;
+  /* naranja */
 }
+
 .step.red .icon {
-  color: #ef4444; /* rojo */
+  color: #ef4444;
+  /* rojo */
+}
+
+
+:host-context(.dark) .seguimiento-head h1 {
+  color: var(--text-dark);
+}
+
+:host-context(.dark) .seguimiento-head p {
+  color: #9ca3af;
+}
+
+:host-context(.dark) .seguimiento-nav {
+  border-bottom-color: #374151;
+}
+
+:host-context(.dark) .tab {
+  color: #d1d5db;
+}
+
+:host-context(.dark) .tab--active {
+  color: #60a5fa;
+  border-bottom-color: #60a5fa;
+}
+
+:host-context(.dark) .badge {
+  background: var(--badge-bg-dark);
+  color: var(--badge-text-dark);
+}
+
+:host-context(.dark) .seguimiento-content {
+  color: var(--text-dark);
+}
+
+:host-context(.dark) .step .icon {
+  opacity: 0.9;
+}
+
+:host-context(.dark) .step.completed .icon {
+  color: #f87171;
+}
+
+:host-context(.dark) .step.green .icon {
+  color: #34d399;
+}
+
+:host-context(.dark) .step.yellow .icon {
+  color: #facc15;
+}
+
+:host-context(.dark) .step.orange .icon {
+  color: #fb923c;
+}
+
+:host-context(.dark) .step.red .icon {
+  color: #f87171;
+}
+
+/* DARK MODE - Angular Material Stepper */
+:host-context(.dark) ::ng-deep .mat-stepper-horizontal {
+  background: #1f2937;
+  color: #f3f4f6;
+}
+
+:host-context(.dark) ::ng-deep .mat-step-header {
+  color: #d1d5db;
+}
+
+:host-context(.dark) ::ng-deep .mat-step-label {
+  color: #d1d5db;
+}
+
+:host-context(.dark) ::ng-deep .mat-step-label.mat-step-label-active {
+  color: #ffffff;
+}
+
+:host-context(.dark) ::ng-deep .mat-step-icon {
+  background-color: #374151;
+  color: white;
+}
+
+:host-context(.dark) ::ng-deep .mat-step-icon-selected {
+  background-color: #3b82f6;
+  color: white;
+}
+
+:host-context(.dark) ::ng-deep .mat-step-icon-state-done {
+  background-color: #10b981;
+  color: white;
+}
+
+:host-context(.dark) ::ng-deep .mat-stepper-horizontal-line {
+  border-top-color: #4b5563;
 }

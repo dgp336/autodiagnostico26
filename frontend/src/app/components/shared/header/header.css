@@ -94,6 +94,14 @@
     0 4px 20px rgba(26, 107, 189, 0.08);
 }
 
+:host-context(.dark) .search-bar {
+  background: var(--bg-dark);
+}
+
+:host-context(.dark) .search-bar:focus-within {
+  background: #1e293b;
+}
+
 .search-icon {
   color: var(--ink-muted);
   margin-left: 1.25rem;
