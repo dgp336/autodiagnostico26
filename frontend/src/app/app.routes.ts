@@ -51,6 +51,7 @@ export const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
 	{ path: 'registro', component: LoginComponent },
 	{ path: 'admin', component: AdminComponent, canActivate: [adminGuard] },
+	{ path: 'admin/contacto', loadComponent: () => import('./admin/admin-contacto/admin-contacto').then((m) => m.AdminContactoComponent), canActivate: [adminGuard] },
 	{ path: 'sobre-nosotros', component: SobreNosotros },
 	{ path: 'registro-taller', component: RegistroTallerComponent },
 	{ path: 'privacidad', loadComponent: () => import('./components/privacidad/privacidad').then((m) => m.Privacidad) },

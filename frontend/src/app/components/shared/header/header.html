@@ -66,6 +66,7 @@
         <div class="dropdown" role="menu">
           @if (authStateService.role() === 'ADMIN') {
             <a routerLink="/admin" class="dropdown-item" role="menuitem">Administración</a>
+            <a routerLink="/admin/contacto" class="dropdown-item" role="menuitem">Buzón</a>
             <hr class="dropdown-divider" />
             <button class="dropdown-item dropdown-item--danger" (click)="onLogout()" role="menuitem">Cerrar sesión</button>
           }
@@ -108,13 +109,20 @@
       </a>
       }
       @if (authStateService.role() === 'ADMIN') {
-      <a routerLink="/admin" routerLinkActive="nav-item--active" class="nav-item">
+      <a routerLink="/admin" routerLinkActive="nav-item--active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           aria-hidden="true">
           <path d="M3 3h18v6H3z" />
           <path d="M3 11h18v10H3z" />
         </svg>
         Administración
+      </a>
+      <a routerLink="/admin/contacto" routerLinkActive="nav-item--active" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+        Buzón
       </a>
       }
       @if (authStateService.role() === 'USER') {
@@ -167,6 +175,7 @@
       }
       @if (authStateService.role() === 'ADMIN') {
         <a routerLink="/admin" class="mobile-nav-link" (click)="toggleMobileMenu()">Administración</a>
+        <a routerLink="/admin/contacto" class="mobile-nav-link" (click)="toggleMobileMenu()">Buzón</a>
       }
       @if (authStateService.role() === 'USER') {
         <a routerLink="/home" class="mobile-nav-link" (click)="toggleMobileMenu()">Inicio</a>

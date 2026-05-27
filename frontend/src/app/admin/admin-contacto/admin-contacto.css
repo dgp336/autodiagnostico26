@@ -1,0 +1,341 @@
+@import '../admin.component.css';
+
+:host {
+  --admin-bg: #f3f4f6;
+  --admin-surface: #ffffff;
+  --admin-surface-soft: #fafafa;
+  --admin-text: #0f172a;
+  --admin-muted: #4b5563;
+  --admin-border: #e5e7eb;
+  --admin-accent: #1d4ed8;
+}
+
+:host-context(body.dark) {
+  --admin-bg: #0f172a;
+  --admin-surface: #111827;
+  --admin-surface-soft: #1f2937;
+  --admin-text: #f8fafc;
+  --admin-muted: #cbd5e1;
+  --admin-border: rgba(148, 163, 184, 0.18);
+  --admin-accent: #60a5fa;
+}
+
+.messages-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card--replied {
+  opacity: 0.75;
+  border-left: 4px solid #22c55e;
+}
+
+:host-context(body.dark) .card--replied {
+  border-left-color: #4ade80;
+}
+
+.card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0;
+}
+
+.card__user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.card__name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--admin-text);
+  white-space: nowrap;
+}
+
+.card__sep {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--admin-muted);
+  opacity: 0.35;
+  flex-shrink: 0;
+}
+
+.card__email {
+  color: var(--admin-muted);
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card__phone {
+  color: var(--admin-muted);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.card__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.date {
+  font-size: 0.8rem;
+  color: var(--admin-muted);
+}
+
+.status--replied {
+  background: #dcfce7;
+  color: #166534;
+}
+
+:host-context(body.dark) .status--replied {
+  background: rgba(34, 197, 94, 0.18);
+  color: #4ade80;
+}
+
+/* ── Gray message box ── */
+
+.card__message-box {
+  background: var(--admin-bg);
+  border-radius: 0.85rem;
+  padding: 0.85rem 1rem;
+  margin-top: 0.75rem;
+}
+
+.card__message-box p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--admin-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.card__actions {
+  margin-top: 0.85rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ── Reply section ── */
+
+.card__reply-section {
+  margin-top: 0;
+}
+
+.card__reply-section .card__message-box {
+  margin-top: 0;
+}
+
+.reply-divider {
+  height: 1px;
+  background: var(--admin-border);
+  margin: 1rem 0 0.75rem;
+}
+
+.reply-label {
+  margin: 0 0 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #16a34a;
+}
+
+:host-context(body.dark) .reply-label {
+  color: #4ade80;
+}
+
+/* ── Modal overlay ── */
+
+.reply-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: overlayIn 180ms ease;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── Modal card ── */
+
+.reply-modal {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  animation: modalIn 200ms ease;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ── Modal header ── */
+
+.reply-modal__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.reply-modal h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+  color: var(--admin-text);
+}
+
+.reply-to {
+  margin: 0;
+  color: var(--admin-muted);
+  font-size: 0.88rem;
+}
+
+.reply-modal__close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--admin-muted);
+  cursor: pointer;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.5rem;
+  transition: background 120ms, color 120ms;
+  flex-shrink: 0;
+}
+
+.reply-modal__close:hover {
+  background: var(--admin-border);
+  color: var(--admin-text);
+}
+
+/* ── Original message preview ── */
+
+.reply-modal__original {
+  background: var(--admin-surface-soft);
+  border: 1px solid var(--admin-border);
+  border-radius: 0.85rem;
+  padding: 0.9rem 1rem;
+  margin: 0.75rem 0 1rem;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.reply-modal__original-label {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--admin-muted);
+}
+
+.reply-modal__original-text {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--admin-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ── Textarea ── */
+
+.reply-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--admin-border);
+  border-radius: 0.8rem;
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: var(--admin-text);
+  background: var(--admin-surface-soft);
+  outline: none;
+  resize: vertical;
+  min-height: 100px;
+  box-sizing: border-box;
+  transition: border-color 150ms, box-shadow 150ms;
+}
+
+.reply-textarea:focus {
+  border-color: var(--admin-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--admin-accent) 20%, transparent);
+}
+
+.reply-textarea::placeholder {
+  color: var(--admin-muted);
+  opacity: 0.6;
+}
+
+/* ── Error ── */
+
+.form-error {
+  color: #dc2626;
+  font-weight: 600;
+  font-size: 0.88rem;
+  margin: 0.5rem 0 0;
+}
+
+:host-context(body.dark) .form-error {
+  color: #f87171;
+}
+
+/* ── Actions ── */
+
+.reply-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.btn-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.5s linear infinite;
+  vertical-align: middle;
+  margin-right: 0.35rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}

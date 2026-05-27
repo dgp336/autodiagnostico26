@@ -1,0 +1,115 @@
+<section class="admin-shell">
+  <header class="admin-hero">
+    <div class="admin-hero__copy">
+      <span class="eyebrow">Panel administrador</span>
+      <h1>Buzón de contacto</h1>
+      <p>Mensajes recibidos desde el formulario de contacto. Puedes responder directamente desde aquí.</p>
+    </div>
+
+    <div class="admin-hero-card">
+      <strong>{{ pendingCount() }}</strong>
+      <span>mensajes</span>
+    </div>
+  </header>
+
+  @if (error()) {
+    <div class="alert alert-error">{{ error() }}</div>
+  }
+
+  @if (loading()) {
+    <p class="muted">Cargando mensajes…</p>
+  } @else if (messages().length === 0) {
+    <p class="muted">No hay mensajes de contacto todavía.</p>
+  } @else {
+    <div class="messages-grid">
+      @for (msg of messages(); track msg.id) {
+        <article class="card" [class.card--replied]="msg.repliedAt">
+          <div class="card__header">
+            <div class="card__user-info">
+              <span class="card__name">{{ msg.name }}</span>
+              <span class="card__sep"></span>
+              <span class="card__email">{{ msg.email }}</span>
+              @if (msg.phone) {
+                <span class="card__sep"></span>
+                <span class="card__phone">{{ msg.phone }}</span>
+              }
+            </div>
+            <div class="card__meta">
+              <span class="status" [class.status--replied]="msg.repliedAt">
+                {{ msg.repliedAt ? 'Respondido' : 'Pendiente' }}
+              </span>
+              <span class="date">{{ msg.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+          </div>
+
+          <div class="card__message-box">
+            <p>{{ msg.message }}</p>
+          </div>
+
+          @if (msg.repliedAt && msg.replyMessage) {
+            <div class="card__reply-section">
+              <div class="reply-divider"></div>
+              <p class="reply-label">Respondido el {{ msg.repliedAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+              <div class="card__message-box">
+                <p>{{ msg.replyMessage }}</p>
+              </div>
+            </div>
+          } @else {
+            <div class="card__actions">
+              <button type="button" class="btn btn-primary" (click)="openReply(msg)">
+                Responder
+              </button>
+            </div>
+          }
+        </article>
+      }
+    </div>
+  }
+
+  @if (replyTarget()) {
+  <div class="reply-overlay" (click)="closeReply()">
+    <div class="reply-modal" (click)="$event.stopPropagation()">
+      <div class="reply-modal__head">
+        <div>
+          <h3>Responder a {{ replyTarget()!.name }}</h3>
+          <p class="reply-to">Para: {{ replyTarget()!.email }}</p>
+        </div>
+        <button type="button" class="reply-modal__close" (click)="closeReply()" aria-label="Cerrar">&times;</button>
+      </div>
+
+      <div class="reply-modal__original">
+        <p class="reply-modal__original-label">Mensaje original</p>
+        <p class="reply-modal__original-text">{{ replyTarget()!.message }}</p>
+      </div>
+
+      <textarea
+        [(ngModel)]="replyText"
+        rows="4"
+        placeholder="Escribe tu respuesta…"
+        class="reply-textarea"
+      ></textarea>
+
+      @if (replyError()) {
+        <p class="form-error">{{ replyError() }}</p>
+      }
+
+      <div class="reply-actions">
+        <button type="button" class="btn btn-secondary" (click)="closeReply()">Cancelar</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="sendingReply() || !replyText().trim()"
+          (click)="sendReply()"
+        >
+          @if (sendingReply()) {
+            <span class="btn-spinner"></span>
+            Enviando…
+          } @else {
+            Enviar respuesta
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+</section>

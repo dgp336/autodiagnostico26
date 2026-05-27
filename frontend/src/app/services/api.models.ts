@@ -233,3 +233,21 @@ export interface CreatePersonalVehicleRequest {
   vin: string | null;
   buildDate: string | null;
 }
+
+// ── Contacto ────────────────────────────────────────────────────────────────
+
+export interface ContactMessage {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  workshopId: number | null;
+  createdAt: string;
+  repliedAt: string | null;
+  replyMessage: string | null;
+}
+
+export interface ReplyRequest {
+  message: string;
+}
