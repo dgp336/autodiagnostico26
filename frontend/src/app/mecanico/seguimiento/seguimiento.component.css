@@ -1,8 +1,18 @@
 .tracking-shell {
   min-height: 100vh;
   padding: 28px;
-  background: radial-gradient(circle at 0% 0%, #f0f9ff 0%, #f8fafc 45%, #e2e8f0 100%);
+  background: radial-gradient(circle at 0% 0%, #103ca31e 0%, #f8fafc 45%, #e2e8f0 100%);
   color: #0f172a;
+}
+
+/* Dark mode base */
+:host-context(.dark) .tracking-shell {
+  background: #11243d;
+  color: #e5e7eb;
+}
+
+:host-context(.dark) h1 {
+  color: var(--text-dark, #e5e7eb);
 }
 
 .split {
@@ -20,6 +30,13 @@
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
 }
 
+:host-context(.dark) .left,
+:host-context(.dark) .right {
+  background: #0b1220;
+  border: 1px solid #374151;
+  color: #e5e7eb;
+}
+
 .eyebrow {
   margin: 0 0 8px;
   text-transform: uppercase;
@@ -28,9 +45,17 @@
   color: #2563eb;
 }
 
+:host-context(.dark) .eyebrow {
+  color: #60a5fa;
+}
+
 .info {
   margin: 8px 0 0;
   color: #334155;
+}
+
+:host-context(.dark) .info {
+  color: #9ca3af;
 }
 
 .last-update {
@@ -38,7 +63,13 @@
   padding: 12px 14px;
   border-radius: 12px;
   border: 1px solid #bfdbfe;
-  background: #eff6ff;
+  background: #ffffff;
+}
+
+:host-context(.dark) .last-update {
+  background: #1e293b;
+  border: 1px solid #374151;
+  color: #e5e7eb;
 }
 
 .last-update .title {
@@ -47,6 +78,10 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #1d4ed8;
+}
+
+:host-context(.dark) .last-update .title {
+  color: #60a5fa;
 }
 
 .last-update p {
@@ -63,17 +98,31 @@
   gap: 8px;
 }
 
+:host-context(.dark) .status-controls {
+  background: transparent;
+}
+
 label {
   display: grid;
   gap: 8px;
   margin-top: 20px;
 }
 
+:host-context(.dark) label {
+  color: #d1d5db;
+}
+
 textarea {
   border-radius: 16px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #000000;
   padding: 14px;
   font: inherit;
+}
+
+:host-context(.dark) textarea {
+  background: #1f2937;
+  border: 1px solid #374151;
+  color: #e5e7eb;
 }
 
 button {
@@ -92,8 +141,17 @@ button:hover {
   box-shadow: 0 8px 16px rgba(37, 99, 235, 0.25);
 }
 
+:host-context(.dark) button:hover {
+  box-shadow: 0 8px 16px rgba(37, 100, 235, 0.199);
+}
+
 .status-controls button.active {
   background: #0f172a;
+}
+
+:host-context(.dark) .status-controls button.active {
+  background: #78849e;
+  color: #ffffff;
 }
 
 .chat-log {
@@ -102,12 +160,23 @@ button:hover {
   gap: 10px;
 }
 
+:host-context(.dark) .chat-log {
+  background: transparent;
+}
+
 .chat-log p {
   margin: 0;
   padding: 12px 14px;
   background: #ffffff;
   border-radius: 14px;
   border: 1px solid #cbd5e1;
+  color: #0f172a;
+}
+
+:host-context(.dark) .chat-log p {
+  background: #111827;
+  border: 1px solid #374151;
+  color: #d1d5db;
 }
 
 @media (max-width: 980px) {
