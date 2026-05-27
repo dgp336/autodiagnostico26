@@ -1,38 +1,52 @@
-<div class="vehiculo-shell">
-  @if (isLoading) {
-    <p class="text-muted">Cargando...</p>
-  } @else if (tracking) {
-    <h3 class="section-title">Vehículo en taller</h3>
-    <p class="section-desc">Información de tu vehículo y su estado actual en el taller.</p>
+<div class="pv-shell">
+  <h3 class="section-title">Mis vehículos</h3>
+  <p class="section-desc">Gestiona los coches de tu garaje y diagnostica problemas con un solo clic.</p>
 
-    <div class="tracking-card">
-      <div class="tracking-header">
-        <div class="tracking-vehicle">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-          </svg>
-          <div>
-            <span class="tracking-car-name">{{ tracking.carInfo }}</span>
-            <span class="tracking-problem">{{ tracking.problemDescription }}</span>
-          </div>
-        </div>
-        <span class="tracking-status tracking-status--{{ tracking.status }}">{{ statusLabel(tracking.status) }}</span>
-      </div>
-
-      @if (tracking.latestUpdate) {
-        <div class="tracking-update">
-          <span class="tracking-update-label">Última actualización</span>
-          <p class="tracking-update-text">{{ tracking.latestUpdate }}</p>
-        </div>
-      }
-    </div>
-  } @else {
-    <div class="vehiculo-empty">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true" class="vehiculo-icon">
+  @if (loading) {
+    <p class="text-muted">Cargando vehículos…</p>
+  } @else if (errorMessage && vehicles.length === 0) {
+    <div class="pv-empty">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true" class="pv-icon">
         <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
       </svg>
-      <h3>Sin vehículo asignado</h3>
+      <h3>Sin vehículos guardados</h3>
       <p>{{ errorMessage }}</p>
+      <a routerLink="/mis-vehiculos" class="btn btn-primary">Ir a Mis vehículos</a>
     </div>
+  } @else {
+    <ul class="pv-list">
+      @for (vehicle of vehicles; track vehicle.id) {
+        <li class="pv-card">
+          <div class="pv-card-info">
+            <h4 class="pv-card-title">{{ displayName(vehicle) }}</h4>
+            <dl class="pv-card-meta">
+              @if (vehicle.year) {
+                <div><dt>Año</dt><dd>{{ vehicle.year }}</dd></div>
+              }
+              @if (vehicle.engineType) {
+                <div><dt>Motor</dt><dd>{{ vehicle.engineType }}</dd></div>
+              }
+              @if (vehicle.transmission) {
+                <div><dt>Transmisión</dt><dd>{{ vehicle.transmission }}</dd></div>
+              }
+              @if (vehicle.plate) {
+                <div><dt>Matrícula</dt><dd>{{ vehicle.plate }}</dd></div>
+              }
+              @if (vehicle.vin) {
+                <div><dt>VIN</dt><dd>{{ vehicle.vin }}</dd></div>
+              }
+            </dl>
+          </div>
+          <div class="pv-card-actions">
+            <button type="button" class="pv-action-primary" (click)="diagnosticar(vehicle)">
+              Diagnosticar
+            </button>
+            <button type="button" class="pv-action-secondary" (click)="eliminar(vehicle)">
+              Eliminar
+            </button>
+          </div>
+        </li>
+      }
+    </ul>
   }
 </div>
