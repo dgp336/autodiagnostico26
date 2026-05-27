@@ -41,13 +41,16 @@
               <span>Inicio de sesión y seguridad</span>
             </a>
 
+            @if (authStateService.role() !== 'TALLER') {
             <a routerLink="/perfil/vehiculo" routerLinkActive="sidebar-item--active" class="sidebar-item">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                 <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
               </svg>
               <span>Mis vehículos</span>
             </a>
+            }
 
+            @if (authStateService.role() !== 'TALLER') {
             <a routerLink="/perfil/preferencias" routerLinkActive="sidebar-item--active" class="sidebar-item">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
@@ -56,6 +59,7 @@
               </svg>
               <span>Estado en taller</span>
             </a>
+            }
           </div>
 
           <div class="sidebar-bottom">
@@ -88,6 +92,8 @@
     </div>
   </div>
 </div>
+
+<app-footer />
 
 @if (showDeleteModal) {
   <div class="modal-overlay" (click)="cancelDelete()">
