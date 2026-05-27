@@ -1,7 +1,7 @@
 <footer class="footer">
 
   <!-- ── FILA PRINCIPAL ── -->
-  <div class="footer-main">
+  <div class="footer-main" [class.footer-main--taller]="authStateService.role() === 'TALLER'">
     <div class="footer-inner">
 
       <!-- COLUMNA 1: Brand -->
@@ -32,7 +32,7 @@
         </div>
       </div>
 
-      @if (authStateService.role() !== 'ADMIN') {
+      @if (authStateService.role() !== 'ADMIN' && authStateService.role() !== 'TALLER') {
       <!-- COLUMNA 2: Servicios -->
       <div class="footer-col">
         <h3 class="footer-col-title">Servicios</h3>
@@ -46,7 +46,7 @@
       </div>
       }
 
-      @if (authStateService.role() !== 'ADMIN') {
+      @if (authStateService.role() !== 'ADMIN' && authStateService.role() !== 'TALLER') {
       <!-- COLUMNA 3: Mi cuenta -->
       <div class="footer-col">
         <h3 class="footer-col-title">Mi cuenta</h3>
@@ -64,6 +64,7 @@
       </div>
       }
 
+      @if (authStateService.role() !== 'TALLER') {
       <!-- COLUMNA 4: Info -->
       <div class="footer-col">
         <h3 class="footer-col-title">Información</h3>
@@ -90,6 +91,7 @@
           }
         </ul>
       </div>
+      }
 
     </div>
   </div>

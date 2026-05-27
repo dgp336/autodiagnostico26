@@ -3,6 +3,11 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthStateService } from '../../../services/auth-state.service';
 
+interface Breadcrumb {
+  label: string;
+  link: string | null;
+}
+
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -17,6 +22,49 @@ export class HeaderComponent implements OnInit {
   menuOpen = false;
   mobileMenuOpen = false;
   isDarkTheme = false;
+
+  private readonly breadcrumbMap: Record<string, Breadcrumb[]> = {
+    '/mecanico': [
+      { label: 'Inicio', link: '/mecanico' },
+      { label: 'Lista de clientes', link: null },
+    ],
+    '/mecanico/seguimiento': [
+      { label: 'Inicio', link: '/mecanico' },
+      { label: 'Lista de clientes', link: '/mecanico' },
+      { label: 'Seguimiento', link: null },
+    ],
+    '/mecanico/seguimiento/chat': [
+      { label: 'Inicio', link: '/mecanico' },
+      { label: 'Lista de clientes', link: '/mecanico' },
+      { label: 'Seguimiento', link: null },
+    ],
+    '/perfil/informacion': [
+      { label: 'Inicio', link: '/mecanico' },
+      { label: 'Mi perfil', link: null },
+    ],
+    '/perfil/seguridad': [
+      { label: 'Inicio', link: '/mecanico' },
+      { label: 'Mi perfil', link: '/perfil/informacion' },
+      { label: 'Seguridad', link: null },
+    ],
+    '/perfil/vehiculo': [
+      { label: 'Inicio', link: '/mecanico' },
+      { label: 'Mi perfil', link: '/perfil/informacion' },
+      { label: 'Vehículos', link: null },
+    ],
+    '/perfil/preferencias': [
+      { label: 'Inicio', link: '/mecanico' },
+      { label: 'Mi perfil', link: '/perfil/informacion' },
+      { label: 'Preferencias', link: null },
+    ],
+  };
+
+  get currentBreadcrumbs(): Breadcrumb[] {
+    const path = this.router.url.split('?')[0];
+    return this.breadcrumbMap[path] ?? [
+      { label: 'Inicio', link: '/mecanico' },
+    ];
+  }
 
   ngOnInit(): void {
     if (typeof window !== 'undefined') {

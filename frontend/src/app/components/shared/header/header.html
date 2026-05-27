@@ -1,24 +1,78 @@
 <header class="header">
 
-  <!-- ── FILA SUPERIOR ── -->
+  <!-- ════════════════════════════════════════════
+       TALLER — Compacto estilo perfil
+       ════════════════════════════════════════════ -->
+  @if (authStateService.role() === 'TALLER') {
+  <div class="header-top header-top--taller">
+
+    <a routerLink="/home" class="header-brand header-brand--taller" aria-label="Ir a inicio">
+      <img src="logo.png" alt="AutoDiag" class="brand-logo brand-logo--taller" width="40" height="40"
+        loading="eager" />
+      <div class="brand-text">
+        <span class="brand-name">AutoDiagnostico</span>
+        <span class="brand-sub">Panel de mecánico</span>
+      </div>
+    </a>
+
+    <div class="header-actions header-actions--taller">
+      <button class="theme-toggle-btn" (click)="toggleTheme()" aria-label="Cambiar tema">
+        <img *ngIf="isDarkTheme" src="assets/dark-theme-icon.png" alt="Light mode" class="theme-toggle-icon" />
+        <img *ngIf="!isDarkTheme" src="assets/light-theme-icon.png" alt="Dark mode" class="theme-toggle-icon" />
+      </button>
+
+      <a routerLink="/perfil/informacion" class="mecanico-info">
+        <img [src]="authStateService.userAvatar()" [alt]="authStateService.userName()" class="mecanico-avatar"
+          width="32" height="32" />
+        <span class="mecanico-name">{{ authStateService.userName() }}</span>
+      </a>
+
+      <button class="logout-btn" (click)="onLogout()" aria-label="Cerrar sesión">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          aria-hidden="true">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" y1="12" x2="9" y2="12" />
+        </svg>
+        Salir
+      </button>
+    </div>
+  </div>
+
+  <div class="breadcrumb-bar">
+    <div class="breadcrumb-inner">
+      @for (crumb of currentBreadcrumbs; track $index) {
+      @if ($index > 0) {
+      <span class="breadcrumb-sep">›</span>
+      }
+      @if (crumb.link) {
+      <a [routerLink]="crumb.link" class="breadcrumb-link">{{ crumb.label }}</a>
+      } @else {
+      <span class="breadcrumb-current">{{ crumb.label }}</span>
+      }
+      }
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       USER / ADMIN / UNAUTHENTICATED — Actual
+       ════════════════════════════════════════════ -->
+  } @else {
+
   <div class="header-top">
     <div class="header-top-inner">
 
-      <!-- LOGO centrado -->
       <a routerLink="/home" class="header-brand" aria-label="Ir a inicio">
         <img src="logo.png" alt="AutoDiag" class="brand-logo" width="60" height="60" loading="eager" />
         <span class="brand-name">AutoDiagnostico</span>
       </a>
 
-      <!-- ACCIONES USUARIO -->
       <div class="header-actions">
-        <!-- Theme toggle -->
         <button class="theme-toggle-btn" (click)="toggleTheme()" aria-label="Cambiar tema">
           <img *ngIf="isDarkTheme" src="assets/dark-theme-icon.png" alt="Light mode" class="theme-toggle-icon" />
           <img *ngIf="!isDarkTheme" src="assets/light-theme-icon.png" alt="Dark mode" class="theme-toggle-icon" />
         </button>
 
-        <!-- No autenticado -->
         @if (!authStateService.isLoggedIn()) {
         <button class="user-btn" (click)="onLogin()" aria-label="Iniciar sesión">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
@@ -33,11 +87,10 @@
         </button>
         }
 
-        <!-- Autenticado -->
         @if (authStateService.isLoggedIn()) {
         <button class="user-btn" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen" aria-label="Menú de usuario">
-          <img [src]="authStateService.userAvatar()" [alt]="authStateService.userName()" class="avatar-img" width="36"
-            height="36" />
+          <img [src]="authStateService.userAvatar()" [alt]="authStateService.userName()" class="avatar-img"
+            width="36" height="36" />
           <div class="user-btn-text">
             <span class="user-btn-title">Mi cuenta</span>
             <span class="user-btn-sub">{{ authStateService.userName() }}</span>
@@ -51,71 +104,64 @@
         @if (menuOpen) {
         <div class="dropdown" role="menu">
           @if (authStateService.role() === 'ADMIN') {
-            <a routerLink="/admin" class="dropdown-item" role="menuitem">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M3 3h18v6H3z"/>
-                <path d="M3 11h18v10H3z"/>
-              </svg>
-              Administración
-            </a>
-            <a routerLink="/admin/contacto" class="dropdown-item" role="menuitem">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-              </svg>
-              Buzón
-            </a>
-            <a routerLink="/admin/usuarios" class="dropdown-item" role="menuitem">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <circle cx="12" cy="8" r="4" />
-                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
-              </svg>
-              Usuarios
-            </a>
-            <a routerLink="/admin/gestiontaller" class="dropdown-item" role="menuitem">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M3 7h18v2H3z" />
-                <path d="M5 11h14v6H5z" />
-              </svg>
-              Talleres
-            </a>
-            <hr class="dropdown-divider" />
-            <button class="dropdown-item dropdown-item--danger" (click)="onLogout()" role="menuitem">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                <polyline points="16 17 21 12 16 7"/>
-                <line x1="21" y1="12" x2="9" y2="12"/>
-              </svg>
-              Cerrar sesión
-            </button>
+          <a routerLink="/admin" class="dropdown-item" role="menuitem">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              aria-hidden="true">
+              <path d="M3 3h18v6H3z" />
+              <path d="M3 11h18v10H3z" />
+            </svg>
+            Administración
+          </a>
+          <a routerLink="/admin/contacto" class="dropdown-item" role="menuitem">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              aria-hidden="true">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            Buzón
+          </a>
+          <hr class="dropdown-divider" />
+          <button class="dropdown-item dropdown-item--danger" (click)="onLogout()" role="menuitem">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              aria-hidden="true">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            Cerrar sesión
+          </button>
           }
           @if (authStateService.role() !== 'ADMIN') {
-            <a routerLink="/mis-vehiculos" class="dropdown-item" role="menuitem">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <line x1="8" y1="6" x2="21" y2="6"/>
-                <line x1="8" y1="12" x2="21" y2="12"/>
-                <line x1="8" y1="18" x2="21" y2="18"/>
-                <line x1="3" y1="6" x2="3.01" y2="6"/>
-                <line x1="3" y1="12" x2="3.01" y2="12"/>
-                <line x1="3" y1="18" x2="3.01" y2="18"/>
-              </svg>
-              Vehículos
-            </a>
-            <a routerLink="/perfil" class="dropdown-item" role="menuitem">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-              </svg>
-              Ajustes
-            </a>
-            <hr class="dropdown-divider" />
-            <button class="dropdown-item dropdown-item--danger" (click)="onLogout()" role="menuitem">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                <polyline points="16 17 21 12 16 7"/>
-                <line x1="21" y1="12" x2="9" y2="12"/>
-              </svg>
-              Cerrar sesión
-            </button>
+          <a routerLink="/mis-vehiculos" class="dropdown-item" role="menuitem">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              aria-hidden="true">
+              <line x1="8" y1="6" x2="21" y2="6" />
+              <line x1="8" y1="12" x2="21" y2="12" />
+              <line x1="8" y1="18" x2="21" y2="18" />
+              <line x1="3" y1="6" x2="3.01" y2="6" />
+              <line x1="3" y1="12" x2="3.01" y2="12" />
+              <line x1="3" y1="18" x2="3.01" y2="18" />
+            </svg>
+            Vehículos
+          </a>
+          <a routerLink="/perfil" class="dropdown-item" role="menuitem">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              aria-hidden="true">
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            </svg>
+            Ajustes
+          </a>
+          <hr class="dropdown-divider" />
+          <button class="dropdown-item dropdown-item--danger" (click)="onLogout()" role="menuitem">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              aria-hidden="true">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            Cerrar sesión
+          </button>
           }
         </div>
         }
@@ -125,28 +171,11 @@
     </div>
   </div>
 
-  <!-- ── FILA INFERIOR: Navegación como categorías ── -->
   <nav class="header-nav" aria-label="Categorías de navegación">
     <div class="header-nav-inner">
-      @if (authStateService.role() === 'TALLER') {
-      <a routerLink="/mecanico" routerLinkActive="nav-item--active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          aria-hidden="true">
-          <path d="M3 7h18v2H3z" />
-          <path d="M5 11h14v6H5z" />
-        </svg>
-        Lista de clientes
-      </a>
-      <a routerLink="/mecanico/seguimiento" routerLinkActive="nav-item--active" class="nav-item">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          aria-hidden="true">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-        </svg>
-        Seguimiento
-      </a>
-      }
       @if (authStateService.role() === 'ADMIN') {
-      <a routerLink="/admin" routerLinkActive="nav-item--active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+      <a routerLink="/admin" routerLinkActive="nav-item--active" [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-item">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           aria-hidden="true">
           <path d="M3 3h18v6H3z" />
@@ -215,7 +244,6 @@
     </div>
   </nav>
 
-  <!-- Menú móvil -->
   <button class="hamburger" (click)="toggleMobileMenu()" [attr.aria-expanded]="mobileMenuOpen" aria-label="Abrir menú">
     <span></span><span></span><span></span>
   </button>
