@@ -1,58 +1,78 @@
 <section class="mechanic-shell">
-  <header class="mechanic-header">
-    <div>
-      <p class="eyebrow">Panel de mecánico</p>
-      <h1>{{ mechanicName }}</h1>
-      <p class="workshop">{{ workshopName }}</p>
-    </div>
+  <div class="workshop-header">
+    <span class="workshop-label">Taller</span>
+    <h1 class="workshop-name">{{ workshopName || 'Cargando...' }}</h1>
+  </div>
 
-    <a routerLink="/mecanico" class="clients-button">Clientes</a>
-  </header>
-
-  <main class="clients-panel">
+  <main class="clients-container">
     @if (loading) {
-      <p>Cargando clientes...</p>
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Cargando clientes...</p>
+      </div>
     }
 
     @if (error) {
-      <p class="error">{{ error }}</p>
+      <div class="error-state">
+        <p class="error-message">{{ error }}</p>
+      </div>
     }
 
     @if (!loading && !error && clients.length > 0) {
-      <article class="client-card" *ngFor="let client of clients" [ngClass]="'status-' + client.status" [routerLink]="['/mecanico','seguimiento']" [queryParams]="{ sessionUuid: client.sessionUuid }">
-        <div class="client-topline">
-          <h2>{{ client.clientName }}</h2>
-          <span class="status-pill">{{ getStatusLabel(client.status) }}</span>
-        </div>
+      <div class="clients-panel">
+        @for (client of clients; track client.sessionUuid) {
+          <article class="client-card" [ngClass]="'status-' + client.status" [routerLink]="['/mecanico','seguimiento']" [queryParams]="{ sessionUuid: client.sessionUuid }">
+            <div class="client-topline">
+              <h2>{{ client.clientName }}</h2>
+              <span class="status-pill">{{ getStatusLabel(client.status) }}</span>
+            </div>
 
-        <div class="client-details">
-          <p><strong>Coche:</strong> {{ client.carInfo }}</p>
-          <p><strong>Problema:</strong> {{ client.problemDescription }}</p>
-          <p *ngIf="client.aiDiagnosis"><strong>Diagnóstico IA:</strong> {{ client.aiDiagnosis }}</p>
-          <p *ngIf="client.estimatedPrice !== null"><strong>Presupuesto estimado:</strong> {{ client.estimatedPrice | number:'1.2-2' }}€</p>
-          <div *ngIf="client.recommendedParts.length > 0" class="recommended-parts">
-            <strong>Piezas recomendadas:</strong>
-            <ul>
-              <li *ngFor="let part of client.recommendedParts">
-                {{ part.name }}
-                <span *ngIf="part.lowRangePrice !== null || part.highRangePrice !== null">
-                  (
-                  <ng-container *ngIf="part.lowRangePrice !== null">{{ part.lowRangePrice }}€</ng-container>
-                  <ng-container *ngIf="part.lowRangePrice !== null && part.highRangePrice !== null"> - </ng-container>
-                  <ng-container *ngIf="part.highRangePrice !== null">{{ part.highRangePrice }}€</ng-container>
-                  )
-                </span>
-              </li>
-            </ul>
-          </div>
-        </div>
+            <div class="client-details">
+              <p><strong>Coche:</strong> {{ client.carInfo }}</p>
+              <p><strong>Problema:</strong> {{ client.problemDescription }}</p>
+              @if (client.aiDiagnosis) {
+                <p><strong>Diagnóstico IA:</strong> {{ client.aiDiagnosis }}</p>
+              }
+              @if (client.estimatedPrice !== null) {
+                <p><strong>Presupuesto estimado:</strong> {{ client.estimatedPrice | number:'1.2-2' }}€</p>
+              }
+              @if (client.recommendedParts.length > 0) {
+                <div class="recommended-parts">
+                  <strong>Piezas recomendadas:</strong>
+                  <ul>
+                    @for (part of client.recommendedParts; track part.idProduct) {
+                      <li>
+                        {{ part.name }}
+                        @if (part.lowRangePrice !== null || part.highRangePrice !== null) {
+                          <span>
+                            (
+                            @if (part.lowRangePrice !== null) { {{ part.lowRangePrice }}€ }
+                            @if (part.lowRangePrice !== null && part.highRangePrice !== null) { - }
+                            @if (part.highRangePrice !== null) { {{ part.highRangePrice }}€ }
+                            )
+                          </span>
+                        }
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
+            </div>
 
-        <p class="client-action">Ver seguimiento</p>
-      </article>
+            <span class="client-action">Ver seguimiento &rarr;</span>
+          </article>
+        }
+      </div>
     }
 
     @if (!loading && !error && clients.length === 0) {
-      <p>No hay clientes asignados</p>
+      <div class="empty-state">
+        <svg class="empty-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+        </svg>
+        <h2 class="empty-title">No hay clientes asignados</h2>
+        <p class="empty-subtitle">Cuando se te asigne un cliente, aparecerá aquí automáticamente.</p>
+      </div>
     }
   </main>
 </section>
