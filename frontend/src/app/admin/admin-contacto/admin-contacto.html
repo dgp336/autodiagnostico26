@@ -48,13 +48,22 @@
       }
     </div>
   }
-</section>
 
-@if (replyTarget()) {
+  @if (replyTarget()) {
   <div class="reply-overlay" (click)="closeReply()">
     <div class="reply-modal" (click)="$event.stopPropagation()">
-      <h3>Responder a {{ replyTarget()!.name }}</h3>
-      <p class="reply-to">Para: {{ replyTarget()!.email }}</p>
+      <div class="reply-modal__head">
+        <div>
+          <h3>Responder a {{ replyTarget()!.name }}</h3>
+          <p class="reply-to">Para: {{ replyTarget()!.email }}</p>
+        </div>
+        <button type="button" class="reply-modal__close" (click)="closeReply()" aria-label="Cerrar">&times;</button>
+      </div>
+
+      <div class="reply-modal__original">
+        <p class="reply-modal__original-label">Mensaje original</p>
+        <p class="reply-modal__original-text">{{ replyTarget()!.message }}</p>
+      </div>
 
       <textarea
         [(ngModel)]="replyText"
@@ -75,9 +84,15 @@
           [disabled]="sendingReply() || !replyText().trim()"
           (click)="sendReply()"
         >
-          {{ sendingReply() ? 'Enviando…' : 'Enviar respuesta' }}
+          @if (sendingReply()) {
+            <span class="btn-spinner"></span>
+            Enviando…
+          } @else {
+            Enviar respuesta
+          }
         </button>
       </div>
     </div>
   </div>
-}
+  }
+</section>
