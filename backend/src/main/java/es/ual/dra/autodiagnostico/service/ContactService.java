@@ -87,6 +87,7 @@ public class ContactService {
             }
 
             msg.setRepliedAt(LocalDateTime.now());
+            msg.setReplyMessage(reply.message());
             repository.save(msg);
         } catch (RuntimeException e) {
             throw e;
@@ -132,7 +133,8 @@ public class ContactService {
     private ContactMessageDTO toDTO(ContactMessage msg) {
         return new ContactMessageDTO(
             msg.getId(), msg.getName(), msg.getEmail(), msg.getPhone(),
-            msg.getMessage(), msg.getWorkshopId(), msg.getCreatedAt(), msg.getRepliedAt()
+            msg.getMessage(), msg.getWorkshopId(), msg.getCreatedAt(), msg.getRepliedAt(),
+            msg.getReplyMessage()
         );
     }
 }

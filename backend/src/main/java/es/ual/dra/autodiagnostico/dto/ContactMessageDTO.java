@@ -10,5 +10,6 @@ public record ContactMessageDTO(
     String message,
     Long workshopId,
     LocalDateTime createdAt,
-    LocalDateTime repliedAt
+    LocalDateTime repliedAt,
+    String replyMessage
 ) {}

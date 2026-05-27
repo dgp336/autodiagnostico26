@@ -35,4 +35,7 @@ public class ContactMessage {
     private LocalDateTime createdAt;
 
     private LocalDateTime repliedAt;
+
+    @Column(columnDefinition = "TEXT")
+    private String replyMessage;
 }
