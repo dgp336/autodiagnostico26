@@ -64,6 +64,20 @@
               </svg>
               Buzón
             </a>
+            <a routerLink="/admin/usuarios" class="dropdown-item" role="menuitem">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+              </svg>
+              Usuarios
+            </a>
+            <a routerLink="/admin/gestiontaller" class="dropdown-item" role="menuitem">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M3 7h18v2H3z" />
+                <path d="M5 11h14v6H5z" />
+              </svg>
+              Talleres
+            </a>
             <hr class="dropdown-divider" />
             <button class="dropdown-item dropdown-item--danger" (click)="onLogout()" role="menuitem">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -147,6 +161,22 @@
         </svg>
         Buzón
       </a>
+      <a routerLink="/admin/usuarios" routerLinkActive="nav-item--active" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          aria-hidden="true">
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+        </svg>
+        Usuarios
+      </a>
+      <a routerLink="/admin/gestiontaller" routerLinkActive="nav-item--active" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          aria-hidden="true">
+          <path d="M3 7h18v2H3z" />
+          <path d="M5 11h14v6H5z" />
+        </svg>
+        Talleres
+      </a>
       }
       @if (authStateService.role() === 'USER') {
       <a routerLink="/home" routerLinkActive="nav-item--active" class="nav-item">
@@ -199,6 +229,8 @@
       @if (authStateService.role() === 'ADMIN') {
         <a routerLink="/admin" class="mobile-nav-link" (click)="toggleMobileMenu()">Administración</a>
         <a routerLink="/admin/contacto" class="mobile-nav-link" (click)="toggleMobileMenu()">Buzón</a>
+        <a routerLink="/admin/usuarios" class="mobile-nav-link" (click)="toggleMobileMenu()">Usuarios</a>
+        <a routerLink="/admin/gestiontaller" class="mobile-nav-link" (click)="toggleMobileMenu()">Talleres</a>
       }
       @if (authStateService.role() === 'USER') {
         <a routerLink="/home" class="mobile-nav-link" (click)="toggleMobileMenu()">Inicio</a>

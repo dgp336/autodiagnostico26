@@ -1,0 +1,98 @@
+<section class="admin-shell">
+	<header class="admin-hero">
+		<div class="admin-hero__copy">
+			<span class="eyebrow">Panel administrador</span>
+			<h1>Gestión de talleres</h1>
+			<p>Revisa solicitudes pendientes, aprueba o rechaza altas y administra los talleres ya registrados.</p>
+		</div>
+
+		<div class="admin-hero-card">
+			<strong>{{ approvedWorkshops().length }}</strong>
+			<span>talleres activos</span>
+		</div>
+	</header>
+
+	<div class="admin-page-actions">
+		<a routerLink="/admin" class="action-card admin-page-actions__card">
+			<span class="action-card__eyebrow">Volver</span>
+			<strong>Panel general</strong>
+			<p>Regresa a los accesos rápidos del administrador.</p>
+		</a>
+	</div>
+
+	@if (error()) {
+		<div class="alert alert-error">{{ error() }}</div>
+	}
+
+	<section class="admin-grid">
+		<section class="panel">
+			<div class="panel__head">
+				<h2>Solicitudes pendientes</h2>
+				<span>{{ pendingApplications().length }}</span>
+			</div>
+
+			@if (loadingPending()) {
+				<p class="muted">Cargando solicitudes...</p>
+			} @else if (pendingApplications().length === 0) {
+				<p class="muted">No hay solicitudes pendientes.</p>
+			} @else {
+				<article class="card" *ngFor="let request of pendingApplications(); trackBy: trackByApplicationId">
+					<div class="card__title-row">
+						<div>
+							<h3>{{ request.workshopName }}</h3>
+							<p>{{ request.fullName }} · {{ request.email }}</p>
+						</div>
+						<span class="status status--pending">Pendiente</span>
+					</div>
+
+					<dl>
+						<div><dt>Dirección</dt><dd>{{ request.address }}</dd></div>
+						<div><dt>Teléfono</dt><dd>{{ request.phone }}</dd></div>
+						<div><dt>Horario</dt><dd>{{ request.schedule }}</dd></div>
+						<div><dt>Límite</dt><dd>{{ request.vehicleLimit }}</dd></div>
+					</dl>
+
+					<div class="actions">
+						<button type="button" class="btn btn-primary" (click)="approve(request)">Aceptar</button>
+						<button type="button" class="btn btn-secondary" (click)="reject(request)">Denegar</button>
+					</div>
+				</article>
+			}
+		</section>
+
+		<section class="panel">
+			<div class="panel__head">
+				<h2>Talleres registrados</h2>
+				<span>{{ approvedWorkshops().length }}</span>
+			</div>
+
+			@if (loadingWorkshops()) {
+				<p class="muted">Cargando talleres...</p>
+			} @else if (approvedWorkshops().length === 0) {
+				<p class="muted">Todavía no hay talleres aprobados.</p>
+			} @else {
+				<article class="card" *ngFor="let workshop of approvedWorkshops(); trackBy: trackByWorkshopId">
+					<div class="card__title-row">
+						<div>
+							<h3>{{ workshop.name }}</h3>
+							<p>{{ workshop.mechanicName }}</p>
+						</div>
+						<span class="status status--approved">Aprobado</span>
+					</div>
+
+					<dl>
+						<div><dt>Dirección</dt><dd>{{ workshop.address }}</dd></div>
+						<div><dt>Teléfono</dt><dd>{{ workshop.phone }}</dd></div>
+						<div><dt>Horario</dt><dd>{{ workshop.schedule }}</dd></div>
+						<div><dt>Capacidad</dt><dd>{{ workshop.activeVehicles }} / {{ workshop.vehicleLimit }}</dd></div>
+					</dl>
+
+					<div class="actions">
+						<button type="button" class="btn btn-danger" (click)="deleteWorkshop(workshop)">Eliminar</button>
+					</div>
+				</article>
+			}
+		</section>
+	</section>
+
+</section>

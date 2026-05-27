@@ -1,6 +1,7 @@
 package es.ual.dra.autodiagnostico.controller;
 
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,11 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping
+    public ResponseEntity<List<AuthUserResponseDTO>> listUsers() {
+        return ResponseEntity.ok(userService.listUsers());
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<AuthUserResponseDTO> getUser(@PathVariable Long id) {

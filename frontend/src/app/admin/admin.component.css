@@ -90,6 +90,62 @@
   align-items: start;
 }
 
+.admin-workshops {
+  margin-top: 1.75rem;
+}
+
+.admin-workshops__divider {
+  height: 1px;
+  margin-bottom: 1.25rem;
+  background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.35), transparent);
+}
+
+.admin-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.action-card {
+  display: block;
+  padding: 1rem 1.1rem;
+  border-radius: 1.1rem;
+  border: 1px solid var(--admin-border);
+  background: linear-gradient(180deg, var(--admin-surface), var(--admin-surface-soft));
+  color: var(--admin-text);
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+
+.action-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(29, 78, 216, 0.35);
+  box-shadow: 0 16px 28px rgba(15, 23, 42, 0.09);
+}
+
+.action-card__eyebrow {
+  display: inline-flex;
+  margin-bottom: 0.35rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--admin-muted);
+}
+
+.action-card strong {
+  display: block;
+  font-size: 1.02rem;
+  margin-bottom: 0.35rem;
+}
+
+.action-card p {
+  margin: 0;
+  color: var(--admin-muted);
+  line-height: 1.5;
+}
+
 .panel {
   background: var(--admin-surface);
   border: 1px solid var(--admin-border);
@@ -286,6 +342,14 @@ dd {
 
 @media (max-width: 900px) {
   .admin-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-workshops {
+    margin-top: 1.25rem;
+  }
+
+  .admin-actions {
     grid-template-columns: 1fr;
   }
 
