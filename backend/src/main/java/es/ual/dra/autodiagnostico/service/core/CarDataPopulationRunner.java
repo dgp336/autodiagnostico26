@@ -3,6 +3,7 @@ package es.ual.dra.autodiagnostico.service.core;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import es.ual.dra.autodiagnostico.repository.EngineRepository;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Profile("!test")
+@Order(1)
 @RequiredArgsConstructor
 @Slf4j
 public class CarDataPopulationRunner implements ApplicationRunner {
