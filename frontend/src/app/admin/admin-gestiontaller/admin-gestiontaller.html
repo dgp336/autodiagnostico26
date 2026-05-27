@@ -1,7 +1,7 @@
 <section class="admin-shell">
+
 	<header class="admin-hero">
 		<div class="admin-hero__copy">
-			<span class="eyebrow">Panel administrador</span>
 			<h1>Gestión de talleres</h1>
 			<p>Revisa solicitudes pendientes, aprueba o rechaza altas y administra los talleres ya registrados.</p>
 		</div>
@@ -11,14 +11,6 @@
 			<span>talleres activos</span>
 		</div>
 	</header>
-
-	<div class="admin-page-actions">
-		<a routerLink="/admin" class="action-card admin-page-actions__card">
-			<span class="action-card__eyebrow">Volver</span>
-			<strong>Panel general</strong>
-			<p>Regresa a los accesos rápidos del administrador.</p>
-		</a>
-	</div>
 
 	@if (error()) {
 		<div class="alert alert-error">{{ error() }}</div>
