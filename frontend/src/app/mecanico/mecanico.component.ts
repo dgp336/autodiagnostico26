@@ -13,8 +13,7 @@ import { AuthStateService } from '../services/auth-state.service';
   styleUrls: ['./mecanico.component.css']
 })
 export class MecanicoComponent implements OnInit, OnDestroy {
-  mechanicName = 'Mecánico';
-  workshopName = 'Taller';
+  workshopName = '';
   private mechanicService = inject(MechanicService);
   private authState = inject(AuthStateService);
   private cdr = inject(ChangeDetectorRef);
@@ -34,7 +33,6 @@ export class MecanicoComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.mechanicName = this.authState.userName();
     this.refreshClients();
     this.refreshTimerId = window.setInterval(() => this.refreshClients(false), 4000);
   }
@@ -58,6 +56,7 @@ export class MecanicoComponent implements OnInit, OnDestroy {
     this.mechanicService.getClientsForMechanic(this.mechanicId).subscribe({
       next: (clients) => {
         this.clients = clients;
+        this.workshopName = clients[0]?.workshopName || 'Taller';
         this.error = null;
         this.loading = false;
         this.cdr.detectChanges();
