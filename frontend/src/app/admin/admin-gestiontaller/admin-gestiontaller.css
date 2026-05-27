@@ -1,0 +1,9 @@
+@import '../admin.component.css';
+
+.admin-footer-link {
+  margin-top: 1rem;
+}
+
+.admin-footer-link__card {
+  max-width: 320px;
+}
