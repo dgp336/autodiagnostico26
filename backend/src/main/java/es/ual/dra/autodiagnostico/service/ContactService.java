@@ -25,7 +25,7 @@ public class ContactService {
 
     private final ContactMessageRepository repository;
 
-    @Value("${app.contact.formspree-url:}")
+    @Value("${FORMSPREE_URL:}")
     private String formspreeUrl;
 
     @Value("${RESEND_API_KEY:}")
