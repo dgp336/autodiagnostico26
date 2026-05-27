@@ -1,5 +1,7 @@
 package es.ual.dra.autodiagnostico.service.user;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,15 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+        public List<AuthUserResponseDTO> listUsers() {
+        return userRepository.findAll().stream()
+            .sorted(Comparator.comparing(AppUser::getRole)
+                .thenComparing(AppUser::getFullName, String.CASE_INSENSITIVE_ORDER))
+            .map(this::mapToResponse)
+            .toList();
+        }
+
+        @Override
     public AuthUserResponseDTO getUserById(Long id) {
         AppUser user = userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));

@@ -190,6 +190,22 @@
         </svg>
         Buzón
       </a>
+      <a routerLink="/admin/usuarios" routerLinkActive="nav-item--active" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          aria-hidden="true">
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+        </svg>
+        Usuarios
+      </a>
+      <a routerLink="/admin/gestiontaller" routerLinkActive="nav-item--active" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          aria-hidden="true">
+          <path d="M3 7h18v2H3z" />
+          <path d="M5 11h14v6H5z" />
+        </svg>
+        Talleres
+      </a>
       }
       @if (authStateService.role() === 'USER') {
       <a routerLink="/home" routerLinkActive="nav-item--active" class="nav-item">
@@ -233,23 +249,27 @@
   </button>
 
   @if (mobileMenuOpen) {
-  <nav class="mobile-nav" aria-label="Menú móvil">
-    @if (authStateService.role() === 'ADMIN') {
-    <a routerLink="/admin" class="mobile-nav-link" (click)="toggleMobileMenu()">Administración</a>
-    <a routerLink="/admin/contacto" class="mobile-nav-link" (click)="toggleMobileMenu()">Buzón</a>
-    }
-    @if (authStateService.role() === 'USER') {
-    <a routerLink="/home" class="mobile-nav-link" (click)="toggleMobileMenu()">Inicio</a>
-    <a routerLink="/taller" class="mobile-nav-link" (click)="toggleMobileMenu()">Taller</a>
-    @if (authStateService.canAccessSeguimiento()) {
-    <a routerLink="/usuario/seguimiento" class="mobile-nav-link" (click)="toggleMobileMenu()">Seguimiento</a>
-    }
-    <a routerLink="/historial" class="mobile-nav-link" (click)="toggleMobileMenu()">Historial</a>
-    <a routerLink="/contacto" class="mobile-nav-link" (click)="toggleMobileMenu()">Contacto</a>
-    }
-  </nav>
-  }
-
+    <nav class="mobile-nav" aria-label="Menú móvil">
+      @if (authStateService.role() === 'TALLER') {
+        <a routerLink="/mecanico" class="mobile-nav-link" (click)="toggleMobileMenu()">Lista de clientes</a>
+        <a routerLink="/mecanico/seguimiento" class="mobile-nav-link" (click)="toggleMobileMenu()">Seguimiento</a>
+      }
+      @if (authStateService.role() === 'ADMIN') {
+        <a routerLink="/admin" class="mobile-nav-link" (click)="toggleMobileMenu()">Administración</a>
+        <a routerLink="/admin/contacto" class="mobile-nav-link" (click)="toggleMobileMenu()">Buzón</a>
+        <a routerLink="/admin/usuarios" class="mobile-nav-link" (click)="toggleMobileMenu()">Usuarios</a>
+        <a routerLink="/admin/gestiontaller" class="mobile-nav-link" (click)="toggleMobileMenu()">Talleres</a>
+      }
+      @if (authStateService.role() === 'USER') {
+        <a routerLink="/home" class="mobile-nav-link" (click)="toggleMobileMenu()">Inicio</a>
+        <a routerLink="/taller" class="mobile-nav-link" (click)="toggleMobileMenu()">Taller</a>
+        @if (authStateService.canAccessSeguimiento()) {
+          <a routerLink="/usuario/seguimiento" class="mobile-nav-link" (click)="toggleMobileMenu()">Seguimiento</a>
+        }
+        <a routerLink="/historial" class="mobile-nav-link" (click)="toggleMobileMenu()">Historial</a>
+        <a routerLink="/contacto" class="mobile-nav-link" (click)="toggleMobileMenu()">Contacto</a>
+      }
+    </nav>
   }
 
 </header>

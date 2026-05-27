@@ -1,0 +1,130 @@
+<section class="admin-shell">
+	<header class="admin-hero">
+		<div class="admin-hero__copy">
+			<span class="eyebrow">Panel administrador</span>
+			<h1>Gestión de usuarios</h1>
+			<p>Filtra por rol, busca rápidamente por nombre o correo y administra las cuentas desde una lista clara.</p>
+		</div>
+
+		<div class="admin-hero-card">
+			<strong>{{ totalUsers() }}</strong>
+			<span>cuentas</span>
+		</div>
+	</header>
+
+	@if (error()) {
+		<div class="alert alert-error">{{ error() }}</div>
+	}
+
+	<section class="summary-grid">
+		<article class="summary-card">
+			<span>Clientes</span>
+			<strong>{{ totalClients() }}</strong>
+		</article>
+		<article class="summary-card">
+			<span>Mecánicos</span>
+			<strong>{{ totalMechanics() }}</strong>
+		</article>
+		<article class="summary-card">
+			<span>Admins</span>
+			<strong>{{ totalAdmins() }}</strong>
+		</article>
+		<a class="summary-card summary-card--link" routerLink="/admin">
+			<span>Volver</span>
+			<strong>Panel general</strong>
+		</a>
+	</section>
+
+	<section class="toolbar panel">
+		<div class="field">
+			<label for="user-search">Buscar</label>
+			<input
+				id="user-search"
+				type="search"
+				placeholder="Nombre, email, ciudad o código postal"
+				[ngModel]="searchTerm()"
+				(ngModelChange)="searchTerm.set($event)"
+			/>
+		</div>
+
+		<div class="field">
+			<label for="role-filter">Filtrar por rol</label>
+			<select
+				id="role-filter"
+				[ngModel]="roleFilter()"
+				(ngModelChange)="roleFilter.set($event)"
+			>
+				<option value="ALL">Todos</option>
+				<option value="USER">Clientes</option>
+				<option value="TALLER">Mecánicos</option>
+				<option value="ADMIN">Administradores</option>
+			</select>
+		</div>
+
+		<button type="button" class="btn btn-secondary toolbar__button" (click)="loadUsers()">Actualizar</button>
+	</section>
+
+	<section class="panel list-panel">
+		<div class="panel__head">
+			<h2>Listado de cuentas</h2>
+			<span>{{ filteredUsers().length }}</span>
+		</div>
+
+		@if (loading()) {
+			<p class="muted">Cargando usuarios...</p>
+		} @else if (filteredUsers().length === 0) {
+			<p class="muted">No hay usuarios con ese filtro.</p>
+		} @else {
+			<div class="users-list">
+				@for (user of filteredUsers(); track user.id) {
+					<article class="user-card" [class.user-card--admin]="user.role === 'ADMIN'" [class.user-card--mechanic]="user.role === 'TALLER'">
+						<div class="user-card__main">
+							<div class="user-card__avatar">
+								{{ user.fullName.charAt(0) || 'U' }}
+							</div>
+
+							<div class="user-card__body">
+								<div class="user-card__head">
+									<div>
+										<h3>{{ user.fullName }}</h3>
+										<p>{{ user.email }}</p>
+									</div>
+								</div>
+
+								<dl>
+									<div><dt>Ciudad</dt><dd>{{ user.city || 'Sin ciudad' }}</dd></div>
+									<div><dt>Código postal</dt><dd>{{ user.postalCode || 'Sin código' }}</dd></div>
+									<div><dt>Alta</dt><dd>{{ user.createdAt | date: 'dd/MM/yyyy HH:mm' }}</dd></div>
+								</dl>
+							</div>
+						</div>
+
+						<div class="user-card__actions">
+							<div class="role-card" [class.role-card--user]="user.role === 'USER'" [class.role-card--mechanic]="user.role === 'TALLER'" [class.role-card--admin]="user.role === 'ADMIN'">
+								<span class="role-card__eyebrow">Rol</span>
+								<strong>{{ roleLabel(user.role) }}</strong>
+							</div>
+
+							@if (user.id === currentUserId()) {
+								<span class="muted">Cuenta actual</span>
+							} @else {
+								<button
+									type="button"
+									class="btn btn-danger"
+									[disabled]="deletingUserId() === user.id"
+									(click)="deleteUser(user)"
+								>
+									@if (deletingUserId() === user.id) {
+										Eliminando...
+									} @else {
+										Eliminar
+									}
+								</button>
+							}
+						</div>
+					</article>
+				}
+			</div>
+		}
+	</section>
+</section>

@@ -10,6 +10,10 @@ export class UserApiService {
 
   constructor(private readonly http: HttpClient) {}
 
+  listUsers(): Observable<AuthUserResponse[]> {
+    return this.http.get<AuthUserResponse[]>(this.baseUrl);
+  }
+
   getProfile(userId: number): Observable<AuthUserResponse> {
     return this.http.get<AuthUserResponse>(`${this.baseUrl}/${userId}`);
   }
