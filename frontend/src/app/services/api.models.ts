@@ -245,6 +245,7 @@ export interface ContactMessage {
   workshopId: number | null;
   createdAt: string;
   repliedAt: string | null;
+  replyMessage: string | null;
 }
 
 export interface ReplyRequest {
