@@ -27,9 +27,11 @@ export class PerfilPreferenciasComponent implements OnInit {
       return;
     }
 
-    this.mechanicService.getTrackingForClient(userId).subscribe({
+    // Use the updated service method returning an array of trackings
+    this.mechanicService.getTrackingsForClient(userId).subscribe({
       next: (data) => {
-        this.tracking = data;
+        // Take the first tracking if available
+        this.tracking = data.length > 0 ? data[0] : null;
         this.isLoading = false;
         this.cdr.detectChanges();
       },
