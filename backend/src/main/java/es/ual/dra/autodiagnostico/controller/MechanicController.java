@@ -27,31 +27,33 @@ public class MechanicController {
         return ResponseEntity.ok(clients);
     }
 
-
-    @GetMapping("/client/{clientId}/tracking")
-    public ResponseEntity<MechanicClientDTO> getTrackingForClient(
-            @PathVariable Long clientId) {
-
-        return ResponseEntity.ok(
-                mechanicService.getTrackingForClient(clientId)
-        );
+    @GetMapping("/client/{clientId}/trackings")
+    public ResponseEntity<List<MechanicClientDTO>> getTrackingsForClient(@PathVariable Long clientId) {
+        return ResponseEntity.ok(mechanicService.getTrackingsForClient(clientId));
     }
 
-    @PostMapping("/{mechanicId}/clients/{clientId}/status")
-    public ResponseEntity<Void> updateClientStatus(
+
+    @GetMapping("/tracking/{sessionUuid}")
+    public ResponseEntity<MechanicClientDTO> getTrackingBySessionUuid(@PathVariable String sessionUuid) {
+        MechanicClientDTO tracking = mechanicService.getTrackingBySessionUuid(sessionUuid);
+        return tracking == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(tracking);
+    }
+
+    @PostMapping("/{mechanicId}/tracking/{sessionUuid}/status")
+    public ResponseEntity<Void> updateTrackingStatus(
             @PathVariable Long mechanicId,
-            @PathVariable Long clientId,
+            @PathVariable String sessionUuid,
             @RequestBody StatusUpdateRequest request) {
-        mechanicService.updateClientStatus(mechanicId, clientId, request.getStatus());
+        mechanicService.updateClientStatusBySessionUuid(mechanicId, sessionUuid, request.getStatus());
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{mechanicId}/clients/{clientId}/tracking-update")
-    public ResponseEntity<Void> updateTrackingMessage(
+    @PostMapping("/{mechanicId}/tracking/{sessionUuid}/tracking-update")
+    public ResponseEntity<Void> updateTrackingMessageBySessionUuid(
             @PathVariable Long mechanicId,
-            @PathVariable Long clientId,
+            @PathVariable String sessionUuid,
             @RequestBody TrackingUpdateRequest request) {
-        mechanicService.updateLatestTrackingMessage(mechanicId, clientId, request.getMessage());
+        mechanicService.updateLatestTrackingMessageBySessionUuid(mechanicId, sessionUuid, request.getMessage());
         return ResponseEntity.ok().build();
     }
 

@@ -4,52 +4,51 @@
     <p>Estado de reparación y comunicación directa.</p>
   </header>
 
-  <mat-horizontal-stepper
-    #stepper
-    [linear]="false"
-    [class.seguimiento-stepper--readonly]="!canEditTracking">
+  @if (trackings.length > 0) {
+    <section class="tracking-list-panel">
+      <div class="tracking-list-head">
+        <div>
+          <h2>Tus seguimientos</h2>
+          <p>Selecciona un taller para ver su seguimiento.</p>
+        </div>
+        <span class="tracking-list-count">{{ trackings.length }}</span>
+      </div>
 
-    <mat-step
-      label="Cita Agendada"
-      [completed]="!!tracking?.createdAt"
-      [editable]="canEditTracking">
-      <p>Cita Agendada</p>
-      <div class="step-date">{{ tracking?.createdAt | date:'short' }}</div>
-    </mat-step>
+      <div class="tracking-list">
+        @for (item of trackings; track item.sessionUuid) {
+          <button
+            type="button"
+            class="tracking-card"
+            [class.tracking-card--active]="selectedSessionUuid === item.sessionUuid"
+            [ngClass]="'tracking-card--' + item.status"
+            (click)="selectTracking(item)">
+            <div class="tracking-card-top">
+              <div>
+                <p class="tracking-card-title">{{ item.workshopName || 'Taller sin nombre' }}</p>
+                <p class="tracking-card-subtitle">Mecanico: {{ item.mechanicName || 'No disponible' }}</p>
+                <p class="tracking-card-subtitle">{{ item.carInfo }}</p>
+              </div>
+              <span class="tracking-card-status">{{ getStatusLabel(item.status) }}</span>
+            </div>
 
-    <mat-step
-      label="En Revisión"
-      [completed]="!!(tracking?.inProgressAt || tracking?.acceptedAt)"
-      [editable]="canEditTracking">
-      <p>En Revisión</p>
-      <div class="step-date">{{ (tracking?.inProgressAt || tracking?.acceptedAt) | date:'short' }}</div>
-    </mat-step>
+            <p class="tracking-card-update">{{ item.latestUpdate || 'Sin actualizaciones por ahora' }}</p>
 
-    <mat-step label="Reparado" [completed]="!!tracking?.fixedAt" [editable]="false">
-      <p>Reparado</p>
-      <div class="step-date">{{ tracking?.fixedAt | date:'short' }}</div>
-    </mat-step>
+            <div class="tracking-card-meta">
+              <span>{{ item.clientName }}</span>
+              <span>{{ item.createdAt | date:'shortDate' }}</span>
+            </div>
+          </button>
+        }
+      </div>
+    </section>
+  }
 
-  </mat-horizontal-stepper>
-
-  <div class="seguimiento-content">
-
-    @if (hasTracking) {
-
-    <router-outlet />
-
-    } @else {
-
+  @if (!hasTracking) {
     <div class="seguimiento-empty">
-
-      <h3>No tienes seguimiento de un coche activo</h3>
-
-      <p>
-        Todavía no has elegido a un mecánico para tu coche.
-      </p>
-
+      <h3>No tienes seguimientos activos</h3>
+      <p>Selecciona un taller para ver el estado de tu coche.</p>
     </div>
-    }
+  }
 
-  </div>
+  <router-outlet />
 </section>

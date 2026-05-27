@@ -12,8 +12,8 @@ export const seguimientoGuard: CanActivateFn = (route, state) => {
 
   const isMechanicRoute = state.url.startsWith('/mecanico/seguimiento');
   if (isMechanicRoute) {
-    const clientId = route.queryParamMap.get('clientId');
-    if (!clientId) {
+    const sessionUuid = route.queryParamMap.get('sessionUuid');
+    if (!sessionUuid) {
       return router.createUrlTree(['/mecanico']);
     }
   }

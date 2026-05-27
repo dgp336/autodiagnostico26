@@ -1,40 +1,31 @@
-import { isPlatformBrowser, DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, ViewChild, inject } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import { ChatApiService } from '../../services/chat-api.service';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, inject } from '@angular/core';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { AuthStateService } from '../../services/auth-state.service';
 import { MechanicService, MechanicClient } from '../../services/mechanic.service';
-import { MatStepperModule } from '@angular/material/stepper';
-import { MatButtonModule } from '@angular/material/button';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-seguimiento-page',
   standalone: true,
-  imports: [RouterOutlet, MatStepperModule, MatButtonModule, ReactiveFormsModule, FormsModule, DatePipe],
-  providers: [DatePipe],
+  imports: [CommonModule, RouterOutlet],
   templateUrl: './seguimiento.html',
   styleUrls: ['./seguimiento.css']
 })
 
 export class SeguimientoComponent implements OnInit {
-  canEditTracking: boolean = false;
   private readonly mechanicService = inject(MechanicService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly cdr = inject(ChangeDetectorRef);
-  @ViewChild('stepper') stepper!: MatStepper;
+  private refreshTimerId: number | null = null;
 
   participantId = 0;
-  sessionUuid = '';
-  tracking: MechanicClient | null = null;
+  trackings: MechanicClient[] = [];
+  selectedTrackingId: number | null = null;
+  selectedSessionUuid = '';
   hasTracking = false;
-  userOnline = false;
-  unreadCount = 0;
-  issueStatus: string = '';
 
   constructor(
-    private readonly chatApiService: ChatApiService,
     private readonly authStateService: AuthStateService,
     @Inject(PLATFORM_ID) private readonly platformId: object
   ) { }
@@ -45,8 +36,6 @@ export class SeguimientoComponent implements OnInit {
       return;
     }
 
-    const role = this.authStateService.role();
-    this.canEditTracking = role === 'TALLER' || role === 'ADMIN';
     const userId = this.authStateService.userId();
 
     if (!userId) {
@@ -54,56 +43,30 @@ export class SeguimientoComponent implements OnInit {
     }
 
     this.participantId = userId;
-    this.issueStatus = this.tracking?.status ?? '';
+    this.selectedSessionUuid = this.route.snapshot.queryParamMap.get('sessionUuid') ?? localStorage.getItem('trackingSessionUuid') ?? '';
 
-    this.loadTracking();
+    this.loadTrackings(false);
+    this.startAutoRefresh();
   }
 
-  ngAfterViewInit(): void {
-    if (this.canEditTracking) {
-      return;
-    }
-
-    queueMicrotask(() => {
-      const stepHeaders = this.stepper?._stepHeader ?? [];
-
-      stepHeaders.forEach((header: any) => {
-        const element = header?._elementRef?.nativeElement;
-
-        if (!element) {
-          return;
-        }
-
-        element.style.pointerEvents = 'none';
-        element.tabIndex = -1;
-        element.setAttribute('aria-disabled', 'true');
-      });
-    });
+  ngOnDestroy(): void {
+    this.stopAutoRefresh();
   }
-  loadTracking(): void {
-    this.mechanicService.getTrackingForClient(this.participantId).subscribe({
-      next: (tracking) => {
-        if (!tracking) {
+
+  loadTrackings(shouldNavigateToChat = false): void {
+    this.mechanicService.getTrackingsForClient(this.participantId).subscribe({
+      next: (trackings) => {
+        this.trackings = trackings;
+
+        if (!trackings.length) {
           this.hasTracking = false;
           this.cdr.detectChanges();
           return;
         }
 
-        this.hasTracking = true;
-        this.tracking = tracking as MechanicClient;
-        this.issueStatus = this.tracking?.status ?? '';
-
-        this.sessionUuid = this.tracking?.sessionUuid ?? '';
-        localStorage.setItem('trackingSessionUuid', this.sessionUuid);
-
+        const selected = this.resolveSelectedTracking(trackings);
+        this.applySelectedTracking(selected, shouldNavigateToChat);
         this.cdr.detectChanges();
-
-        console.log('USER TRACKING', tracking);
-        console.log('USER UUID', this.sessionUuid);
-
-        setTimeout(() => {
-          this.router.navigate(['/usuario/seguimiento/chat']);
-        });
       },
       error: (err) => {
         if (err.status !== 404) {
@@ -111,28 +74,69 @@ export class SeguimientoComponent implements OnInit {
         }
 
         this.hasTracking = false;
+        this.trackings = [];
         this.cdr.detectChanges();
-
-        setTimeout(() => {
-          this.router.navigate(['/usuario/seguimiento']);
-        });
       }
     });
   }
 
-  loadChatData(): void {
-    this.chatApiService.isUserOnline(this.sessionUuid, this.participantId).subscribe({
-      next: (isOnline) => {
-        this.userOnline = isOnline;
-        this.cdr.detectChanges();
-      }
-    });
+  selectTracking(tracking: MechanicClient): void {
+    this.applySelectedTracking(tracking, true);
+    this.cdr.detectChanges();
+  }
 
-    this.chatApiService.unreadCount(this.sessionUuid).subscribe({
-      next: (count) => {
-        this.unreadCount = count;
-        this.cdr.detectChanges();
+  getStatusLabel(status: string): string {
+    return {
+      verde: 'Reparado',
+      amarillo: 'Pendiente',
+      naranja: 'En revisión',
+      rojo: 'Urgente'
+    }[status] || status;
+  }
+
+  private startAutoRefresh(): void {
+    this.stopAutoRefresh();
+    this.refreshTimerId = window.setInterval(() => {
+      this.loadTrackings(false);
+    }, 5000);
+  }
+
+  private stopAutoRefresh(): void {
+    if (this.refreshTimerId !== null) {
+      window.clearInterval(this.refreshTimerId);
+      this.refreshTimerId = null;
+    }
+  }
+
+  private resolveSelectedTracking(trackings: MechanicClient[]): MechanicClient {
+    if (this.selectedTrackingId !== null) {
+      const byId = trackings.find((tracking) => tracking.issueId === this.selectedTrackingId);
+      if (byId) {
+        return byId;
       }
-    });
+    }
+
+    if (this.selectedSessionUuid) {
+      const bySession = trackings.find((tracking) => tracking.sessionUuid === this.selectedSessionUuid);
+      if (bySession) {
+        return bySession;
+      }
+    }
+
+    return trackings[0];
+  }
+
+  private applySelectedTracking(tracking: MechanicClient, shouldNavigateToChat = false): void {
+    this.hasTracking = true;
+    this.selectedTrackingId = tracking.issueId;
+    this.selectedSessionUuid = tracking.sessionUuid;
+
+    localStorage.setItem('trackingSessionUuid', tracking.sessionUuid);
+
+    if (shouldNavigateToChat) {
+      this.router.navigate(['/usuario/seguimiento/detalle'], {
+        queryParams: { sessionUuid: tracking.sessionUuid }
+      });
+    }
   }
 }

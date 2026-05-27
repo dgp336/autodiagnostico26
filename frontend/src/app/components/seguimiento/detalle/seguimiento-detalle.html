@@ -1,0 +1,80 @@
+<section class="seguimiento-shell">
+  <header class="seguimiento-head">
+    <button type="button" class="back-button" (click)="goBack()">Volver</button>
+    <div>
+      <h1>Seguimiento</h1>
+      <p>Detalle del taller, mecanico y estado actual.</p>
+    </div>
+  </header>
+
+  @if (loading) {
+    <p class="info">Cargando seguimiento...</p>
+  }
+
+  @if (!loading && tracking) {
+    <section class="tracking-summary">
+      <div class="summary-card">
+        <span class="summary-label">Taller</span>
+        <strong>{{ tracking.workshopName || 'Taller sin nombre' }}</strong>
+        <small>Mecanico: {{ tracking.mechanicName || 'No disponible' }}</small>
+      </div>
+
+      <div class="summary-card">
+        <span class="summary-label">Vehiculo</span>
+        <strong>{{ tracking.carInfo || 'Sin datos' }}</strong>
+        <small>Estado: {{ getStatusLabel(tracking.status) }}</small>
+      </div>
+
+      <div class="summary-card summary-card--wide">
+        <span class="summary-label">Diagnostico IA</span>
+        <strong>{{ tracking.aiDiagnosis || 'Pendiente de diagnostico' }}</strong>
+      </div>
+    </section>
+
+    <mat-horizontal-stepper [linear]="false" class="seguimiento-stepper">
+      <mat-step label="Cita Agendada" [completed]="!!tracking.createdAt">
+        <p>Cita Agendada</p>
+        <div class="step-date">{{ tracking.createdAt | date:'short' }}</div>
+      </mat-step>
+
+      <mat-step label="En Revision" [completed]="!!(tracking.inProgressAt || tracking.acceptedAt)">
+        <p>En Revision</p>
+        <div class="step-date">{{ (tracking.inProgressAt || tracking.acceptedAt) | date:'short' }}</div>
+
+        @if (trackingUpdates.length > 0) {
+          <div class="tracking-updates">
+            <h4>Actualizaciones del mecanico</h4>
+            <ul>
+              @for (update of trackingUpdates; track update.createdAt + update.text) {
+                <li>
+                  <p>{{ update.text }}</p>
+                  <time>{{ update.createdAt | date:'short' }}</time>
+                </li>
+              }
+            </ul>
+          </div>
+        } @else {
+          <p class="tracking-updates-empty">Aun no hay actualizaciones del mecanico.</p>
+        }
+      </mat-step>
+
+      <mat-step label="Reparado" [completed]="!!tracking.fixedAt">
+        <p>Reparado</p>
+        <div class="step-date">{{ tracking.fixedAt | date:'short' }}</div>
+      </mat-step>
+    </mat-horizontal-stepper>
+
+    <section class="chat-panel">
+      <app-seguimiento-chat
+        [sessionUuidInput]="tracking.sessionUuid">
+      </app-seguimiento-chat>
+    </section>
+  }
+
+  @if (!loading && !tracking) {
+    <div class="seguimiento-empty">
+      <h3>No se encontro el seguimiento</h3>
+      <p>Selecciona un seguimiento de la lista.</p>
+    </div>
+  }
+</section>
