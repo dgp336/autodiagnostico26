@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { WorkshopService } from '../../services/workshop.service';
 import { WorkshopApplicationApiService } from '../../services/workshop-application-api.service';
 import { Workshop, WorkshopApplicationResponse } from '../../services/api.models';
@@ -8,7 +7,7 @@ import { Workshop, WorkshopApplicationResponse } from '../../services/api.models
 @Component({
   selector: 'app-admin-gestiontaller',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './admin-gestiontaller.html',
   styleUrls: ['./admin-gestiontaller.css'],
 })

@@ -1,16 +1,5 @@
 @import '../admin.component.css';
 
-.admin-page-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-}
-
-.admin-page-actions__card {
-  max-width: 320px;
-  width: min(100%, 320px);
-}
-
 .admin-grid {
   align-items: stretch;
 }
