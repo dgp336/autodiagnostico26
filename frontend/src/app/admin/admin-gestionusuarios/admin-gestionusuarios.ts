@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { UserApiService } from '../../services/user-api.service';
 import { AuthStateService } from '../../services/auth-state.service';
 import { AuthUserResponse } from '../../services/api.models';
@@ -11,7 +10,7 @@ type UserRoleFilter = 'ALL' | 'USER' | 'TALLER' | 'ADMIN';
 @Component({
   selector: 'app-admin-gestionusuarios',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin-gestionusuarios.html',
   styleUrl: './admin-gestionusuarios.css',
 })

@@ -206,25 +206,31 @@
 }
 
 /* ── Compact TALLER footer ── */
-.footer-main--taller {
+.footer-main--taller,
+.footer-main--admin {
   padding-block: 1rem;
 }
 
 .footer-main--taller .footer-tagline,
-.footer-main--taller .footer-socials {
+.footer-main--taller .footer-socials,
+.footer-main--admin .footer-tagline,
+.footer-main--admin .footer-socials {
   display: none;
 }
 
-.footer-main--taller .footer-brand-col {
+.footer-main--taller .footer-brand-col,
+.footer-main--admin .footer-brand-col {
   gap: 0;
 }
 
-.footer-main--taller .footer-brand img {
+.footer-main--taller .footer-brand img,
+.footer-main--admin .footer-brand img {
   width: 32px;
   height: 32px;
 }
 
-.footer-main--taller .footer-brand-name {
+.footer-main--taller .footer-brand-name,
+.footer-main--admin .footer-brand-name {
   font-size: 0.95rem;
 }
 

@@ -55,7 +55,86 @@
   </div>
 
   <!-- ════════════════════════════════════════════
-       USER / ADMIN / UNAUTHENTICATED — Actual
+       ADMIN — Compacto estilo perfil
+       ════════════════════════════════════════════ -->
+  } @else if (authStateService.role() === 'ADMIN') {
+
+  <div class="header-top header-top--taller">
+
+    <a routerLink="/home" class="header-brand header-brand--taller" aria-label="Ir a inicio">
+      <img src="logo.png" alt="AutoDiag" class="brand-logo brand-logo--taller" width="40" height="40"
+        loading="eager" />
+      <div class="brand-text">
+        <span class="brand-name">AutoDiagnostico</span>
+        <span class="brand-sub">Panel de administración</span>
+      </div>
+    </a>
+
+    <div class="header-actions header-actions--taller">
+      <button class="theme-toggle-btn" (click)="toggleTheme()" aria-label="Cambiar tema">
+        <img *ngIf="isDarkTheme" src="assets/dark-theme-icon.png" alt="Light mode" class="theme-toggle-icon" />
+        <img *ngIf="!isDarkTheme" src="assets/light-theme-icon.png" alt="Dark mode" class="theme-toggle-icon" />
+      </button>
+
+      <a routerLink="/perfil/informacion" class="mecanico-info">
+        <img [src]="authStateService.userAvatar()" [alt]="authStateService.userName()" class="mecanico-avatar"
+          width="32" height="32" />
+        <span class="mecanico-name">{{ authStateService.userName() }}</span>
+      </a>
+
+      <button class="logout-btn" (click)="onLogout()" aria-label="Cerrar sesión">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          aria-hidden="true">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" y1="12" x2="9" y2="12" />
+        </svg>
+        Salir
+      </button>
+    </div>
+  </div>
+
+  <nav class="header-nav" aria-label="Categorías de navegación">
+    <div class="header-nav-inner">
+      @if (authStateService.role() === 'ADMIN') {
+      <a routerLink="/admin" routerLinkActive="nav-item--active" [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          aria-hidden="true">
+          <path d="M3 3h18v6H3z" />
+          <path d="M3 11h18v10H3z" />
+        </svg>
+        Administración
+      </a>
+      <a routerLink="/admin/contacto" routerLinkActive="nav-item--active" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+        Buzón
+      </a>
+      <a routerLink="/admin/usuarios" routerLinkActive="nav-item--active" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          aria-hidden="true">
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+        </svg>
+        Usuarios
+      </a>
+      <a routerLink="/admin/gestiontaller" routerLinkActive="nav-item--active" class="nav-item">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          aria-hidden="true">
+          <path d="M3 7h18v2H3z" />
+          <path d="M5 11h14v6H5z" />
+        </svg>
+        Talleres
+      </a>
+      }
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════════════════
+       USER / UNAUTHENTICATED — Actual
        ════════════════════════════════════════════ -->
   } @else {
 
@@ -103,34 +182,6 @@
 
         @if (menuOpen) {
         <div class="dropdown" role="menu">
-          @if (authStateService.role() === 'ADMIN') {
-          <a routerLink="/admin" class="dropdown-item" role="menuitem">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              aria-hidden="true">
-              <path d="M3 3h18v6H3z" />
-              <path d="M3 11h18v10H3z" />
-            </svg>
-            Administración
-          </a>
-          <a routerLink="/admin/contacto" class="dropdown-item" role="menuitem">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              aria-hidden="true">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-            </svg>
-            Buzón
-          </a>
-          <hr class="dropdown-divider" />
-          <button class="dropdown-item dropdown-item--danger" (click)="onLogout()" role="menuitem">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              aria-hidden="true">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
-            Cerrar sesión
-          </button>
-          }
-          @if (authStateService.role() !== 'ADMIN') {
           <a routerLink="/mis-vehiculos" class="dropdown-item" role="menuitem">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               aria-hidden="true">
@@ -162,7 +213,6 @@
             </svg>
             Cerrar sesión
           </button>
-          }
         </div>
         }
         }
@@ -173,41 +223,6 @@
 
   <nav class="header-nav" aria-label="Categorías de navegación">
     <div class="header-nav-inner">
-      @if (authStateService.role() === 'ADMIN') {
-      <a routerLink="/admin" routerLinkActive="nav-item--active" [routerLinkActiveOptions]="{ exact: true }"
-        class="nav-item">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          aria-hidden="true">
-          <path d="M3 3h18v6H3z" />
-          <path d="M3 11h18v10H3z" />
-        </svg>
-        Administración
-      </a>
-      <a routerLink="/admin/contacto" routerLinkActive="nav-item--active" class="nav-item">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          aria-hidden="true">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-        </svg>
-        Buzón
-      </a>
-      <a routerLink="/admin/usuarios" routerLinkActive="nav-item--active" class="nav-item">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          aria-hidden="true">
-          <circle cx="12" cy="8" r="4" />
-          <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
-        </svg>
-        Usuarios
-      </a>
-      <a routerLink="/admin/gestiontaller" routerLinkActive="nav-item--active" class="nav-item">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          aria-hidden="true">
-          <path d="M3 7h18v2H3z" />
-          <path d="M5 11h14v6H5z" />
-        </svg>
-        Talleres
-      </a>
-      }
-      @if (authStateService.role() === 'USER') {
       <a routerLink="/home" routerLinkActive="nav-item--active" class="nav-item">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           aria-hidden="true">
@@ -240,7 +255,6 @@
         </svg>
         Contacto
       </a>
-      }
     </div>
   </nav>
 
@@ -250,25 +264,13 @@
 
   @if (mobileMenuOpen) {
     <nav class="mobile-nav" aria-label="Menú móvil">
-      @if (authStateService.role() === 'TALLER') {
-        <a routerLink="/mecanico" class="mobile-nav-link" (click)="toggleMobileMenu()">Lista de clientes</a>
-        <a routerLink="/mecanico/seguimiento" class="mobile-nav-link" (click)="toggleMobileMenu()">Seguimiento</a>
+      <a routerLink="/home" class="mobile-nav-link" (click)="toggleMobileMenu()">Inicio</a>
+      <a routerLink="/taller" class="mobile-nav-link" (click)="toggleMobileMenu()">Taller</a>
+      @if (authStateService.canAccessSeguimiento()) {
+        <a routerLink="/usuario/seguimiento" class="mobile-nav-link" (click)="toggleMobileMenu()">Seguimiento</a>
       }
-      @if (authStateService.role() === 'ADMIN') {
-        <a routerLink="/admin" class="mobile-nav-link" (click)="toggleMobileMenu()">Administración</a>
-        <a routerLink="/admin/contacto" class="mobile-nav-link" (click)="toggleMobileMenu()">Buzón</a>
-        <a routerLink="/admin/usuarios" class="mobile-nav-link" (click)="toggleMobileMenu()">Usuarios</a>
-        <a routerLink="/admin/gestiontaller" class="mobile-nav-link" (click)="toggleMobileMenu()">Talleres</a>
-      }
-      @if (authStateService.role() === 'USER') {
-        <a routerLink="/home" class="mobile-nav-link" (click)="toggleMobileMenu()">Inicio</a>
-        <a routerLink="/taller" class="mobile-nav-link" (click)="toggleMobileMenu()">Taller</a>
-        @if (authStateService.canAccessSeguimiento()) {
-          <a routerLink="/usuario/seguimiento" class="mobile-nav-link" (click)="toggleMobileMenu()">Seguimiento</a>
-        }
-        <a routerLink="/historial" class="mobile-nav-link" (click)="toggleMobileMenu()">Historial</a>
-        <a routerLink="/contacto" class="mobile-nav-link" (click)="toggleMobileMenu()">Contacto</a>
-      }
+      <a routerLink="/historial" class="mobile-nav-link" (click)="toggleMobileMenu()">Historial</a>
+      <a routerLink="/contacto" class="mobile-nav-link" (click)="toggleMobileMenu()">Contacto</a>
     </nav>
   }
   }
