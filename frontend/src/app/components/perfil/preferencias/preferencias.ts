@@ -15,7 +15,7 @@ export class PerfilPreferenciasComponent implements OnInit {
   private readonly mechanicService = inject(MechanicService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  tracking: MechanicClient | null = null;
+  trackings: MechanicClient[] = [];
   isLoading = true;
   errorMessage = '';
 
@@ -27,12 +27,13 @@ export class PerfilPreferenciasComponent implements OnInit {
       return;
     }
 
-    // Use the updated service method returning an array of trackings
     this.mechanicService.getTrackingsForClient(userId).subscribe({
       next: (data) => {
-        // Take the first tracking if available
-        this.tracking = data.length > 0 ? data[0] : null;
+        this.trackings = data;
         this.isLoading = false;
+        if (data.length === 0) {
+          this.errorMessage = 'No tienes ningún seguimiento activo en este momento.';
+        }
         this.cdr.detectChanges();
       },
       error: () => {
@@ -43,17 +44,13 @@ export class PerfilPreferenciasComponent implements OnInit {
     });
   }
 
-  statusIcon(status: string): string {
-    const icons: Record<string, string> = {
-      verde: '●',
-      amarillo: '●',
-      naranja: '●',
-      rojo: '●'
+  statusLabel(status: string): string {
+    const labels: Record<string, string> = {
+      verde: 'Correcto',
+      amarillo: 'En revisión',
+      naranja: 'Atención',
+      rojo: 'Urgente'
     };
-    return icons[status] || '●';
-  }
-
-  get sessionUuid(): string | null {
-    return this.tracking?.sessionUuid ?? null;
+    return labels[status] || status;
   }
 }

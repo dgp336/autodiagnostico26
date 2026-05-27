@@ -1,5 +1,5 @@
 .taller-shell {
-  max-width: 560px;
+  max-width: 600px;
 }
 
 .section-title {
@@ -11,6 +11,12 @@
   color: var(--color-ink-muted, #6b7280);
   font-size: 0.85rem;
   margin-bottom: 1.25rem;
+}
+
+.taller-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
 }
 
 .taller-card {
@@ -39,6 +45,11 @@
 .taller-value {
   font-size: 0.9rem;
   color: var(--color-ink, #111827);
+}
+
+.taller-dot {
+  font-size: 1.1rem;
+  line-height: 1;
 }
 
 .taller-status {
@@ -82,18 +93,25 @@
 }
 
 .taller-chat-link {
-  margin-top: 1.25rem;
+  padding-top: 0.25rem;
 }
 
 .taller-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 2rem 0;
+  padding: 3rem 1rem;
+  gap: 0.75rem;
 }
 
 .taller-icon {
+  width: 48px;
+  height: 48px;
   color: var(--color-primary, #1a6bbd);
-  opacity: 0.35;
-  margin-bottom: 0.75rem;
+  opacity: 0.5;
+  flex-shrink: 0;
 }
 
 .taller-empty h3 {
@@ -105,4 +123,10 @@
   color: var(--color-ink-muted, #6b7280);
   font-size: 0.875rem;
   margin-bottom: 1rem;
+}
+
+@media (max-width: 900px) {
+  .taller-shell {
+    max-width: 100%;
+  }
 }

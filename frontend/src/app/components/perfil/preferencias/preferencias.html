@@ -1,43 +1,46 @@
 <div class="taller-shell">
   <h3 class="section-title">Estado en el taller</h3>
-  <p class="section-desc">Consulta el estado actual del servicio de tu vehículo.</p>
+  <p class="section-desc">Consulta el estado actual del servicio de tus vehículos.</p>
 
   @if (isLoading) {
     <p class="text-muted">Cargando...</p>
-  } @else if (tracking) {
-    <div class="taller-card">
-      <div class="taller-row">
-        <span class="taller-label">Vehículo</span>
-        <span class="taller-value">{{ tracking.carInfo }}</span>
-      </div>
-      <div class="taller-row">
-        <span class="taller-label">Problema</span>
-        <span class="taller-value">{{ tracking.problemDescription }}</span>
-      </div>
-      <div class="taller-row">
-        <span class="taller-label">Estado</span>
-        <span class="taller-status taller-status--{{ tracking.status }}">
-          {{ statusIcon(tracking.status) }} {{ tracking.status === 'verde' ? 'Correcto' : tracking.status === 'amarillo' ? 'En revisión' : tracking.status === 'naranja' ? 'Atención' : 'Urgente' }}
-        </span>
-      </div>
-      @if (tracking.latestUpdate) {
-        <div class="taller-row">
-          <span class="taller-label">Última actualización</span>
-          <span class="taller-value">{{ tracking.latestUpdate }}</span>
+  } @else if (trackings.length > 0) {
+    <div class="taller-grid">
+      @for (tracking of trackings; track tracking.sessionUuid) {
+        <div class="taller-card">
+          <div class="taller-row">
+            <span class="taller-label">Vehículo</span>
+            <span class="taller-value">{{ tracking.carInfo }}</span>
+          </div>
+          <div class="taller-row">
+            <span class="taller-label">Problema</span>
+            <span class="taller-value">{{ tracking.problemDescription }}</span>
+          </div>
+          <div class="taller-row">
+            <span class="taller-label">Estado</span>
+            <span class="taller-status taller-status--{{ tracking.status }}">
+              <span class="taller-dot">●</span> {{ statusLabel(tracking.status) }}
+            </span>
+          </div>
+          @if (tracking.latestUpdate) {
+            <div class="taller-row">
+              <span class="taller-label">Última actualización</span>
+              <span class="taller-value">{{ tracking.latestUpdate }}</span>
+            </div>
+          }
+          @if (tracking.sessionUuid) {
+            <div class="taller-chat-link">
+              <a routerLink="/usuario/seguimiento/chat" class="btn btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                Ir al chat con el taller
+              </a>
+            </div>
+          }
         </div>
       }
     </div>
-
-    @if (sessionUuid) {
-      <div class="taller-chat-link">
-        <a routerLink="/usuario/seguimiento/chat" class="btn btn-primary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg>
-          Ir al chat con el taller
-        </a>
-      </div>
-    }
   } @else {
     <div class="taller-empty">
       <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true" class="taller-icon">
@@ -47,7 +50,7 @@
       </svg>
       <h3>Sin servicio activo</h3>
       <p>{{ errorMessage }}</p>
-      <a routerLink="/diagnostico" class="btn btn-primary">Iniciar diagnóstico</a>
+      <a routerLink="/home" class="btn btn-primary">Iniciar diagnóstico</a>
     </div>
   }
 </div>
