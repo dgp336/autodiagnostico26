@@ -32,18 +32,21 @@
         </div>
       </div>
 
+      @if (authStateService.role() !== 'ADMIN') {
       <!-- COLUMNA 2: Servicios -->
       <div class="footer-col">
         <h3 class="footer-col-title">Servicios</h3>
         <ul class="footer-links">
-          <li><a routerLink="/taller"      class="footer-link">Buscar taller</a></li>
+            <li><a routerLink="/taller"      class="footer-link">Buscar taller</a></li>
 
           @if (authStateService.canAccessSeguimiento()) {
             <li><a routerLink="/usuario/seguimiento" class="footer-link">Seguimiento en tiempo real</a></li>
           }
         </ul>
       </div>
+      }
 
+      @if (authStateService.role() !== 'ADMIN') {
       <!-- COLUMNA 3: Mi cuenta -->
       <div class="footer-col">
         <h3 class="footer-col-title">Mi cuenta</h3>
@@ -59,26 +62,31 @@
           }
         </ul>
       </div>
+      }
 
       <!-- COLUMNA 4: Info -->
       <div class="footer-col">
         <h3 class="footer-col-title">Información</h3>
         <ul class="footer-links">
-          <li><a routerLink="/contacto"      class="footer-link">Contacto</a></li>
+          @if (authStateService.role() !== 'ADMIN') {
+            <li><a routerLink="/contacto"      class="footer-link">Contacto</a></li>
+          }
           <li><a routerLink="/sobre-nosotros" class="footer-link">Sobre nosotros</a></li>
           <li><a routerLink="/privacidad"    class="footer-link">Política de privacidad</a></li>
-          @if (authStateService.role() !== 'TALLER') {
-            <li>
-              <a routerLink="/cambiar-rol" class="footer-link footer-link--highlight">
-                ¿Eres mecánico? Trabaja con nosotros
-              </a>
-            </li>
-          } @else {
-            <li>
-              <a routerLink="/registro-taller" class="footer-link footer-link--highlight">
-                ¿Tienes un taller? Registra tu taller
-              </a>
-            </li>
+          @if (authStateService.role() !== 'ADMIN') {
+            @if (authStateService.role() !== 'TALLER') {
+              <li>
+                <a routerLink="/cambiar-rol" class="footer-link footer-link--highlight">
+                  ¿Eres mecánico? Trabaja con nosotros
+                </a>
+              </li>
+            } @else {
+              <li>
+                <a routerLink="/registro-taller" class="footer-link footer-link--highlight">
+                  ¿Tienes un taller? Registra tu taller
+                </a>
+              </li>
+            }
           }
         </ul>
       </div>
