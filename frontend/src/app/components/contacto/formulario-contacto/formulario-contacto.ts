@@ -2,8 +2,7 @@ import { Component, inject, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthStateService } from '../../../services/auth-state.service';
-
-const FORMSPREE_URL = 'https://formspree.io/f/xkoepwgv';
+import { API_BASE_URL } from '../../../services/api.config';
 
 @Component({
   selector: 'app-formulario-contacto',
@@ -37,7 +36,7 @@ export class FormularioContactoComponent {
     this.success = false;
 
     try {
-      const response = await fetch(FORMSPREE_URL, {
+      const response = await fetch(`${API_BASE_URL}/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -46,12 +45,11 @@ export class FormularioContactoComponent {
           phone: this.phone || '',
           message: this.message,
           workshopId: this.workshopId(),
-          _subject: `Consulta desde taller #${this.workshopId()}`,
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Formspree error');
+        throw new Error('Error al enviar el mensaje');
       }
 
       this.sending = false;
