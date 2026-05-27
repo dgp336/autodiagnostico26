@@ -4,23 +4,9 @@
   <div class="header-top">
     <div class="header-top-inner">
 
-      <!-- BUSCADOR (elemento principal) -->
-      <div class="search-bar">
-        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2" aria-hidden="true">
-          <circle cx="11" cy="11" r="8" />
-          <path d="m21 21-4.35-4.35" />
-        </svg>
-        <input type="search" class="search-input" placeholder="Busca tu vehículo o problema..."
-          [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" aria-label="Buscador principal" />
-        <button class="search-btn" (click)="onSearch()" aria-label="Buscar">
-          Buscar
-        </button>
-      </div>
-
-      <!-- LOGO (derecha) -->
+      <!-- LOGO centrado -->
       <a routerLink="/home" class="header-brand" aria-label="Ir a inicio">
-        <img src="logo.png" alt="AutoDiag" class="brand-logo" width="40" height="40" loading="eager" />
+        <img src="logo.png" alt="AutoDiag" class="brand-logo" width="60" height="60" loading="eager" />
         <span class="brand-name">AutoDiagnostico</span>
       </a>
 
@@ -143,7 +129,7 @@
   <nav class="header-nav" aria-label="Categorías de navegación">
     <div class="header-nav-inner">
       @if (authStateService.role() === 'TALLER') {
-      <a routerLink="/mecanico" routerLinkActive="nav-item--active" class="nav-item">
+      <a routerLink="/mecanico" routerLinkActive="nav-item--active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           aria-hidden="true">
           <path d="M3 7h18v2H3z" />
@@ -151,7 +137,7 @@
         </svg>
         Lista de clientes
       </a>
-      <a routerLink="/mecanico" routerLinkActive="nav-item--active" class="nav-item">
+      <a routerLink="/mecanico/seguimiento" routerLinkActive="nav-item--active" class="nav-item">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           aria-hidden="true">
           <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
@@ -238,7 +224,7 @@
     <nav class="mobile-nav" aria-label="Menú móvil">
       @if (authStateService.role() === 'TALLER') {
         <a routerLink="/mecanico" class="mobile-nav-link" (click)="toggleMobileMenu()">Lista de clientes</a>
-        <a routerLink="/mecanico" class="mobile-nav-link" (click)="toggleMobileMenu()">Seguimiento</a>
+        <a routerLink="/mecanico/seguimiento" class="mobile-nav-link" (click)="toggleMobileMenu()">Seguimiento</a>
       }
       @if (authStateService.role() === 'ADMIN') {
         <a routerLink="/admin" class="mobile-nav-link" (click)="toggleMobileMenu()">Administración</a>

@@ -1,13 +1,12 @@
 import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { AuthStateService } from '../../../services/auth-state.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, FormsModule, CommonModule],
+  imports: [RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './header.html',
   styleUrls: ['./header.css']
 })
@@ -17,7 +16,6 @@ export class HeaderComponent implements OnInit {
 
   menuOpen = false;
   mobileMenuOpen = false;
-  searchQuery = '';
   isDarkTheme = false;
 
   ngOnInit(): void {
@@ -61,13 +59,6 @@ export class HeaderComponent implements OnInit {
     this.authStateService.clearSession();
     this.menuOpen = false;
     void this.router.navigate(['/login']);
-  }
-
-  onSearch(): void {
-    if (this.searchQuery.trim()) {
-      // TODO: router.navigate(['/buscar'], { queryParams: { q: this.searchQuery } })
-      console.log('Buscar:', this.searchQuery);
-    }
   }
 
   @HostListener('document:click', ['$event'])
