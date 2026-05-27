@@ -1,94 +1,50 @@
-# feat: implementar flujo de talleres y asignación mecánico-cliente
+# Talleres
 
-## Resumen
+Este componente muestra los talleres disponibles y permite al cliente seleccionar uno para iniciar o continuar su seguimiento.
 
-Este PR implementa el nuevo sistema de talleres, permitiendo a los clientes visualizar talleres disponibles, consultar ocupación, seleccionar un taller y crear automáticamente una sesión de seguimiento con el mecánico asignado.
+## Componente principal
 
----
+- `TallerComponent` en `frontend/src/app/components/taller/`
 
-## Funcionalidades implementadas
+## Qué muestra
 
-### Sistema de talleres
+- listado dinámico de talleres desde backend
+- dirección
+- horario
+- ocupación actual
+- mecánico asignado
+- vehículos en reparación
+- filtros por disponibilidad, horario y distancia
 
-* Listado dinámico de talleres desde backend
-* Vista detallada de:
-  * dirección
-  * contacto
-  * horario
-  * ocupación
-  * mecánico asignado
-  * vehículos en reparación
-* Integración completa frontend ↔ backend
+## Flujo de uso
 
----
+1. El componente carga talleres con `WorkshopService.listWorkshops(userId)`.
+2. Si el usuario tiene geolocalización disponible, ordena la lista por cercanía.
+3. El cliente puede filtrar por ocupación y por talleres abiertos.
+4. Al seleccionar un taller, el frontend comprueba que tenga un vehículo personal activo seleccionado.
+5. El componente llama a `WorkshopService.selectWorkshop()`.
+6. El backend crea o reutiliza la sesión de seguimiento con `sessionUuid`.
+7. El usuario navega a `/usuario/seguimiento/detalle`.
 
-## Selección de taller
+## Backend asociado
 
-### Flujo implementado
+- `GET /api/workshops`
+- `GET /api/workshops/{workshopId}`
+- `POST /api/workshops/{workshopId}/select`
+- `GET /api/workshops/exists-for-mechanic/{mechanicId}`
 
-1. El cliente visualiza talleres disponibles
-2. Selecciona un taller
-3. Backend crea automáticamente:
-   * `TallerAssignment`
-   * `sessionUuid`
-   * relación mecánico-cliente
-4. El usuario es redirigido automáticamente al seguimiento/chat
+## Reglas visuales y de negocio
 
----
+- Un taller lleno se marca como completo.
+- Si ya existe una sesión previa, el usuario puede volver a ella.
+- La lista se reordena con la posición del usuario cuando hay geolocalización.
+- La selección depende de un vehículo personal guardado previamente.
 
-## Persistencia
+## Relación con seguimiento
 
-Cada taller mantiene:
+La selección del taller no termina en el listado: genera la sesión de trabajo que después se usa en seguimiento y chat.
 
-* límite de vehículos
-* vehículos activos
-* mecánico responsable
-* sesiones persistentes de seguimiento
+## Observaciones
 
----
-
-## Frontend Angular
-
-### Añadido
-
-* nuevo `TallerComponent`
-* render dinámico de talleres
-* cálculo de ocupación
-* estado visual de talleres completos
-* integración de navegación hacia seguimiento
-
-### Mejoras UX
-
-* botón de actualización
-* bloqueo de selección en talleres llenos
-* recuperación automática de sesiones existentes
-* mensajes de error controlados
-
----
-
-## Backend Spring Boot
-
-### Añadido
-
-* DTOs de talleres
-* endpoints de listado y selección
-* lógica de asignación mecánico-cliente
-* persistencia de `sessionUuid`
-* control de capacidad de talleres
-
----
-
-## Manejo de errores
-
-Soporte para:
-
-* talleres completos
-* clientes sin sesión
-* errores de asignación
-* talleres inexistentes
-
----
-
-## Resultado
-
-El sistema ahora permite crear flujos completos de asignación entre cliente y mecánico mediante selección de talleres, dejando preparada la integración directa con seguimiento y chat persistente.
+- El componente usa `signals` y `computed` para filtros y ordenación.
+- La distancia se calcula con la fórmula de Haversine.

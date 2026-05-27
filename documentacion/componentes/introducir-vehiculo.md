@@ -1,30 +1,68 @@
 # Introducción de Vehículo
 
-Este componente es el núcleo de la identificación técnica del vehículo en el proceso de diagnóstico.
+Este componente centraliza la selección de marca, modelo y detalle técnico del vehículo en los flujos de diagnóstico y alta de vehículos.
 
-## Estructura de Componentes
+## Componente principal
 
-`IntroducirVehiculo` actúa como un orquestador de tres sub-componentes especializados:
+- `IntroducirVehiculo` en `frontend/src/app/components/introducir-vehiculo/`
 
-1.  **SelectorMarcaModelo**: Gestiona la carga y selección de la marca y el modelo.
-2.  **PrecisionBusqueda**: Un indicador visual que muestra qué tan completa es la información proporcionada (Marca -> Modelo -> Detalle).
-3.  **DetalleVehiculo**: Permite especificar la variante exacta, motorización, transmisión y año.
+## Subcomponentes usados
 
-## Relación con la Capa MCP (LLM)
+1. `SelectorMarcaModelo`: carga y selección de marca y modelo.
+2. `PrecisionBusqueda`: muestra el nivel de completitud de la información.
+3. `DetalleVehiculo`: permite elegir variante, motor, transmisión y año.
 
-La información recopilada por este componente es crucial para el diagnóstico inteligente mediante IA:
+## Modos de uso
 
-*   **Contexto en el Prompt**: Toda la información del vehículo (`brand`, `model`, `engineType`, `transmission`, etc.) se envía al LLM como parte del contexto del diagnóstico.
-*   **Capa MCP**: El LLM utiliza herramientas de la capa MCP para consultar catálogos técnicos precisos.
-*   **Motorización y Piezas**: Basándose en la **motorización** exacta identificada por este componente, el LLM puede invocar herramientas MCP para filtrar y sugerir las piezas de repuesto específicas que son compatibles con ese vehículo exacto, evitando errores de compatibilidad.
+### `diagnostico`
 
-## Reutilización y Flujos
+- Se usa en el flujo de autodiagnóstico.
+- El usuario debe completar al menos marca y modelo.
+- El botón principal emite `enviar` para continuar.
 
-*   **Diagnóstico Anónimo/Usuario**: Se utiliza en el flujo principal para iniciar un diagnóstico.
-*   **Mis Vehículos**: Este componente se reutiliza en el apartado "Mis Vehículos" para permitir al usuario registrado añadir un nuevo vehículo a su garaje virtual con la misma precisión técnica.
+### `alta`
 
-## Comunicación con otros componentes
+- Se usa en `Mis Vehículos` para registrar un coche en el garaje.
+- Incluye matrícula, VIN y fecha de matriculación opcionales.
+- El botón principal emite `guardarCoche`.
 
-Emite eventos (`Output`) hacia el componente padre:
-*   `vehicleContextChange`: Notifica cada cambio en la selección del vehículo.
-*   `enviar`: Se dispara cuando el usuario confirma la información para proceder al diagnóstico.
+## Datos que recoge
+
+- `brand`
+- `modelId`
+- `modelName`
+- `variantId`
+- `variantName`
+- `engineType`
+- `transmission`
+- `year`
+
+En modo alta también recoge:
+
+- `plate`
+- `vin`
+- `buildDate`
+
+## Backend asociado
+
+- `GET /api/vehicles/brands`
+- `GET /api/vehicles/brands/{brand}/models`
+- `GET /api/vehicles/{vehicleId}/variants`
+- `POST /api/personal-vehicles`
+
+## Flujo funcional
+
+1. El componente carga marcas al iniciarse.
+2. Al elegir marca, carga modelos.
+3. Al elegir modelo, carga variantes técnicas.
+4. El padre recibe el contexto técnico con `vehicleContextChange`.
+5. En diagnóstico, el contexto se envía al motor IA.
+6. En alta, el contexto se usa para guardar el vehículo del usuario.
+
+## Integración con diagnóstico
+
+La información técnica se transforma en el `AutodiagnosisRequest` que después consume el backend.
+
+## Integración con `Mis Vehículos`
+
+En modo alta, el componente se reutiliza dentro de `MisVehiculosComponent` para crear un vehículo personal con la misma base técnica.

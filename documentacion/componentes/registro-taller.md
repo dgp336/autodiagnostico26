@@ -1,36 +1,56 @@
 # Registro de Taller
 
-Este componente permite a los nuevos talleres solicitar unirse a la plataforma de AutoDiagnóstico.
+Este componente permite a un mecánico solicitar el alta de su taller desde el frontend.
 
-## Componentes y Estructura
+## Componente principal
 
-El componente principal es `RegistroTallerComponent`, ubicado en `frontend/src/app/components/registro-taller/`.
+- `RegistroTallerComponent` en `frontend/src/app/components/registro-taller/`
 
-### Campos del Formulario
+## Qué hace
 
-El formulario recopila información esencial para dar de alta tanto al taller como al usuario administrador del mismo.
+El formulario recoge los datos de la cuenta del mecánico y del taller:
 
-| Campo | Entidad Relacionada | Descripción |
+| Campo | Entidad | Uso |
 | :--- | :--- | :--- |
-| **Nombre del taller** | `Workshop.name` | Nombre comercial del establecimiento. |
-| **Dirección** | `Workshop.address` | Ubicación física completa. |
-| **Teléfono** | `Workshop.phone` | Contacto telefónico del taller. |
-| **Correo electrónico** | `Workshop.email` / `AppUser.email` | Email de contacto y login. |
-| **Horario** | `Workshop.schedule` | Horas de apertura y cierre. |
-| **Límite de vehículos** | `Workshop.vehicleLimit` | Capacidad máxima de vehículos simultáneos. |
-| **URL Foto/Logo** | `Workshop.photoUrl` | Enlace a una imagen del taller o logo. |
-| **Nombre completo** | `AppUser.fullName` | Nombre del responsable del taller. |
-| **Contraseña** | `AppUser.passwordHash` | Credenciales de acceso. |
+| Nombre del taller | `Workshop.name` | Nombre público del taller |
+| Dirección | `Workshop.address` | Ubicación física |
+| Teléfono | `Workshop.phone` | Contacto |
+| Correo electrónico | `Workshop.email` / `AppUser.email` | Login y contacto |
+| Horario | `Workshop.schedule` | Horario comercial |
+| Límite de vehículos | `Workshop.vehicleLimit` | Capacidad máxima |
+| URL foto / logo | `Workshop.photoUrl` | Imagen del taller |
+| Nombre completo | `AppUser.fullName` | Responsable de la cuenta |
+| Contraseña | `AppUser.passwordHash` | Credencial de acceso |
 
-## Lógica de Funcionamiento
+## Flujo real
 
-1.  **Validación en tiempo real**: Se validan los campos obligatorios y la coincidencia de contraseñas mediante Angular Signals y Computed properties.
-2.  **Simulación de envío**: Actualmente, el componente realiza una simulación de envío (frontend-only) mostrando un spinner de carga y una pantalla de éxito tras 1.2 segundos.
-3.  **Integración**: El enlace para acceder a este registro se encuentra en el `Footer` de la aplicación, bajo la sección de "Información".
+1. El componente comprueba que el usuario está autenticado.
+2. Llama a `WorkshopService.existsForMechanic(userId)` como failsafe.
+3. Si ya existe un taller o una solicitud asociada, redirige a `/home`.
+4. Si no existe, pre-rellena `fullName` y `email` desde la sesión.
+5. El usuario completa el formulario y selecciona la ubicación en el mapa.
+6. El componente envía la solicitud a `WorkshopApplicationApiService.submit()`.
+7. El backend guarda una `WorkshopApplication` en estado `PENDING`.
 
-## Diseño y Estilos
+## Backend asociado
 
-El componente utiliza el sistema de diseño global del proyecto (`styles.css`):
-*   **Clases globales**: Reutiliza `.card` para los contenedores y `.btn .btn-primary` para las acciones.
-*   **Variables CSS**: Utiliza tokens globales como `--color-primary`, `--spacing-md`, etc.
-*   **Responsividad**: Adaptado para dispositivos móviles mediante Media Queries que reorganizan el grid de campos.
+- `POST /api/workshop-applications`
+- `GET /api/workshops/exists-for-mechanic/{mechanicId}`
+
+## Validaciones visibles en el frontend
+
+- Campos obligatorios completos.
+- Coordenadas seleccionadas en el mapa.
+- Términos aceptados.
+- Límite mínimo de vehículos.
+
+## Diseño
+
+- Usa tarjetas y formularios del sistema global de estilos.
+- Incluye un mapa selector de ubicación.
+- Muestra un estado de comprobación mientras valida el usuario.
+
+## Observaciones
+
+- Ya no es una simulación frontend-only.
+- El flujo real persiste la solicitud y luego depende de la aprobación administrativa.
