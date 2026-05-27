@@ -80,6 +80,15 @@
   padding: 0.9rem;
   background: #fff;
   color: #0f172a;
+
+  p {
+    color: #000000;
+  }
+
+  :host-context(.dark) p {
+    color: #ffffff;
+  }
+
 }
 
 .tracking-card--active {
@@ -113,6 +122,7 @@
   border-radius: 12px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
+  color: #ffffff;
 }
 
 .tracking-card-meta {
@@ -467,4 +477,82 @@
 
 :host-context(.dark) ::ng-deep .mat-stepper-horizontal-line {
   border-top-color: #4b5563;
+}
+
+/* Additional Dark Mode Overrides */
+
+:host-context(.dark) .tracking-list-head h2 {
+  color: #f9fafb;
+  /* Light text for headings */
+}
+
+:host-context(.dark) .tracking-list-head p {
+  color: #9ca3af;
+  /* Secondary text */
+}
+
+:host-context(.dark) .tracking-list-panel {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+:host-context(.dark) .tracking-card {
+  background: #1f2937;
+  color: #f9fafb;
+}
+
+:host-context(.dark) .tracking-card-update {
+  background: #1f2937;
+}
+
+:host-context(.dark) .tracking-card-status {
+  background: #374151;
+  color: #e5e7eb;
+}
+
+:host-context(.dark) .tracking-card--verde {
+  border-color: #34d399;
+}
+
+:host-context(.dark) .tracking-card--verde .tracking-card-status {
+  background: #064e3b;
+  color: #bbf7d0;
+}
+
+:host-context(.dark) .tracking-card--amarillo {
+  border-color: #fbbf24;
+}
+
+:host-context(.dark) .tracking-card--amarillo .tracking-card-status {
+  background: #78350f;
+  color: #fcd34d;
+}
+
+:host-context(.dark) .tracking-card--naranja {
+  border-color: #fb923c;
+}
+
+:host-context(.dark) .tracking-card--naranja .tracking-card-status {
+  background: #7c2d12;
+  color: #fdba74;
+}
+
+:host-context(.dark) .tracking-card--rojo {
+  border-color: #ef4444;
+}
+
+:host-context(.dark) .tracking-card--rojo .tracking-card-status {
+  background: #7f1d1d;
+  color: #fca5a5;
+}
+
+/* Additional Dark Mode Overrides for tracking components */
+:host-context(.dark) .tracking-list-count {
+  background: #374151;
+  color: #93c5fd;
+}
+
+:host-context(.dark) .tracking-card-subtitle,
+:host-context(.dark) .tracking-card-meta,
+:host-context(.dark) .tracking-card p {
+  color: #ffffff;
 }

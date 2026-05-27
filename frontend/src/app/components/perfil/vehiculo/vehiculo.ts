@@ -25,9 +25,11 @@ export class PerfilVehiculoComponent implements OnInit {
       return;
     }
 
-    this.mechanicService.getTrackingForClient(userId).subscribe({
-      next: (data) => {
-        this.tracking = data;
+    // Updated service returns an array of trackings
+    this.mechanicService.getTrackingsForClient(userId).subscribe({
+      next: (data: MechanicClient[]) => {
+        // Use the first tracking if available
+        this.tracking = data.length > 0 ? data[0] : null;
         this.isLoading = false;
         this.cdr.detectChanges();
       },

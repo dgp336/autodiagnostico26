@@ -118,3 +118,56 @@
 .chat-panel {
   margin-top: 1.5rem;
 }
+
+/* Dark mode overrides for seguimiento-detalle */
+:host-context(.dark) {
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+:host-context(.dark) .seguimiento-head h1,
+:host-context(.dark) .seguimiento-head p {
+  color: #f9fafb;
+}
+
+:host-context(.dark) .back-button {
+  border-color: #374151;
+  background: #1f2937;
+  color: #f9fafb;
+}
+
+:host-context(.dark) .summary-card {
+  border-color: #374151;
+  background: #1f2937;
+}
+
+:host-context(.dark) .summary-label {
+  color: #9ca3af;
+}
+
+:host-context(.dark) .step-date {
+  color: #9ca3af;
+}
+
+:host-context(.dark) .tracking-updates {
+  background: #111827;
+  border-color: #374151;
+}
+
+:host-context(.dark) .tracking-updates h4 {
+  color: #f9fafb;
+}
+
+:host-context(.dark) .tracking-updates li {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+:host-context(.dark) .tracking-updates li p {
+  color: #e5e7eb;
+}
+
+:host-context(.dark) .tracking-updates li time,
+:host-context(.dark) .tracking-updates-empty {
+  color: #9ca3af;
+}
