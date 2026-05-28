@@ -20,7 +20,6 @@ export interface GuardarCochePayload {
   vehicleModelId: number;
   plate: string | null;
   vin: string | null;
-  buildDate: string | null;
 }
 
 @Component({
@@ -52,7 +51,6 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
 
   plate = '';
   vin = '';
-  buildDate = '';
   saving = false;
 
   readonly engineTypeOptions: EnumOption<EngineType>[] = [
@@ -208,7 +206,6 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
       vehicleModelId: this.detailValue.variantId,
       plate: this.plate.trim() || null,
       vin: this.vin.trim() || null,
-      buildDate: this.buildDate || null,
     });
   }
 
@@ -220,7 +217,6 @@ export class IntroducirVehiculo implements OnInit, OnDestroy, OnChanges {
     this.detailValue = { variantId: null, year: null, engineType: null, transmission: null };
     this.plate = '';
     this.vin = '';
-    this.buildDate = '';
     this.saving = false;
     this.emitContext();
     this.cdr.detectChanges();

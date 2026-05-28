@@ -20,8 +20,8 @@
           <div class="pv-card-info">
             <h4 class="pv-card-title">{{ displayName(vehicle) }}</h4>
             <dl class="pv-card-meta">
-              @if (vehicle.year) {
-                <div><dt>Año</dt><dd>{{ vehicle.year }}</dd></div>
+              @if (vehicle.firstProductionYear) {
+                <div><dt>Año</dt><dd>{{ vehicle.firstProductionYear }}</dd></div>
               }
               @if (vehicle.engineType) {
                 <div><dt>Motor</dt><dd>{{ vehicle.engineType }}</dd></div>

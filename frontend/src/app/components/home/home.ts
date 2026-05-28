@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IntroducirVehiculo } from '../introducir-vehiculo/introducir-vehiculo';
+import { IntroducirVehiculo, GuardarCochePayload } from '../introducir-vehiculo/introducir-vehiculo';
 import { SeleccionaProblema, ProblemaSeleccion } from '../selecciona-problema/selecciona-problema';
 import { SelectorMisVehiculos } from '../selector-mis-vehiculos/selector-mis-vehiculos';
 import { VehicleSearchContext, PersonalVehicleResponse } from '../../services/api.models';
@@ -23,6 +23,8 @@ export class HomeComponent {
   private readonly personalVehicleApi = inject(PersonalVehicleApiService);
   private readonly cdr = inject(ChangeDetectorRef);
 
+  @ViewChild(IntroducirVehiculo) introducirVehiculo?: IntroducirVehiculo;
+
   vehicleContext: VehicleSearchContext | null = null;
   seleccion: ProblemaSeleccion = { problemas: [], descripcionLibre: '' };
 
@@ -40,6 +42,16 @@ export class HomeComponent {
 
   get isLoggedIn(): boolean {
     return this.auth.isLoggedIn();
+  }
+
+  get canSendDiagnostico(): boolean {
+    if (!this.tieneProblema) {
+      return false;
+    }
+    if (this.selectedPersonalVehicleId !== null) {
+      return true;
+    }
+    return !!this.vehicleContext?.brand && !!this.vehicleContext?.modelId;
   }
 
   ngOnInit(): void {
@@ -102,6 +114,7 @@ export class HomeComponent {
     this.selectedPersonalVehicleId = id;
     if (id === null) {
       this.prefillContext = null;
+      this.vehicleContext = null;
       localStorage.removeItem('selectedPersonalVehicleId');
       return;
     }
@@ -153,18 +166,9 @@ export class HomeComponent {
     this.navigateToDiagnostico(clientId, null);
   }
 
-  get canSaveVehicle(): boolean {
-    if (!this.isLoggedIn || this.savingVehicle) return false;
-    if (this.selectedPersonalVehicleId !== null) return false;
-    return this.vehicleContext?.variantId != null;
-  }
-
-  onGuardarCoche(): void {
-    if (!this.canSaveVehicle) return;
-
+  onGuardarCoche(payload: GuardarCochePayload): void {
     const ownerId = this.auth.userId();
-    const vehicleModelId = this.vehicleContext?.variantId ?? null;
-    if (ownerId === null || vehicleModelId === null) {
+    if (ownerId === null) {
       return;
     }
 
@@ -174,21 +178,22 @@ export class HomeComponent {
 
     this.personalVehicleApi.create({
       ownerId,
-      vehicleModelId,
-      plate: null,
-      vin: null,
-      buildDate: null,
+      vehicleModelId: payload.vehicleModelId,
+      plate: payload.plate,
+      vin: payload.vin,
     }).subscribe({
       next: (created: PersonalVehicleResponse) => {
         this.personalVehicles = [created, ...this.personalVehicles];
         this.savingVehicle = false;
         this.saveVehicleMessage = 'Coche guardado en tu garaje. Ya puedes seleccionarlo de la lista.';
+        this.introducirVehiculo?.notifySaved();
         this.applyPersonalVehicle(created.id);
         this.cdr.detectChanges();
       },
       error: () => {
         this.savingVehicle = false;
         this.saveVehicleError = 'No se pudo guardar el coche. Inténtalo de nuevo.';
+        this.introducirVehiculo?.notifySaveFailed();
         this.cdr.detectChanges();
       },
     });
@@ -218,7 +223,7 @@ export class HomeComponent {
       variantName: vehicle.modelName,
       engineType: vehicle.engineType,
       transmission: vehicle.transmission,
-      year: vehicle.year,
+      year: vehicle.firstProductionYear,
     };
 
     this.prefillContext = selectedContext;

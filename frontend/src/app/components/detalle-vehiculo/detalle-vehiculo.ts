@@ -49,17 +49,9 @@ export class DetalleVehiculo implements OnInit, OnChanges, OnDestroy {
     });
 
     this.form.get('variantId')!.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(variantId => {
-      if (variantId) {
-        const variant = this.variants.find(v => v.id === Number(variantId));
-        if (variant) {
-          if (variant.engineType && !this.form.get('engineType')!.value) {
-            this.form.get('engineType')!.setValue(variant.engineType, { emitEvent: false });
-          }
-          if (variant.transmission && !this.form.get('transmission')!.value) {
-            this.form.get('transmission')!.setValue(variant.transmission, { emitEvent: false });
-          }
-        }
-      }
+      const variant = variantId ? this.variants.find(v => v.id === Number(variantId)) : null;
+      this.form.get('engineType')!.setValue(variant?.engineType ?? null, { emitEvent: false });
+      this.form.get('transmission')!.setValue(variant?.transmission ?? null, { emitEvent: false });
     });
 
     this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -81,11 +73,20 @@ export class DetalleVehiculo implements OnInit, OnChanges, OnDestroy {
     }
 
     if (changes['variants'] && this.variants.length === 0) {
-      this.form.get('variantId')!.setValue(null, { emitEvent: false });
+      this.form.patchValue({
+        variantId: null,
+        year: null,
+        engineType: null,
+        transmission: null,
+      }, { emitEvent: false });
     }
 
-    if (changes['value'] && this.value) {
-      this.form.patchValue(this.value, { emitEvent: false });
+    if (changes['value']) {
+      if (this.value) {
+        this.form.patchValue(this.value, { emitEvent: false });
+      } else {
+        this.form.reset({ variantId: null, year: null, engineType: null, transmission: null }, { emitEvent: false });
+      }
     }
   }
 
