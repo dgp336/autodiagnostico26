@@ -296,12 +296,10 @@ button:hover {
   color: #e2e8f0;
 }
 
-/* DARK MODE - Angular Material Stepper */
 :host-context(body.dark) ::ng-deep .mat-horizontal-stepper-wrapper {
   background: #111827;
   color: #e5e7eb;
   border: 1px solid #334155;
-  border-radius: 16px;
   padding: 12px;
 }
 
