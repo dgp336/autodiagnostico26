@@ -452,7 +452,7 @@ public class CarDataPopulationService {
 
         return file.substring(
                 file.lastIndexOf("-") + 1,
-                file.lastIndexOf(".")).toLowerCase();
+                file.lastIndexOf("."));
     }
 
     private String getSpec(
