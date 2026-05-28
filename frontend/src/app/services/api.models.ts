@@ -218,12 +218,11 @@ export interface PersonalVehicleResponse {
   brand: string | null;
   vehicleName: string | null;
   modelName: string | null;
-  year: number | null;
+  firstProductionYear: number | null;
   engineType: EngineType | null;
   transmission: TransmissionType | null;
   plate: string | null;
   vin: string | null;
-  buildDate: string | null;
 }
 
 export interface CreatePersonalVehicleRequest {
@@ -231,7 +230,6 @@ export interface CreatePersonalVehicleRequest {
   vehicleModelId: number;
   plate: string | null;
   vin: string | null;
-  buildDate: string | null;
 }
 
 // ── Contacto ────────────────────────────────────────────────────────────────

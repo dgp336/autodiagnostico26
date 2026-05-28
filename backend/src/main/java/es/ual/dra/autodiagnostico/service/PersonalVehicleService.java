@@ -56,7 +56,6 @@ public class PersonalVehicleService {
                 .vehicleModel(model)
                 .plate(normalize(request.getPlate()))
                 .vin(normalize(request.getVin()))
-                .buildDate(request.getBuildDate())
                 .build();
 
         return toDto(personalVehicleRepository.save(pv));
@@ -91,14 +90,13 @@ public class PersonalVehicleService {
                 .brand(vehicle == null ? null : vehicle.getBrand())
                 .vehicleName(vehicle == null ? null : vehicle.getName())
                 .modelName(model == null ? null : model.getModelName())
-                .year(model == null ? null : model.getYearFirstProduction())
+                .firstProductionYear(model == null ? null : model.getYearFirstProduction())
                 .engineType(model == null || model.getEngine() == null || model.getEngine().getEngineType() == null
                         ? null
                         : model.getEngine().getEngineType().name())
                 .transmission(model == null || model.getTransmission() == null ? null : model.getTransmission().name())
                 .plate(pv.getPlate())
                 .vin(pv.getVin())
-                .buildDate(pv.getBuildDate())
                 .build();
     }
 }

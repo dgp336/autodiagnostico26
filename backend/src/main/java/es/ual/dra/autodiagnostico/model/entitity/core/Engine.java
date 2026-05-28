@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -30,6 +32,7 @@ public class Engine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idEngine;
     private String name;
+    @Enumerated(EnumType.STRING)
     private EngineType engineType;
 
     @OneToMany(mappedBy = "engine", cascade = CascadeType.ALL, orphanRemoval = true)

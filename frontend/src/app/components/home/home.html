@@ -14,34 +14,32 @@
   }
 
   <app-introducir-vehiculo
+    [mode]="'alta'"
     [tieneProblema]="tieneProblema"
     [prefill]="prefillContext"
     (vehicleContextChange)="onVehicleContextChange($event)"
-    (enviar)="onEnviar()"
+    (guardarCoche)="onGuardarCoche($event)"
   />
 
-  @if (isLoggedIn && selectedPersonalVehicleId === null) {
-    <div class="home-save-vehicle">
-      <p class="home-save-vehicle-hint">
-        ¿Quieres guardar este coche en tu garaje para no rellenar sus datos la próxima vez?
-      </p>
-      <button
-        type="button"
-        class="home-save-vehicle-btn"
-        [disabled]="!canSaveVehicle"
-        (click)="onGuardarCoche()"
-      >
-        @if (savingVehicle) { Guardando... } @else { Guardar coche en mi garaje }
-      </button>
-      @if (!canSaveVehicle && !savingVehicle) {
-        <p class="home-save-vehicle-sub">Selecciona marca, modelo y variante para poder guardarlo.</p>
-      }
-      @if (saveVehicleMessage) {
-        <p class="home-save-vehicle-success">{{ saveVehicleMessage }}</p>
-      }
-      @if (saveVehicleError) {
-        <p class="home-save-vehicle-error">{{ saveVehicleError }}</p>
-      }
-    </div>
+  <div class="home-save-vehicle">
+    <p class="home-save-vehicle-hint">Cuando tengas el coche definido, puedes lanzar aquí el diagnóstico.</p>
+    <button
+      type="button"
+      class="home-save-vehicle-btn"
+      [disabled]="!canSendDiagnostico"
+      (click)="onEnviar()"
+    >
+      Enviar diagnóstico
+    </button>
+    @if (!canSendDiagnostico) {
+      <p class="home-save-vehicle-sub">Selecciona un problema y completa al menos marca y modelo para continuar.</p>
+    }
+  </div>
+
+  @if (saveVehicleMessage) {
+    <p class="home-save-vehicle-success">{{ saveVehicleMessage }}</p>
+  }
+  @if (saveVehicleError) {
+    <p class="home-save-vehicle-error">{{ saveVehicleError }}</p>
   }
 </section>

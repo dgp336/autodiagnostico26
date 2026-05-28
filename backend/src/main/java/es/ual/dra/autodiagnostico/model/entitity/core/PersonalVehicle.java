@@ -1,7 +1,5 @@
 package es.ual.dra.autodiagnostico.model.entitity.core;
 
-import java.time.LocalDate;
-
 import es.ual.dra.autodiagnostico.model.entitity.user.AppUser;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,14 +19,12 @@ public class PersonalVehicle {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "idVehicleModel")
+    @JoinColumn(name = "id_vehicle_model")
     private VehicleModel vehicleModel;
 
     @ManyToOne(optional = true)
     @JoinColumn(name = "owner_id")
     private AppUser owner;
-
-    private LocalDate buildDate;
 
     @Column(name = "vin", length = 32)
     private String vin;

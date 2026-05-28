@@ -53,7 +53,6 @@ export class MisVehiculosComponent implements OnInit {
       vehicleModelId: payload.vehicleModelId,
       plate: payload.plate,
       vin: payload.vin,
-      buildDate: payload.buildDate,
     }).subscribe({
       next: (created: PersonalVehicleResponse) => {
         this.vehicles = [created, ...this.vehicles];
@@ -106,6 +105,7 @@ export class MisVehiculosComponent implements OnInit {
         this.vehicles = list;
         this.loading = false;
         this.cdr.detectChanges();
+        console.log('Loaded personal vehicles:', list);
       },
       error: () => {
         this.errorMessage = 'No se pudieron cargar tus vehículos';
