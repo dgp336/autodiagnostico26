@@ -183,42 +183,6 @@
   margin: 0;
 }
 
-.status-row {
-  margin-top: 16px;
-}
-
-.status-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.status-controls button {
-  background: #e2e8f0;
-  color: #0f172a;
-  border: 1px solid #cbd5e1;
-}
-
-.status-controls button.active {
-  color: #ffffff;
-}
-
-.status-controls button:nth-child(1).active {
-  background: #16a34a;
-}
-
-.status-controls button:nth-child(2).active {
-  background: #ca8a04;
-}
-
-.status-controls button:nth-child(3).active {
-  background: #ea580c;
-}
-
-.status-controls button:nth-child(4).active {
-  background: #dc2626;
-}
-
 label {
   display: grid;
   gap: 8px;
@@ -332,6 +296,51 @@ button:hover {
   color: #e2e8f0;
 }
 
+/* DARK MODE - Angular Material Stepper */
+:host-context(body.dark) ::ng-deep .mat-horizontal-stepper-wrapper {
+  background: #111827;
+  color: #e5e7eb;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  padding: 12px;
+}
+
+:host-context(body.dark) ::ng-deep .mat-horizontal-stepper-header-container {
+  background: transparent;
+}
+
+:host-context(body.dark) ::ng-deep .mat-step-header {
+  color: #d1d5db;
+}
+
+:host-context(body.dark) ::ng-deep .mat-step-label {
+  color: #d1d5db;
+}
+
+:host-context(body.dark) ::ng-deep .mat-step-label.mat-step-label-active {
+  color: #ffffff;
+}
+
+:host-context(body.dark) ::ng-deep .mat-step-icon {
+  background-color: #374151;
+  color: #ffffff;
+}
+
+:host-context(body.dark) ::ng-deep .mat-step-icon-selected {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+:host-context(body.dark) ::ng-deep .mat-step-icon-state-done {
+  background-color: #10b981;
+  color: #ffffff;
+}
+
+:host-context(body.dark) ::ng-deep .mat-horizontal-stepper-line,
+:host-context(body.dark) ::ng-deep .mat-stepper-horizontal-line {
+  border-top-color: #4b5563;
+}
+
 :host-context(body.dark) textarea {
   background: #0f172a;
   color: #e2e8f0;
@@ -357,28 +366,6 @@ button:hover {
   background: #0f172a;
   color: #cbd5e1;
   border-color: #334155;
-}
-
-:host-context(body.dark) .status-controls button {
-  background: #334155;
-  color: #e2e8f0;
-  border-color: #475569;
-}
-
-:host-context(body.dark) .status-controls button:nth-child(1).active {
-  background: #15803d;
-}
-
-:host-context(body.dark) .status-controls button:nth-child(2).active {
-  background: #a16207;
-}
-
-:host-context(body.dark) .status-controls button:nth-child(3).active {
-  background: #c2410c;
-}
-
-:host-context(body.dark) .status-controls button:nth-child(4).active {
-  background: #b91c1c;
 }
 
 @media (max-width: 980px) {

@@ -20,7 +20,7 @@
         <article class="summary-card">
           <span class="summary-label">Vehículo</span>
           <strong>{{ tracking.carInfo || 'Sin datos' }}</strong>
-          <small>Estado: {{ tracking.status | titlecase }}</small>
+          <small>Estado: {{ getStatusLabel(tracking.status || 'rojo') }}</small>
         </article>
 
         <article class="summary-card summary-card--wide">
@@ -30,55 +30,48 @@
       </div>
     }
 
-    @if (!loading) {
+    @if (tracking) {
       <div class="tracking-badge-row">
-        <span class="tracking-badge tracking-badge--{{ tracking?.status || 'amarillo' }}">
-          {{ getStatusLabel(tracking?.status || 'amarillo') }}
+        <span class="tracking-badge tracking-badge--{{ tracking.status || 'rojo' }}">
+          {{ getStatusLabel(tracking.status || 'rojo') }}
         </span>
-        <span class="tracking-badge tracking-badge--session">Sesión {{ tracking?.sessionUuid | slice:0:8 }}</span>
+        <span class="tracking-badge tracking-badge--session">Sesión {{ tracking.sessionUuid | slice:0:8 }}</span>
       </div>
     }
 
     <mat-horizontal-stepper
       [linear]="false"
       [selectedIndex]="selectedStepIndex"
-      [class.seguimiento-stepper--readonly]="!canEditTracking"
       (selectionChange)="onStepperSelectionChange($event)">
 
       <mat-step
-        label="Cita Agendada"
-        [completed]="!!tracking?.createdAt"
-        [editable]="canEditTracking">
-        <p>Cita Agendada</p>
+        label="Pendiente de aceptar"
+        [completed]="!!(tracking?.acceptedAt || tracking?.inProgressAt || tracking?.fixedAt)">
+        <p>Pendiente de aceptar</p>
         <div class="step-date">{{ tracking?.createdAt | date:'short' }}</div>
       </mat-step>
 
       <mat-step
-        label="En Revisión"
-        [completed]="!!(tracking?.inProgressAt || tracking?.acceptedAt)"
-        [editable]="canEditTracking">
-        <p>En Revisión</p>
-        <div class="step-date">{{ (tracking?.inProgressAt || tracking?.acceptedAt) | date:'short' }}</div>
+        label="Cita agendada"
+        [completed]="!!(tracking?.inProgressAt || tracking?.fixedAt)">
+        <p>Cita agendada</p>
+        <div class="step-date">{{ tracking?.acceptedAt | date:'short' }}</div>
+      </mat-step>
+
+      <mat-step
+        label="En revisión"
+        [completed]="!!tracking?.fixedAt">
+        <p>En revisión</p>
+        <div class="step-date">{{ tracking?.inProgressAt | date:'short' }}</div>
       </mat-step>
 
       <mat-step
         label="Reparado"
-        [completed]="!!tracking?.fixedAt"
-        [editable]="canEditTracking">
+        [completed]="!!tracking?.fixedAt">
         <p>Reparado</p>
         <div class="step-date">{{ tracking?.fixedAt | date:'short' }}</div>
       </mat-step>
     </mat-horizontal-stepper>
-
-    <div class="status-row">
-      <label>Estado del coche:</label>
-      <div class="status-controls">
-        <button type="button" (click)="setStatus('verde')" [class.active]="status==='verde'">Verde</button>
-        <button type="button" (click)="setStatus('amarillo')" [class.active]="status==='amarillo'">Amarillo</button>
-        <button type="button" (click)="setStatus('naranja')" [class.active]="status==='naranja'">Naranja</button>
-        <button type="button" (click)="setStatus('rojo')" [class.active]="status==='rojo'">Rojo</button>
-      </div>
-    </div>
 
     @if (!loading && tracking?.latestUpdate) {
       <div class="last-update">
