@@ -89,7 +89,7 @@
     </svg>
       <select id="dv-transmission" class="dv-select" formControlName="transmission">
         <option [ngValue]="null">No lo sé / Cualquiera</option>
-        @for (opt of transmissionOptions; track opt.value) {
+        @for (opt of filteredTransmissionOptions; track opt.value) {
           <option [value]="opt.value">{{ opt.label }}</option>
         }
       </select>
