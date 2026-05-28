@@ -29,6 +29,7 @@ export class DetalleVehiculo implements OnInit, OnChanges, OnDestroy {
   @Input() disabled = false;
   @Input() engineTypeOptions: EnumOption<EngineType>[] = [];
   @Input() transmissionOptions: EnumOption<TransmissionType>[] = [];
+  filteredTransmissionOptions: EnumOption<TransmissionType>[] = [];
   @Input() value: DetalleVehiculoValue | null = null;
 
   @Output() detailChange = new EventEmitter<DetalleVehiculoValue>();
@@ -38,7 +39,7 @@ export class DetalleVehiculo implements OnInit, OnChanges, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -47,13 +48,14 @@ export class DetalleVehiculo implements OnInit, OnChanges, OnDestroy {
       engineType: [null],
       transmission: [null],
     });
+    this.updateTransmissionOptions();
 
     this.form.get('variantId')!.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(variantId => {
       const variant = variantId ? this.variants.find(v => v.id === Number(variantId)) : null;
       this.form.get('engineType')!.setValue(variant?.engineType ?? null, { emitEvent: false });
       this.form.get('transmission')!.setValue(variant?.transmission ?? null, { emitEvent: false });
+      this.updateTransmissionOptions();
     });
-
     this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.emitValue();
     });
@@ -88,11 +90,32 @@ export class DetalleVehiculo implements OnInit, OnChanges, OnDestroy {
         this.form.reset({ variantId: null, year: null, engineType: null, transmission: null }, { emitEvent: false });
       }
     }
+    if (changes['transmissionOptions'] && this.variants && this.form) {
+      const variantId = this.form.get('variantId')?.value;
+      const variant = variantId ? this.variants.find(v => v.id === Number(variantId)) : null;
+      this.updateTransmissionOptions();
+    }
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private updateTransmissionOptions(): void {
+    const availableTransmissions = new Set<TransmissionType>();
+    this.variants?.forEach(v => {
+      if (v?.transmission != null) {
+        availableTransmissions.add(v.transmission);
+      }
+    });
+    if (availableTransmissions.size > 0) {
+      this.filteredTransmissionOptions = this.transmissionOptions.filter(opt =>
+        availableTransmissions.has(opt.value as unknown as TransmissionType)
+      );
+    } else {
+      this.filteredTransmissionOptions = [...this.transmissionOptions];
+    }
   }
 
   private emitValue(): void {
