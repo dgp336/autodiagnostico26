@@ -2,7 +2,6 @@ package es.ual.dra.autodiagnostico.service;
 
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -92,7 +91,12 @@ public class MechanicsDataInitializer implements CommandLineRunner {
                     "https://api.dicebear.com/9.x/initials/svg?seed=C" + i + "&backgroundColor=1a6bbd");
         }
 
-        seedDemoIssues();
+        try {
+            seedDemoIssues();
+        } catch (RuntimeException ex) {
+            log.warn("Skipping demo issue seeding because existing local data could not be read safely: {}",
+                    ex.getMessage());
+        }
 
         log.info("Mechanics, workshops and clients initialization completed.");
     }
@@ -166,10 +170,10 @@ public class MechanicsDataInitializer implements CommandLineRunner {
         };
     }
 
-        private void seedDemoIssues() {
+    private void seedDemoIssues() {
         List<VehicleModel> models = vehicleModelRepository.findAll().stream()
-            .sorted(Comparator.comparing(VehicleModel::getIdVehicleModel))
-            .toList();
+                .sorted(Comparator.comparing(VehicleModel::getIdVehicleModel))
+                .toList();
 
         if (models.size() < 6) {
             log.warn("No hay suficientes modelos de vehiculo para sembrar casos demo.");
@@ -188,47 +192,47 @@ public class MechanicsDataInitializer implements CommandLineRunner {
         Workshop workshop2 = workshopRepository.findByNameIgnoreCase("Auto Diagnosis Express").orElseThrow();
         Workshop workshop3 = workshopRepository.findByNameIgnoreCase("Reparaciones Rapidas Sur").orElseThrow();
 
-        seedIssue(client1, models.get(0), "1111AAA", "VIN0001", LocalDate.of(2018, 3, 10),
-            mechanic1, workshop1, IssueStatus.WORKSHOP_ASSIGNED, "amarillo",
-            "Revisando fallo de encendido. Esperando diagnostico.");
+        seedIssue(client1, models.get(0), "1111AAA", "VIN0001", 2018,
+                mechanic1, workshop1, IssueStatus.WORKSHOP_ASSIGNED, "amarillo",
+                "Revisando fallo de encendido. Esperando diagnostico.");
 
-        seedIssue(client1, models.get(1), "2222BBB", "VIN0002", LocalDate.of(2016, 7, 5),
-            mechanic2, workshop2, IssueStatus.IN_PROGRESS, "naranja",
-            "En reparacion. Sustituyendo bobinas.");
+        seedIssue(client1, models.get(1), "2222BBB", "VIN0002", 2016,
+                mechanic2, workshop2, IssueStatus.IN_PROGRESS, "naranja",
+                "En reparacion. Sustituyendo bobinas.");
 
-        seedIssue(client2, models.get(2), "3333CCC", "VIN0003", LocalDate.of(2020, 1, 20),
-            mechanic2, workshop2, IssueStatus.BUDGET_ACCEPTED, "amarillo",
-            "Presupuesto aceptado. Preparando recambios.");
+        seedIssue(client2, models.get(2), "3333CCC", "VIN0003", 2020,
+                mechanic2, workshop2, IssueStatus.BUDGET_ACCEPTED, "amarillo",
+                "Presupuesto aceptado. Preparando recambios.");
 
-        seedIssue(client2, models.get(3), "4444DDD", "VIN0004", LocalDate.of(2015, 11, 2),
-            mechanic3, workshop3, IssueStatus.FIXED, "verde",
-            "Vehiculo reparado. Listo para entrega.");
+        seedIssue(client2, models.get(3), "4444DDD", "VIN0004", 2015,
+                mechanic3, workshop3, IssueStatus.FIXED, "verde",
+                "Vehiculo reparado. Listo para entrega.");
 
-        seedIssue(client3, models.get(4), "5555EEE", "VIN0005", LocalDate.of(2019, 5, 12),
-            mechanic1, workshop1, IssueStatus.IN_PROGRESS, "naranja",
-            "En taller. Revisando sistema electrico.");
+        seedIssue(client3, models.get(4), "5555EEE", "VIN0005", 2019,
+                mechanic1, workshop1, IssueStatus.IN_PROGRESS, "naranja",
+                "En taller. Revisando sistema electrico.");
 
-        seedIssue(client3, models.get(5), "6666FFF", "VIN0006", LocalDate.of(2017, 9, 8),
-            mechanic3, workshop3, IssueStatus.WORKSHOP_ASSIGNED, "amarillo",
-            "Vehiculo recibido. Diagnostico pendiente.");
-        }
+        seedIssue(client3, models.get(5), "6666FFF", "VIN0006", 2017,
+                mechanic3, workshop3, IssueStatus.WORKSHOP_ASSIGNED, "amarillo",
+                "Vehiculo recibido. Diagnostico pendiente.");
+    }
 
-        private void seedIssue(
+    private void seedIssue(
             AppUser client,
             VehicleModel model,
             String plate,
             String vin,
-            LocalDate buildDate,
+            Integer buildYear,
             AppUser mechanic,
             Workshop workshop,
             IssueStatus status,
             String progressColor,
             String latestUpdate) {
-        PersonalVehicle personalVehicle = findOrCreatePersonalVehicle(client, model, plate, vin, buildDate);
+        PersonalVehicle personalVehicle = findOrCreatePersonalVehicle(client, model, plate, vin);
 
         String sessionUuid = UUID.nameUUIDFromBytes(
-            ("seed-" + client.getEmail() + "-" + plate).getBytes(StandardCharsets.UTF_8))
-            .toString();
+                ("seed-" + client.getEmail() + "-" + plate).getBytes(StandardCharsets.UTF_8))
+                .toString();
 
         Issue issue = issueRepository.findBySessionUuid(sessionUuid).orElseGet(Issue::new);
         issue.setPersonalVehicle(personalVehicle);
@@ -250,16 +254,16 @@ public class MechanicsDataInitializer implements CommandLineRunner {
         if (!chatMessageRepository.existsByIssueId(issue.getId())) {
             String firstMessage = "[ACTUALIZACION] " + latestUpdate;
             chatMessageRepository.save(ChatMessage.builder()
-                .issue(issue)
-                .sessionUuid(sessionUuid)
-                .sender(mechanic)
-                .senderRole(ChatSenderRole.MECANICO)
-                .commentText(firstMessage)
-                .wordCount(firstMessage.split("\\s+").length)
-                .readByUser(false)
-                .build());
+                    .issue(issue)
+                    .sessionUuid(sessionUuid)
+                    .sender(mechanic)
+                    .senderRole(ChatSenderRole.MECANICO)
+                    .commentText(firstMessage)
+                    .wordCount(firstMessage.split("\\s+").length)
+                    .readByUser(false)
+                    .build());
         }
-        }
+    }
 
     private void seedChatRoomPresence(Issue issue, AppUser client, AppUser mechanic) {
         upsertPresence(issue, client);
@@ -277,22 +281,20 @@ public class MechanicsDataInitializer implements CommandLineRunner {
         chatRoomPresenceRepository.save(presence);
     }
 
-        private PersonalVehicle findOrCreatePersonalVehicle(
+    private PersonalVehicle findOrCreatePersonalVehicle(
             AppUser owner,
             VehicleModel model,
             String plate,
-            String vin,
-            LocalDate buildDate) {
+            String vin) {
         return personalVehicleRepository.findByOwnerIdOrderByIdDesc(owner.getId()).stream()
-            .filter(vehicle -> plate.equalsIgnoreCase(vehicle.getPlate())
-                || (vin != null && vin.equalsIgnoreCase(vehicle.getVin())))
-            .findFirst()
-            .orElseGet(() -> personalVehicleRepository.save(PersonalVehicle.builder()
-                .owner(owner)
-                .vehicleModel(model)
-                .plate(plate)
-                .vin(vin)
-                .buildDate(buildDate)
-                .build()));
-        }
+                .filter(vehicle -> plate.equalsIgnoreCase(vehicle.getPlate())
+                        || (vin != null && vin.equalsIgnoreCase(vehicle.getVin())))
+                .findFirst()
+                .orElseGet(() -> personalVehicleRepository.save(PersonalVehicle.builder()
+                        .owner(owner)
+                        .vehicleModel(model)
+                        .plate(plate)
+                        .vin(vin)
+                        .build()));
+    }
 }
