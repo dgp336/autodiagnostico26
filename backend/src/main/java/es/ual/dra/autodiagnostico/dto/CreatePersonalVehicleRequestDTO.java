@@ -1,7 +1,5 @@
 package es.ual.dra.autodiagnostico.dto;
 
-import java.time.LocalDate;
-
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,5 +22,5 @@ public class CreatePersonalVehicleRequestDTO {
 
     private String plate;
     private String vin;
-    private LocalDate buildDate;
+    private Integer firstProductionYear;
 }
