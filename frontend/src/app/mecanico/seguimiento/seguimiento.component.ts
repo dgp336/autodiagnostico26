@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -11,6 +11,7 @@ import { ChatApiService } from '../../services/chat-api.service';
 import { ChatMessageResponse } from '../../services/api.models';
 
 type ClientStatus = 'verde' | 'amarillo' | 'naranja' | 'rojo';
+type StepStatus = ClientStatus;
 
 @Component({
   selector: 'app-seguimiento',
@@ -25,7 +26,6 @@ export class SeguimientoComponent implements OnInit {
   private mechanicService = inject(MechanicService);
   private auth = inject(AuthStateService);
   private route = inject(ActivatedRoute);
-  private cdr = inject(ChangeDetectorRef);
   private chatApi = inject(ChatApiService);
 
   message = '';
@@ -34,17 +34,12 @@ export class SeguimientoComponent implements OnInit {
   loading = true;
   canEditTracking = false;
   selectedStepIndex = 0;
+  private initialLoadCompleted = false;
 
   clientId = 0;
   sessionUuid = '';
 
-  constructor() {
-    const sessionParam = this.route.snapshot.queryParamMap.get('sessionUuid');
-    if (sessionParam) {
-      this.sessionUuid = sessionParam;
-    }
-
-  }
+  constructor() {}
 
   get isMechanic(): boolean {
     const role = this.auth.role();
@@ -53,15 +48,11 @@ export class SeguimientoComponent implements OnInit {
 
   getStatusLabel(status: string): string {
     return {
-      verde: 'Reparado',
-      amarillo: 'Pendiente',
+      rojo: 'Pendiente de aceptar',
+      amarillo: 'Cita agendada',
       naranja: 'En revisión',
-      rojo: 'Urgente'
+      verde: 'Reparado'
     }[status] || status;
-  }
-
-  get status(): ClientStatus {
-    return (this.tracking?.status ?? 'amarillo') as ClientStatus;
   }
 
   ngOnInit(): void {
@@ -73,13 +64,12 @@ export class SeguimientoComponent implements OnInit {
         return;
       }
 
+      const sessionChanged = sessionUuid !== this.sessionUuid;
       this.sessionUuid = sessionUuid;
-      this.loadTracking();
+      if (sessionChanged || !this.initialLoadCompleted) {
+        this.loadTracking(!this.initialLoadCompleted);
+      }
     });
-
-    if (this.sessionUuid) {
-      this.loadTracking();
-    }
   }
 
   onStepperSelectionChange(event: StepperSelectionEvent): void {
@@ -91,11 +81,7 @@ export class SeguimientoComponent implements OnInit {
       return;
     }
 
-    const nextStatus: ClientStatus = event.selectedIndex === 2
-      ? 'verde'
-      : event.selectedIndex === 1
-      ? 'naranja'
-      : 'amarillo';
+    const nextStatus: StepStatus = (['rojo', 'amarillo', 'naranja', 'verde'][event.selectedIndex] ?? 'rojo') as StepStatus;
 
     this.setStatus(nextStatus);
   }
@@ -117,8 +103,7 @@ export class SeguimientoComponent implements OnInit {
           this.tracking.status = status;
         }
         this.selectedStepIndex = this.computeStepIndex();
-        this.loadTracking();
-        this.cdr.detectChanges();
+        this.loadTracking(false);
       },
       error: (err) => {
         console.error('Error actualizando estado:', err);
@@ -151,7 +136,6 @@ export class SeguimientoComponent implements OnInit {
 
         this.publishTrackingUpdateToChat(trimmed);
         this.message = '';
-        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error guardando actualización:', err);
@@ -167,12 +151,15 @@ export class SeguimientoComponent implements OnInit {
     return this.tracking?.sessionUuid ?? this.sessionUuid ?? '';
   }
 
-  loadTracking(): void {
-    this.loading = true;
+  loadTracking(showLoading = !this.initialLoadCompleted): void {
+    if (showLoading) {
+      this.loading = true;
+    }
 
     if (!this.sessionUuid) {
-      this.loading = false;
-      this.cdr.detectChanges();
+      if (showLoading) {
+        this.loading = false;
+      }
       return;
     }
 
@@ -186,13 +173,16 @@ export class SeguimientoComponent implements OnInit {
         this.selectedStepIndex = this.computeStepIndex();
         this.loadUpdateHistoryFromChat();
 
-        this.loading = false;
-        this.cdr.detectChanges();
+        this.initialLoadCompleted = true;
+        if (showLoading) {
+          this.loading = false;
+        }
       },
       error: (err: any) => {
         console.error(err);
-        this.loading = false;
-        this.cdr.detectChanges();
+        if (showLoading) {
+          this.loading = false;
+        }
       }
     });
   }
@@ -232,8 +222,6 @@ export class SeguimientoComponent implements OnInit {
           .filter((text) => text.length > 0)
           .slice(-8)
           .reverse();
-
-        this.cdr.detectChanges();
       },
       error: () => {
         // Keep existing local list if chat history fails.
@@ -242,14 +230,16 @@ export class SeguimientoComponent implements OnInit {
   }
 
   private computeStepIndex(): number {
-    if (this.tracking?.fixedAt) {
-      return 2;
+    switch (this.tracking?.status as ClientStatus | undefined) {
+      case 'verde':
+        return 3;
+      case 'naranja':
+        return 2;
+      case 'amarillo':
+        return 1;
+      case 'rojo':
+      default:
+        return 0;
     }
-
-    if (this.tracking?.inProgressAt || this.tracking?.acceptedAt) {
-      return 1;
-    }
-
-    return 0;
   }
 }
