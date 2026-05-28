@@ -28,6 +28,7 @@ public class VehicleModel {
 
     private int yearFirstProduction;
 
+    @Enumerated(EnumType.STRING)
     private TransmissionType transmission;
 
     @OneToMany(mappedBy = "vehicleModel", cascade = CascadeType.ALL, orphanRemoval = true)
