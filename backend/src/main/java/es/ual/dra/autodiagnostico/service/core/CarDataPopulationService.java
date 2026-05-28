@@ -320,12 +320,23 @@ public class CarDataPopulationService {
                             vm,
                             ctx.brand()));
 
-            for (TransmissionType transmission : transmissions) {
+            System.out.println("Lista de transmisiones probables para el modelo de vehículo " + vm.getModelName() + " con marca " + ctx.brand() + ": " + transmissions);
 
-                vm.setTransmission(transmission);
+            if (transmissions.isEmpty()) {
+                vm.setTransmission(TransmissionType.AT);
+            } else {
+                for (TransmissionType transmission : transmissions) {
+                    VehicleModel vm2 = new VehicleModel();
+                    vm2.setModelName(vm.getModelName());
+                    vm2.setVehicle(vehicle);
+                    vm2.setYearFirstProduction(vm.getYearFirstProduction());
+                    vm2.setEngine(vm.getEngine());
+                    vm2.setTransmission(transmission);
+                    vehicleModelRepository.save(vm2);
+                }
             }
 
-            vehicleModelRepository.save(vm);
+            // vehicleModelRepository.save(vm);
         }
     }
 
@@ -674,6 +685,8 @@ public class CarDataPopulationService {
                 score += 0;
                 break;
         }
+
+        System.out.println("Score para el modelo de vehículo " + vehicleModel.getModelName() + " con marca " + brand + ": " + score);
 
         return score;
 
